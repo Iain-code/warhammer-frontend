@@ -1,6 +1,6 @@
 import React from 'react'
 import { useContext } from 'react'
-import ModelContext from '../modelContext'
+import ModelContext from '../../modelContext'
 import PropTypes from 'prop-types'
 
 const ModelProfile = ({ wargear }) => {

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useContext } from 'react'
 import Select from 'react-select';
-import AttackerContext from '../attackerContext';
-import DefenderContext from '../defenderContext';
-import ModelContext from '../modelContext'
-import ModelWargear from './ModelWargear'
+import AttackerContext from '../../attackerContext';
+import DefenderContext from '../../defenderContext';
+import ModelContext from '../../modelContext'
+import ModelWargear from '../ModelWargear'
 
 
 const ModelForm = () => {

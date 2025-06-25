@@ -1,12 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+
 
 const Fight = ({ wargear, rules, defender }) => {
   const [hits, setHits] = useState(null)
   const [wounds, setWounds] = useState(null)
   const [failedSaves, setFailedSaves] = useState(null)
   const [damage, setDamage] = useState(null)
+  const [unitSize, setUnitSize] = useState(1)
+  const [modelsKilled, setModelsKilled] = useState(null)
+
+  const attacks = Number(wargear.a.String)
+  const hitTarget = Number(wargear.bs_ws.String)
+  const strength = Number(wargear.s.String)
+  const toughness = Number(defender.T)
 
   const hitCalculation = (results, hitChance) => {
     let hits = 0
@@ -28,33 +35,28 @@ const Fight = ({ wargear, rules, defender }) => {
       }
     }
     if (rules.isPlusHit && hitChance > 2) {
-      hitChance = hitChance - 1
+      hitChance -= 1
     }
     if (rules.isMinusHit && hitChance < 6) {
-      hitChance = hitChance + 1
+      hitChance += 1
     }
 
-    if (newResults) {
-      for (let key in newResults) {
-        if (key >= hitChance) {
-          hits += newResults[key]
-        }
-      }
-      setHits(hits)
-    } else if (rules.isTorrent) {
+    const source = newResults || updatedResults
+
+    if (rules.isTorrent || typeof hitChance != 'number') {
       const torrentHits = updatedResults[1] + updatedResults[2] + updatedResults[3] + updatedResults[4] + updatedResults[5] + updatedResults[6]
-      setHits(torrentHits)
+      return torrentHits
     } else {
-      for (let key in updatedResults) {
+      for (let key in source) {
         if (key >= hitChance) {
           hits += updatedResults[key]
         }
       }
-      setHits(hits)
+      return hits
     }
   }
 
-  const woundCalculation = () => {
+  const woundCalculation = (localHits) => {
     let modifier = 0
 
     if (strength > toughness * 2) {
@@ -79,7 +81,7 @@ const Fight = ({ wargear, rules, defender }) => {
       modifier = modifier + 1
     }
 
-    const woundRoll = diceRoll(hits)
+    const woundRoll = diceRoll(localHits)
     let successfulWounds = woundRollSort(woundRoll, modifier)
     let reRoll = 0
 
@@ -88,7 +90,7 @@ const Fight = ({ wargear, rules, defender }) => {
       const rolled = diceRoll(reRoll)
       successfulWounds = successfulWounds + woundRollSort(rolled, modifier)
     }
-    setWounds(successfulWounds)
+    return successfulWounds
   }
 
   const woundRollSort = (woundRoll, modifier) => {
@@ -102,23 +104,25 @@ const Fight = ({ wargear, rules, defender }) => {
     return successfulWounds
   }
 
-  useEffect(() => {
-    console.log('useEffect Hits:', hits)
-    console.log('useEffect Wounds:', wounds)
-    console.log('useEffect failed Saves', failedSaves)
-  }, [wounds, hits, failedSaves])
-  
-  const attacks = Number(wargear.a.String)
-  const hitTarget = Number(wargear.bs_ws.String)
-  const strength = Number(wargear.s.String)
-  const toughness = Number(defender.T)
-
   const handleCalculations = (event) => {
     event.preventDefault()
-    const results = diceRoll(10000 * attacks)
-    hitCalculation(results, hitTarget)
-    woundCalculation()
-    savesCalculatuion()
+    const unitAttacks = unitSize * attacks
+    const results = diceRoll(10000 * unitAttacks)
+
+    const localHits = hitCalculation(results, hitTarget)
+    setHits(localHits)
+
+    const localWounds = woundCalculation(localHits)
+    setWounds(localWounds)
+
+    const localFailedSaves = savesCalculatuion(localWounds)
+    setFailedSaves(localFailedSaves)
+
+    const localDamage = damageCalculation(localFailedSaves)
+    setDamage(localDamage)
+
+    const localModelsKilled = modelsCalculation(localDamage)
+    setModelsKilled(localModelsKilled)
   }
 
   const diceRoll = (amountOfDice) => {
@@ -133,11 +137,8 @@ const Fight = ({ wargear, rules, defender }) => {
 
   const calculateSave = () => {
     let ap = wargear.ap.Int32
-    console.log('ap ---', ap)
     let save = Number(defender.Sv.String.replace("+", "")) - ap
     let inv_save
-    console.log('SAVE:', save)
-    console.log('INV SV:', inv_save)
 
     if (defender.inv_sv.String !== '' || defender.inv_sv.String !== "-" || defender.inv_sv.Valid !== false) {
       inv_save = Number(defender.inv_sv.String)
@@ -145,12 +146,10 @@ const Fight = ({ wargear, rules, defender }) => {
     if (save > 6) {
       save = 0
     }
-    console.log('save before invun', save)
     if (inv_save < save) {
       save = inv_save
     }
-    console.log('invun save:', inv_save)
-    console.log('save after invun', save)
+
     switch (save) {
     case 2:
       return 83.3
@@ -167,37 +166,56 @@ const Fight = ({ wargear, rules, defender }) => {
     }
   }
 
-  const savesCalculatuion = () => {
+  const savesCalculatuion = (localWounds) => {
+    console.log('local wounds:', localWounds)
+
     const savePercentage = calculateSave()
-    const passed = wounds / 100 * savePercentage
+    const passed = localWounds / 100 * savePercentage
 
     let rounded = Number(passed.toFixed(2))
 
+    const failed = localWounds - passed
+
+    console.log('wounds ---', localWounds)
     console.log('Passed saves calculation ---', rounded)
-    const failed = wounds - passed
-    setFailedSaves(Number(failed.toFixed(2)))
+    console.log('failed saves ---', failed)
+
+    return (Number(failed.toFixed(2)))
   }
 
-  const damageCalculation = () => {
-    const damage = failedSaves * wargear.d.String
+  const damageCalculation = (localFailedSaves) => {
+    const damage = localFailedSaves * wargear.d.String
     return Number(damage)
   }
 
+  const modelsCalculation = (localDamage) => {
+    console.log(defender)
+    const killed = localDamage / defender.W.Int32
+    return killed
+  }
+
   return (
-    <div className='fightCalc'>
-      <form onSubmit={(event) => handleCalculations(event)}>
-        <button type='submit'>Calculate</button>
-      </form>
-      <h2 className='fightheader'>Fight Calculations</h2>
-      <br />
-      <div className='fightInfo'>
-        Average Successful Hits: {hits && hits / 10000}
+    <div>
+      <div>
+        <input type='text' placeholder='Input Unit Size' onChange={(event) => setUnitSize(event.target.value || 1)}/>
+      </div>
+      <div className='fightCalc'>
+        <form onSubmit={(event) => handleCalculations(event)}>
+          <button type='submit'>Calculate</button>
+        </form>
+        <h2 className='fightheader'>Fight Calculations</h2>
         <br />
-        Average Successful Wounds: {wounds && wounds / 10000}
-        <br />
-        Average Failed Saves: {failedSaves && failedSaves / 10000}
-        <br />
-        Damage:
+        <div className='fightInfo'>
+          Average Successful Hits: {hits / 10000}
+          <br />
+          Average Successful Wounds: {wounds / 10000}
+          <br />
+          Average Failed Saves: {failedSaves / 10000}
+          <br />
+          Damage: {damage / 10000}
+          <br />
+          Models killed: {modelsKilled / 10000}
+        </div>
       </div>
     </div>
   )

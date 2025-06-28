@@ -1,7 +1,7 @@
 import React from "react";
-import FactionForm from "./FactionForm";
-import ModelForm from "./ModelForm";
-import Toggle from "../Models/Toggle";
+import FactionForm from "../FactionForm/factionForm";
+import ModelForm from "../Models/ModelForm";
+import Toggle from "../NavBar/Toggle";
 import { useState } from 'react'
 
 const Home = () => {

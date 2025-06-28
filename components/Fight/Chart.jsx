@@ -1,42 +1,52 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { Bar } from 'react-chartjs-2'
+
+/*
 import {
   Chart as ChartJS,
-  BarElement,
   CategoryScale,
   LinearScale,
+  BarElement,
+  Title,
   Tooltip,
   Legend
-} from 'chart.js';
+} from 'chart.js'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+)
+*/
 
-const MyChart = ({ data }) => {
-  const chartData = {
-    labels: data.map(row => row.year),
+const MyBarChart = ({ input }) => {
+  console.log('INPUT:', input)
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+    }
+  }
+
+  const data = {
+    labels: ['One', 'Two', 'Three', 'Four', 'Five', 'Six'],
     datasets: [
       {
-        label: 'Acquisitions by year',
-        data: data.map(row => row.count),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+        data: input,
+        backgroundColor: 'orangered'
       }
     ]
-  };
+  }
 
-  const options = {
-    animation: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: false }
-    }
-  };
-
-  return <Bar data={chartData} options={options} />;
-};
-
-MyChart.propTypes = {
-  data: PropTypes.object
+  return <Bar options={options} data={data} />
 }
 
-export default MyChart;
+MyBarChart.propTypes = {
+  input: PropTypes.object
+}
+
+export default MyBarChart

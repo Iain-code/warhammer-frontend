@@ -1,0 +1,15 @@
+.modelWargear {
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.modelWargear-select {
+  padding: 12px 55px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}

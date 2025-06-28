@@ -25,11 +25,6 @@ const ExtraRules = ({ wargear, defender }) => {
     }))
   }
 
-  useEffect(() => {
-    console.log('Count changed:', extraRules);
-  }, [extraRules]);
-
-
   if (!wargear) {
     return <div></div>
   }
@@ -47,7 +42,6 @@ const ExtraRules = ({ wargear, defender }) => {
           rules={extraRules} 
           defender={defender} 
         />
-        {console.log('WARGEAR ---', wargear)}
       </div>
     </div>
   )

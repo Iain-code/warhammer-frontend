@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-
+import MyBarChart from './Chart'
 
 const Fight = ({ wargear, rules, defender }) => {
   const [hits, setHits] = useState(null)
@@ -9,6 +9,8 @@ const Fight = ({ wargear, rules, defender }) => {
   const [damage, setDamage] = useState(null)
   const [unitSize, setUnitSize] = useState(1)
   const [modelsKilled, setModelsKilled] = useState(null)
+  const [toggle, setToggle] = useState(false)
+  const [hitRoll, setHitRoll] = useState(null) 
 
   const attacks = Number(wargear.a.String)
   const hitTarget = Number(wargear.bs_ws.String)
@@ -24,14 +26,7 @@ const Fight = ({ wargear, rules, defender }) => {
       newResults = { ...updatedResults, 6: updatedResults[6] * 2}
 
       if (rules.isCrit5) {
-        newResults = { ...newResults, [5]: updatedResults[5] * 2 }
-      }
-    }
-    if (rules.isLethal) {
-      newResults = { ...updatedResults, lethals: updatedResults[6]}
-
-      if (rules.isCrit5) {
-        newResults = { ...newResults, 5: updatedResults[5] * 2}
+        newResults = { ...newResults, 5: updatedResults[5] * 2 }
       }
     }
     if (rules.isPlusHit && hitChance > 2) {
@@ -49,7 +44,7 @@ const Fight = ({ wargear, rules, defender }) => {
     } else {
       for (let key in source) {
         if (key >= hitChance) {
-          hits += updatedResults[key]
+          hits += source[key]
         }
       }
       return hits
@@ -58,6 +53,7 @@ const Fight = ({ wargear, rules, defender }) => {
 
   const woundCalculation = (localHits) => {
     let modifier = 0
+    let successfulWounds = 0
 
     if (strength > toughness * 2) {
       modifier = 2
@@ -80,16 +76,25 @@ const Fight = ({ wargear, rules, defender }) => {
     if (rules.isMinusWound && modifier < 6) {
       modifier = modifier + 1
     }
-
+    if (rules.isLethal) {
+      successfulWounds += localHits / 6
+      localHits -= successfulWounds
+      if (rules.isCrit5) {
+        const crit5 = localHits / 6
+        successfulWounds += crit5
+        localHits -= crit5 
+      }
+    }
     const woundRoll = diceRoll(localHits)
-    let successfulWounds = woundRollSort(woundRoll, modifier)
+    successfulWounds += woundRollSort(woundRoll, modifier)
     let reRoll = 0
 
     if (rules.isTwinLinked) {
       reRoll = (woundRoll[1] + woundRoll[2] + woundRoll[3] + woundRoll[4] + woundRoll[5] + woundRoll[6]) - successfulWounds
       const rolled = diceRoll(reRoll)
-      successfulWounds = successfulWounds + woundRollSort(rolled, modifier)
+      successfulWounds += woundRollSort(rolled, modifier)
     }
+
     return successfulWounds
   }
 
@@ -107,7 +112,9 @@ const Fight = ({ wargear, rules, defender }) => {
   const handleCalculations = (event) => {
     event.preventDefault()
     const unitAttacks = unitSize * attacks
+
     const results = diceRoll(10000 * unitAttacks)
+    setHitRoll(results)
 
     const localHits = hitCalculation(results, hitTarget)
     setHits(localHits)
@@ -123,6 +130,8 @@ const Fight = ({ wargear, rules, defender }) => {
 
     const localModelsKilled = modelsCalculation(localDamage)
     setModelsKilled(localModelsKilled)
+    
+    setToggle(true)
   }
 
   const diceRoll = (amountOfDice) => {
@@ -167,20 +176,19 @@ const Fight = ({ wargear, rules, defender }) => {
   }
 
   const savesCalculatuion = (localWounds) => {
-    console.log('local wounds:', localWounds)
-
+    let devs = 0
     const savePercentage = calculateSave()
+
+    if (rules.isDev) {
+      devs = localWounds / 6
+      localWounds -= devs
+    }
     const passed = localWounds / 100 * savePercentage
 
-    let rounded = Number(passed.toFixed(2))
-
     const failed = localWounds - passed
+    const failedWithDev = failed + devs
 
-    console.log('wounds ---', localWounds)
-    console.log('Passed saves calculation ---', rounded)
-    console.log('failed saves ---', failed)
-
-    return (Number(failed.toFixed(2)))
+    return (Number(failedWithDev.toFixed(2)))
   }
 
   const damageCalculation = (localFailedSaves) => {
@@ -189,7 +197,6 @@ const Fight = ({ wargear, rules, defender }) => {
   }
 
   const modelsCalculation = (localDamage) => {
-    console.log(defender)
     const killed = localDamage / defender.W.Int32
     return killed
   }
@@ -197,25 +204,36 @@ const Fight = ({ wargear, rules, defender }) => {
   return (
     <div>
       <div>
-        <input type='text' placeholder='Input Unit Size' onChange={(event) => setUnitSize(event.target.value || 1)}/>
+        <input 
+          className='modelSizeInput' 
+          type='text' 
+          placeholder='Input Unit Size' 
+          onChange={(event) => setUnitSize(event.target.value || 1)}
+        />
       </div>
       <div className='fightCalc'>
         <form onSubmit={(event) => handleCalculations(event)}>
-          <button type='submit'>Calculate</button>
+          <button type='submit' className='calculate' >Calculate</button>
         </form>
-        <h2 className='fightheader'>Fight Calculations</h2>
-        <br />
-        <div className='fightInfo'>
-          Average Successful Hits: {hits / 10000}
+        {toggle &&
+        <div>
+          <h2 className='fightheader'>Fight Calculations</h2>
           <br />
-          Average Successful Wounds: {wounds / 10000}
-          <br />
-          Average Failed Saves: {failedSaves / 10000}
-          <br />
-          Damage: {damage / 10000}
-          <br />
-          Models killed: {modelsKilled / 10000}
+          <div className='fightInfo'>
+            Average Successful Hits: {hits / 10000}
+            <br />
+            Average Successful Wounds: {wounds / 10000}
+            <br />
+            Average Wounds Through Saves: {failedSaves / 10000}
+            <br />
+            Damage: {damage / 10000}
+            <br />
+            Models killed: {modelsKilled / 10000}
+          </div>
+          <div className='charts'>
+          </div>
         </div>
+        }
       </div>
     </div>
   )

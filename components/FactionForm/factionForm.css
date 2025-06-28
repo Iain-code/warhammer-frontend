@@ -1,0 +1,64 @@
+.factionForm {
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.factionForm form {
+  overflow: visible;
+  z-index: 4500; 
+  position: relative;
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+  padding-top: 140px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.factionForm-selectA {
+  font-size: 20px;
+  padding: 25px 25px;
+  padding-bottom: 50px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background-image: var(--ffa-image);
+  background-size: cover;
+  background-position: center;
+  width: 100%
+}
+
+.factionForm-selectB {
+  font-size: 20px;
+  padding: 25px 25px;
+  padding-bottom: 50px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background-image: var(--ffb-image);
+  background-size: cover;
+  background-position: center;
+  width: 100%
+}
+
+.factionFormButton {
+  background-color: orangered;
+  margin-left: 25px;
+  margin-right: 25px;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  width: 300px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.factionFormButton:hover {
+  background-color: #ff5a1f;
+  box-shadow: 0 0 12px orangered, 0 0 24px orangered;
+  transform: scale(1.05);
+}

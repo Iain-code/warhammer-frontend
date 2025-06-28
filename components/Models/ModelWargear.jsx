@@ -1,12 +1,12 @@
-import ModelContext from "../modelContext"
+import ModelContext from "../../modelContext"
 import { useContext, useEffect, useState } from 'react'
-import modelService from '../requests/models'
+import modelService from '../../requests/models'
 import { useMutation } from "@tanstack/react-query"
 import React from 'react'
 import Select from 'react-select'
 import PropTypes from "prop-types"
-import ExtraRules from "./ExtraRules"
-import ModelProfile from "./ModelProfiles"
+import ExtraRules from "../Fight/ExtraRules"
+import ModelProfile from "../Models/ModelProfiles"
 
 
 const ModelWargear = () => {
@@ -47,9 +47,44 @@ const ModelWargear = () => {
     setChosenWargear(wargear)
   }
 
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+      borderColor: 'orangered',
+      borderRadius: '8px',
+      padding: '4px',
+      boxShadow: 'none',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? 'orangered' : 'antiquewhite',
+      backgroundColor: state.isFocused ? 'white' : '#2b2a2a',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+      width: 'inherit',
+      minWidth: '100%',
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: 'antiquewhite',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: 'AntiqueWhite'
+    })
+  }
+
   return (
     <div className="modelWargear">
       <Select className="modelWargear-select"
+        styles={customStyles}
         options={atkWargear}
         onChange={(wargear) => chooseWargear(wargear)}
         placeholder='Choose your weapon...'
@@ -61,7 +96,6 @@ const ModelWargear = () => {
 
       {atkWargear && chosenWargear &&
       <div>
-        {console.log('chosen wargear --- ', chosenWargear)}
         <ModelProfile 
           wargear={chosenWargear}
         />

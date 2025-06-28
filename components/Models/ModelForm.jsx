@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useContext } from 'react'
 import Select from 'react-select';
 import AttackerContext from '../../attackerContext';
 import DefenderContext from '../../defenderContext';
 import ModelContext from '../../modelContext'
-import ModelWargear from '../ModelWargear'
-
+import ModelWargear from './ModelWargear'
 
 const ModelForm = () => {
   const [attacker, attackerDispatch] = useContext(AttackerContext)
@@ -40,14 +39,46 @@ const ModelForm = () => {
     })
   }
 
-  useEffect(() => {
-    console.log('model:', model)
-  }, [model])
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+      borderColor: 'orangered',
+      borderRadius: '8px',
+      padding: '4px',
+      boxShadow: 'none',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? 'orangered' : 'antiquewhite',
+      backgroundColor: state.isFocused ? 'white' : '#2b2a2a',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+      width: 'inherit',
+      minWidth: '100%',
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: 'antiquewhite',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: 'AntiqueWhite'
+    })
+  }
+
 
   return (
     <div>
       <div className='modelForm'>
         <Select
+          styles={customStyles}
           className='modelForm-select'
           options={attacker}
           onChange={(model) => handleAttackerModel(model)}
@@ -61,6 +92,7 @@ const ModelForm = () => {
           <button className='reset' type='submit'>Reset</button>
         </form>
         <Select
+          styles={customStyles}
           className='modelForm-select'
           options={defender}
           onChange={(model) => handleDefenderModel(model)}

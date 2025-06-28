@@ -5,13 +5,11 @@ import { createContext, useReducer } from 'react'
 const modelReducer = (state, action) => {
   switch (action.type) {
   case 'attacker':
-    // console.log('ACTION attacker:', action.payload)
     return {
       ...state,
       attack: action.payload
     }
   case 'defender':
-    // console.log('ACTION defender', action.payload)
     return {
       ...state,
       defence: action.payload

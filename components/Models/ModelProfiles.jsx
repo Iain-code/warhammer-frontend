@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 const ModelProfile = ({ wargear }) => {
   const [model] = useContext(ModelContext)
   const defender = model.defence
-  console.log('defender:', defender)
 
   return (
     <div className='modelTables'>

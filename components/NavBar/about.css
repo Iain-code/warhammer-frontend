@@ -1,0 +1,28 @@
+.aboutMain {
+  padding-top: 100px;
+  font-family: sans-serif;
+  color: white;
+  font-weight: 600;
+  justify-content: center;
+}
+
+.firstAbout {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.secondAbout {
+  justify-content: center;
+  width: 100%;
+  display: flex;
+}
+
+.aboutLink {
+  margin: 0 7px;
+  color: orangered
+}
+
+.aboutLink:visited {
+  color: orangered;
+}

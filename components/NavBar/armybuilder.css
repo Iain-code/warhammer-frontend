@@ -1,0 +1,17 @@
+.builderError {
+  margin-top: 100px;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: sans-serif;
+  color: orangered;
+  text-align: center;
+}
+
+.armyBuilder {
+  margin-top: 100px;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: sans-serif;
+  color: orangered;
+  text-align: center;
+}

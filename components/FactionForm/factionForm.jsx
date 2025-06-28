@@ -59,7 +59,7 @@ const FactionForm = ({ visibility }) => {
   }
 
   const defenderMutation = useMutation({
-    mutationFn: (faction) => modelService.getModelsForFaction(faction),
+    mutationFn: async (faction) => await modelService.getModelsForFaction(faction),
     onSuccess: (models) => {
       defenderDispatch({
         type: 'model',
@@ -72,7 +72,7 @@ const FactionForm = ({ visibility }) => {
   })
 
   const attackerMutation = useMutation({
-    mutationFn: (faction) => modelService.getModelsForFaction(faction),
+    mutationFn: async (faction) => await modelService.getModelsForFaction(faction),
     onSuccess: (models) => {
       attackerDispatch({
         type: 'model',
@@ -87,8 +87,43 @@ const FactionForm = ({ visibility }) => {
   const findFaction = (attack, defend) => {
     attackerMutation.mutate(attack)
     defenderMutation.mutate(defend)
-    setDefend(null)
   }
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+      borderColor: 'orangered',
+      borderRadius: '8px',
+      padding: '4px',
+      boxShadow: 'none',
+
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? 'orangered' : 'antiquewhite',
+      backgroundColor: state.isFocused ? 'white' : '#2b2a2a',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+      width: 'inherit',
+      minWidth: '100%',
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      backgroundColor: '#2b2a2a',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: 'antiquewhite',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: 'AntiqueWhite'
+    })
+  }
+
 
   return (
     <div 
@@ -99,6 +134,7 @@ const FactionForm = ({ visibility }) => {
       }}>
       <form onSubmit={(event) => {event.preventDefault(), findFaction(attack, defend)}}>
         <Select
+          styles={customStyles}
           className="factionForm-selectA"
           options={options}
           onChange={handleAttackerChange}
@@ -108,6 +144,7 @@ const FactionForm = ({ visibility }) => {
         />
         <button className='factionFormButton' type='submit'>Get Models</button>
         <Select
+          styles={customStyles}
           className="factionForm-selectB"
           options={options} 
           onChange={handleDefenderChange}

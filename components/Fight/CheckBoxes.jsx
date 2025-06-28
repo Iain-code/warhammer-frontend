@@ -8,10 +8,10 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
   }
 
   return (
-    <div className='boxes'>
-      <label className='label'>
+    <div className='tick-boxes'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isSustained')}
         />
@@ -19,9 +19,9 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
         Sustained
       </label>
       
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isLethal')}
         />
@@ -29,81 +29,81 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
         Lethal
       </label>
       
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isCrit5')}
         />
         <br />
         Critical 5s
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isDev')}
         />
         <br />
         Devestating Wounds
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isIgnoreCover')}
         />
         <br />
         Ignore Cover
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isTorrent')}
         />
         <br />
         Torrent
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isTwinLinked')}
         />
         <br />
         Twin Linked
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isPlusHit')}
         />
         <br />
         Plus to Hit
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isPlusWound')}
         />
         <br />
         Plus to Wound
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isMinusHit')}
         />
         <br />
         Minus to Hit
       </label>
-      <label className='label'>
+      <label className='tick-boxes-label'>
         <input
-          className='box'
+          className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isMinusWound')}
         />

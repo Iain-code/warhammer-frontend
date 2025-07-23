@@ -1,5 +1,5 @@
 import React from "react";
-import FactionForm from "../FactionForm/factionForm";
+import FactionForm from "../FactionForm/FactionForm";
 import ModelForm from "../Models/ModelForm";
 import Toggle from "../NavBar/Toggle";
 import { useState } from 'react'
@@ -9,7 +9,7 @@ const Home = () => {
 
   return (
     <div>
-      <FactionForm visibility={setShowForm}/>
+      <FactionForm setShowForm={setShowForm}/>
       <Toggle showForm={showForm}>
         <ModelForm />
       </Toggle>

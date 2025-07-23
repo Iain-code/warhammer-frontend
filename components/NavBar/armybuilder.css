@@ -15,3 +15,40 @@
   color: orangered;
   text-align: center;
 }
+
+.armyList {
+  display: flex;
+  padding-top: 100px;
+  color: white;
+  align-items: center;
+}
+
+.ABTable {
+  margin: 0 auto;
+  padding: 5px;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  border-collapse: collapse;
+  background: #1b1b1b;
+  border-radius: 8px;
+  overflow: hidden;
+  color: white;
+}
+
+.ABTable th {
+  background: #2a2a2a;
+  padding: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid #444;
+}
+
+.ABTable td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #333;
+}
+
+.ABTable tr:hover {
+  background: #2a2a2a;
+}
+

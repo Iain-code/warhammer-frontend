@@ -7,18 +7,13 @@ import userService from '../../requests/users'
 import './login.css'
 
 const CreateUser = () => {
-  const [userDispatch] = useContext(UserContext)
   const [newUsername, setNewUsername] = useState("")
   const [newPassword, setNewPassword] = useState("")
 
   const createUserMutation = useMutation({
     mutationFn: async (createUser) => await userService.createUser(createUser),
     onSuccess: (newUser) => {
-      userDispatch({
-        type: 'user',
-        payload: newUser
-      })
-      console.log('new user dispatch ---', newUser)
+      window.alert(`User ${newUser.username} has been created. Please continue to login`)
     },
     onError: (error) => {
       console.error('error creating new user ---', error)
@@ -27,22 +22,30 @@ const CreateUser = () => {
 
   const handleCreate = (e) => {
     e.preventDefault()
-    const createUser = {email: newUsername, password: newPassword}
-    console.log('createUser ---', createUser)
-
-    const response = createUserMutation.mutate(createUser)
+    const createUser = {username: newUsername, password: newPassword}
+    createUserMutation.mutate(createUser)
     setNewPassword("")
     setNewUsername("")
-    console.log('response ---', response)
   }
 
   return (
     <div className='createUserForm'>
       <h3>Create User</h3>
-      <form className='form1' onClick={(e) => handleCreate(e)}>
+      <form className='form1' onSubmit={(e) => handleCreate(e)}>
         <div className="inputRow">
-          <input className='createUserInput' type='text' placeholder='Username' onChange={(e) => setNewUsername(e.target.value)} />
-          <input className='createUserInput' type='password' placeholder='Password' onChange={(e) => setNewPassword(e.target.value)} />
+          <input 
+            className='createUserInput' 
+            type='text' placeholder='Username' 
+            onChange={(e) => setNewUsername(e.target.value)} 
+            value={newUsername}
+          />
+          <input 
+            className='createUserInput' 
+            type='password' 
+            placeholder='Password' 
+            onChange={(e) => setNewPassword(e.target.value)} 
+            value={newPassword}
+          />
         </div>
         <button className='createUserButton' type='submit' >Create User</button>
       </form>
@@ -50,12 +53,11 @@ const CreateUser = () => {
   )
 }
 
-
 const Login = () => {
   const [, userDispatch] = useContext(UserContext)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const loginMutation = useMutation({
     mutationFn: (credentials) => userService.login(credentials),
@@ -63,7 +65,7 @@ const Login = () => {
       userDispatch({
         type: 'user',
         payload: {
-          username: newUser.email,
+          username: newUser.username,
           id: newUser.id,
           token: newUser.token,
           isAdmin: newUser.is_admin
@@ -72,23 +74,22 @@ const Login = () => {
       navigate('/')
       const loginData = {
         token: newUser.token,
-        email: newUser.email,
-        is_admin: newUser.is_admin
+        username: newUser.username,
+        is_admin: newUser.is_admin,
+        id: newUser.id
       }
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(loginData))
-      console.log('local storage:', window.localStorage)
     },
     onError: (error) => {
-      console.error('error loggin in ---', error)
+      console.error('error logging in ---', error)
     }
   })
 
   const handleLogin = (e) => {
     e.preventDefault()
-    const credentials = {email: username, password: password}
-    const response = loginMutation.mutate(credentials)
-    console.log('response:', response)
+    const credentials = {username: username, password: password}
+    loginMutation.mutate(credentials)
   }
 
   return (

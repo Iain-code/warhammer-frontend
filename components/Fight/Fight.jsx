@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import MyBarChart from './Chart'
+// import MyBarChart from './Chart'
 
 const Fight = ({ wargear, rules, defender }) => {
   const [hits, setHits] = useState(null)
@@ -10,11 +10,11 @@ const Fight = ({ wargear, rules, defender }) => {
   const [unitSize, setUnitSize] = useState(1)
   const [modelsKilled, setModelsKilled] = useState(null)
   const [toggle, setToggle] = useState(false)
-  const [hitRoll, setHitRoll] = useState(null) 
+  // const [hitRoll, setHitRoll] = useState(null) 
 
-  const attacks = Number(wargear.a.String)
-  const hitTarget = Number(wargear.bs_ws.String)
-  const strength = Number(wargear.s.String)
+  const attacks = Number(wargear.attacks)
+  const hitTarget = Number(wargear.BS_WS)
+  const strength = Number(wargear.strength)
   const toughness = Number(defender.T)
 
   const hitCalculation = (results, hitChance) => {
@@ -114,7 +114,7 @@ const Fight = ({ wargear, rules, defender }) => {
     const unitAttacks = unitSize * attacks
 
     const results = diceRoll(10000 * unitAttacks)
-    setHitRoll(results)
+    // setHitRoll(results)
 
     const localHits = hitCalculation(results, hitTarget)
     setHits(localHits)
@@ -145,12 +145,12 @@ const Fight = ({ wargear, rules, defender }) => {
   }
 
   const calculateSave = () => {
-    let ap = wargear.ap.Int32
-    let save = Number(defender.Sv.String.replace("+", "")) - ap
+    let ap = wargear.AP
+    let save = Number(defender.Sv.replace("+", "")) - ap
     let inv_save
 
-    if (defender.inv_sv.String !== '' || defender.inv_sv.String !== "-" || defender.inv_sv.Valid !== false) {
-      inv_save = Number(defender.inv_sv.String)
+    if (defender.inv_sv !== '' || defender.inv_sv !== "-" || defender.inv_sv === null) {
+      inv_save = Number(defender.inv_sv)
     }
     if (save > 6) {
       save = 0
@@ -192,12 +192,12 @@ const Fight = ({ wargear, rules, defender }) => {
   }
 
   const damageCalculation = (localFailedSaves) => {
-    const damage = localFailedSaves * wargear.d.String
+    const damage = localFailedSaves * wargear.damage
     return Number(damage)
   }
 
   const modelsCalculation = (localDamage) => {
-    const killed = localDamage / defender.W.Int32
+    const killed = localDamage / defender.W
     return killed
   }
 

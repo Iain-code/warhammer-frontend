@@ -21,24 +21,26 @@
   font-size: 20px;
   padding: 25px 25px;
   padding-bottom: 50px;
-  border: 2px solid #ccc;
   border-radius: 6px;
   background-image: var(--ffa-image);
   background-size: cover;
   background-position: center;
-  width: 100%
+  width: 100%;
+  background-color: #1b1b1b;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 1);
 }
 
 .factionForm-selectB {
   font-size: 20px;
   padding: 25px 25px;
   padding-bottom: 50px;
-  border: 2px solid #ccc;
   border-radius: 6px;
   background-image: var(--ffb-image);
   background-size: cover;
   background-position: center;
-  width: 100%
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 1);
+  width: 100%;
+  background-color: #1b1b1b;
 }
 
 .factionFormButton {
@@ -54,7 +56,7 @@
   width: 300px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0,0,0,1);
 }
 
 .factionFormButton:hover {

@@ -1,15 +1,55 @@
 .modelWargear {
-  opacity: 0;
-  animation: fadeIn 1s ease-in forwards;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  opacity: 0;
+  margin: 0 auto;
+  animation: fadeIn 1s ease-in forwards;
   padding: 20px;
   text-align: center;
+  width: 70%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 1);
+  background-color: #1b1b1b;
 }
 
 .modelWargear-select {
-  padding: 12px 55px;
+  width: 100%;
+  padding: 5px 5px;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.modelTables {
+  padding: 5px;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  border-collapse: collapse;
+  background: #1b1b1b;
+  border-radius: 8px;
+  overflow: hidden;
+  color: white;
+}
+
+.modelTables th {
+  background: #2a2a2a;
+  padding: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid #444;
+}
+
+.modelTables td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #333;
+}
+
+.modelTables tr:hover {
+  background: #2a2a2a;
 }

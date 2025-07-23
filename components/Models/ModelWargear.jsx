@@ -89,7 +89,7 @@ const ModelWargear = () => {
         onChange={(wargear) => chooseWargear(wargear)}
         placeholder='Choose your weapon...'
         isSearchable
-        getOptionLabel={(option) => option.name.String}
+        getOptionLabel={(option) => option.name}
         getOptionValue={(option) => option.FIELD2}
         maxMenuHeight={150}
       />

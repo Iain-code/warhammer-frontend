@@ -1,0 +1,67 @@
+.adminAuth {
+  padding-top: 100px;
+}
+
+.modelTables caption {
+  caption-side: top;
+  padding: 12px;
+  font-weight: bold;
+  color: antiquewhite;
+  background-color: #2a2a2a;
+}
+
+.modelTables {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: #1b1b1b;
+  border-radius: 8px;
+  color: white;
+}
+
+.modelTables th,
+.modelTables td {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding: 14px 16px;
+  border: 1px solid #333;
+  text-align: center;
+}
+
+.modelTables th {
+  background: #2a2a2a;
+  font-weight: 500;
+}
+
+.modelTables tr:hover {
+  background: #2a2a2a;
+}
+
+.adminAuth {
+  justify-content: center;
+  opacity: 0;
+  margin: 0 auto;
+  animation: fadeIn 1s ease-in forwards;
+  padding: 100px 20px 20px 20px;
+  text-align: center;
+  width: 70%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 1);
+  background-color: #1b1b1b;
+}
+
+.admin-select {
+  width: 100%;
+  padding: 5px 5px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.attackTable {
+  width: 100%;
+}

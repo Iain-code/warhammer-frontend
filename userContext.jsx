@@ -7,7 +7,7 @@ const userReducer = (state, action) => {
   case 'user':
     return action.payload
   case 'remove':
-    return
+    return null
   }
 }
 

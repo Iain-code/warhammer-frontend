@@ -45,7 +45,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           onChange={() => changeRule('isDev')}
         />
         <br />
-        Devestating Wounds
+        Dev Wounds
       </label>
       <label className='tick-boxes-label'>
         <input

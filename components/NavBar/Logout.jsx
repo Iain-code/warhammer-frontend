@@ -9,6 +9,7 @@ const Logout = () => {
     userDispatch({
       type: 'remove'
     })
+    window.localStorage.clear()
   }
 
   return (

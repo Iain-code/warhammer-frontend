@@ -17,9 +17,10 @@
   height: 65px; 
   font-size: 20px;
   padding: 8px 16px 8px 16px;
-  border: 2px solid #ccc;
   border-radius: 6px;
   z-index: 1460;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 1);
+  background-color: #1b1b1b;
 }
 
 .reset {
@@ -34,7 +35,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0,0,0,1);
 }
 
 .reset:hover {

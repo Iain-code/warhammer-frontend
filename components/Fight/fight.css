@@ -94,35 +94,6 @@
   font-size: 20px;
 }
 
-.modelTables {
-  padding: 5px;
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  border-collapse: collapse;
-  background: #1b1b1b;
-  border-radius: 8px;
-  overflow: hidden;
-  color: white;
-}
-
-.modelTables th {
-  background: #2a2a2a;
-  padding: 16px;
-  font-weight: 500;
-  border-bottom: 2px solid #444;
-}
-
-.modelTables td {
-  padding: 14px 16px;
-  border-bottom: 1px solid #333;
-}
-
-.modelTables tr:hover {
-  background: #2a2a2a;
-}
-
 .caption {
   padding: 10px;
   font-size: 1.5em;

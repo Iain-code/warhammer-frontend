@@ -6,23 +6,67 @@ import ArmyBuilder from "../components/NavBar/ArmyBuilder";
 import About from "../components/NavBar/About";
 import UserContext from "../userContext";
 import Logout from '../components/NavBar/Logout.jsx'
+import userService from '../requests/users'
+import Admin from '../components/NavBar/Admin.jsx'
 
 const App = () => {
   const [user, userDispatch] = useContext(UserContext)
+
+  const isTokenExpired = (token) => {
+    if (!token) return true
+    
+    try {
+      const payload64 = token.split('.')[1]
+      const payload = JSON.parse(atob(payload64))
+      const currentTime = Date.now() / 1000
+
+      return payload.exp < currentTime
+    } catch (error) {
+      console.error('Invalid token format', error)
+      return true
+    }
+  }
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedInUser')
     if (loggedUser) {
       const newUser = JSON.parse(loggedUser)
-      userDispatch({
-        type: 'user',
-        payload: {
-          username: newUser.email,
-          id: newUser.id,
-          token: newUser.token,
-          isAdmin: newUser.is_admin
+      const expiredToken = isTokenExpired(newUser.token)
+
+      const checkToken = async () => {
+        try {
+          const response = await userService.refresh(newUser.token)
+          userDispatch({
+            type: 'user',
+            payload: {
+              username: newUser.username,
+              id: newUser.id,
+              token: response.token,
+              isAdmin: newUser.is_admin
+            }
+          })
+        } catch (error) {
+          console.error(error)
+          window.localStorage.clear()
+          userDispatch({
+            type: 'remove'
+          })
         }
-      })
+      }
+
+      if (expiredToken) {
+        checkToken()
+      } else {
+        userDispatch({
+          type: 'user',
+          payload: {
+            username: newUser.username,
+            id: newUser.id,
+            token: newUser.token,
+            isAdmin: newUser.is_admin
+          }
+        })
+      }
     }
   }, [userDispatch])
 
@@ -44,6 +88,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/armybuilder" element={<ArmyBuilder />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admins" element={<Admin user={user} />} />
         </Routes>
       </div>
     </Router>

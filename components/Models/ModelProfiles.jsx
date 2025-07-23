@@ -2,6 +2,7 @@ import React from 'react'
 import { useContext } from 'react'
 import ModelContext from '../../modelContext'
 import PropTypes from 'prop-types'
+import './modelWargear.css'
 
 const ModelProfile = ({ wargear }) => {
   const [model] = useContext(ModelContext)
@@ -25,14 +26,14 @@ const ModelProfile = ({ wargear }) => {
         </thead>
         <tbody>
           <tr>
-            <td>{wargear.name.String}</td>
-            <td>{wargear.type.String}</td>
-            <td>{wargear.range.String}</td>
-            <td>{wargear.bs_ws.String}</td>
-            <td>{wargear.a.String}</td>
-            <td>{wargear.s.String}</td>
-            <td>{wargear.ap.Int32}</td>
-            <td>{wargear.d.String}</td>
+            <td>{wargear.name}</td>
+            <td>{wargear.type}</td>
+            <td>{wargear.range}</td>
+            <td>{wargear.BS_WS}</td>
+            <td>{wargear.attacks}</td>
+            <td>{wargear.strength}</td>
+            <td>{wargear.AP}</td>
+            <td>{wargear.damage}</td>
           </tr>
         </tbody>
       </table>
@@ -55,11 +56,11 @@ const ModelProfile = ({ wargear }) => {
             <td>{defender.name}</td>
             <td>{defender.M}</td>
             <td>{defender.T}</td>
-            <td>{defender.W.Int32}</td>
-            <td>{defender.Sv.String}</td>
-            <td>{defender.inv_sv.String}</td>
-            <td>{defender.Ld.String}</td>
-            <td>{defender.OC.String}</td>
+            <td>{defender.W}</td>
+            <td>{defender.Sv}</td>
+            <td>{defender.inv_sv}</td>
+            <td>{defender.Ld}</td>
+            <td>{defender.OC}</td>
           </tr>
         </tbody>
       </table>
@@ -72,11 +73,11 @@ ModelProfile.propTypes = {
     name: PropTypes.string,
     type: PropTypes.string,
     range: PropTypes.string,
-    bs_ws: PropTypes.string,
-    a: PropTypes.string,
-    s: PropTypes.string,
-    d: PropTypes.string,
-    ap: PropTypes.string,
+    BS_WS: PropTypes.string,
+    attacks: PropTypes.string,
+    strength: PropTypes.string,
+    damage: PropTypes.string,
+    AP: PropTypes.string,
   })
 }
 

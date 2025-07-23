@@ -14,13 +14,13 @@
   font-family: sans-serif;
   text-align: center;
   background-color: #1b1b1b;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 1);
   position: fixed;
   margin: 0 auto;
   z-index: 5000;
   top: 0;
   height: 75px;
-  width: 100%
+  width: 100%;
 }
 
 .loggedIn {
@@ -48,22 +48,20 @@
 }
 
 .title {
-  font-size: 60px;
-  z-index: 1000;
-  opacity: 0;
-  animation: fadeIn 1.0s ease-in forwards;
-  justify-content: center;
-  display: flex;
-  padding: 5px;
-  background: linear-gradient(to bottom, rgb(255, 0, 123), #f7d203);
+  font-size: 2.8rem;
+  font-weight: 600;
   color: orangered;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(to right, orangered, #ff6347);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: sticky;
-  font-family: 'Courier New', Courier, monospace;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.title:hover {
+  transform: scale(1.03);
 }
 
 @keyframes fadeIn {

@@ -51,11 +51,9 @@ const getKeywordsForFaction = async (faction) => {
 }
 
 const getPointsForID = async (IdArr) => {
-  console.log('array in request:', IdArr)
   const response = await axios.get(`${baseUrl}/points`, {
     params: { points_id: IdArr}
   })
-  console.log('response:', response.data)
   return response.data
 }
 

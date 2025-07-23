@@ -10,6 +10,10 @@ const UnitTable = ({ groupedUnits, toShow }) => {
   const viewWargear = () => {
 
   }
+
+  const addUnitToRoster = () => {
+
+  }
   
   return (
     <div>
@@ -29,6 +33,7 @@ const UnitTable = ({ groupedUnits, toShow }) => {
               <th>Wargear</th>
               <th>Unit Size</th>
               <th>Points Cost</th>
+              <th>Add to Roster</th>
             </tr>
           </thead>
           <tbody>
@@ -44,6 +49,26 @@ const UnitTable = ({ groupedUnits, toShow }) => {
                 <td>{unit.OC}</td>
                 <td><button onClick={() => viewKeywords()}>View keywords</button></td>
                 <td><button onClick={() => viewWargear()}>View Wargear</button></td>
+                <td>
+                  {unit.unitPoints.description}
+                  {unit.unitPoints.description2 && (
+                    <>
+                      <br />
+                      {unit.unitPoints.description2}
+                    </>
+                  )}
+                </td>
+                <td>
+                  {unit.unitPoints.cost}
+                  {unit.unitPoints.cost2 && (
+                    <>
+                      <br />
+                      <br />
+                      {unit.unitPoints.cost2}
+                    </>
+                  )}
+                </td>
+                <td><button onClick={addUnitToRoster}>Add</button></td>
               </tr>
             ))}
           </tbody>

@@ -65,23 +65,41 @@ const ArmyBuilder = () => {
 
   const sortUnitsAndFetchData = async () => {
     const IDs = units.data.map(unit => unit.datasheet_id)
-    console.log('IDs:', IDs)
     const response = await modelService.getPointsForID(IDs)
     return response
   }
   console.log('Points', points.data)
 
   const getWargearForModels = async () => {
+    const response = await modelService.getWargear()
+    return response
   }
 
   useEffect(() => {
-    if (!units.data || !keywords.data) return
+    if (!units.data || !keywords.data || !points.data) return
 
     const keywordMap = keywords.data.reduce((object, keyword) => {
       if (!object[keyword.datasheet_id]) {
         object[keyword.datasheet_id] = []
       }
       object[keyword.datasheet_id].push(keyword.keyword)
+      return object
+    }, {})
+
+    const pointsMap = points.data.reduce((object, point) => {
+      if (!object[point.datasheet_id]) {
+        object[point.datasheet_id] = {
+          description: point.description,
+          cost: point.cost
+        }
+      } else {
+        object[point.datasheet_id] = {
+          description: object[point.datasheet_id].description,
+          cost: object[point.datasheet_id].cost,
+          description2: point.description,
+          cost2: point.cost
+        }
+      }
       return object
     }, {})
 
@@ -98,26 +116,28 @@ const ArmyBuilder = () => {
     for (const unit of units.data) {
       const unitKeywords = keywordMap[unit.datasheet_id] || []
       const added = { ...unit, keywords: unitKeywords }
+      const unitPoints = pointsMap[unit.datasheet_id] || []
+      const pointsAdded = { ...added,  unitPoints}
 
       if (unitKeywords.includes('Character')) {
-        initialGroups.characters.push(added)
+        initialGroups.characters.push(pointsAdded)
       } else if (unitKeywords.includes('Battleline')) {
-        initialGroups.battleline.push(added)
+        initialGroups.battleline.push(pointsAdded)
       } else if (unitKeywords.includes('Transport')) {
-        initialGroups.transports.push(added)
+        initialGroups.transports.push(pointsAdded)
       } else if (unitKeywords.includes('Aircraft')) {
-        initialGroups.aircraft.push(added)
+        initialGroups.aircraft.push(pointsAdded)
       } else if (unitKeywords.includes('Monster')) {
-        initialGroups.monsters.push(added)
+        initialGroups.monsters.push(pointsAdded)
       } else if (unitKeywords.includes('Mounted')) {
-        initialGroups.mounted.push(added)
+        initialGroups.mounted.push(pointsAdded)
       } else if (unitKeywords.includes('Vehicle')) {
-        initialGroups.vehicles.push(added)
+        initialGroups.vehicles.push(pointsAdded)
       }
     }
 
     setGroupedUnits(initialGroups)
-  }, [units.data, keywords.data])
+  }, [units.data, keywords.data, points.data])
 
   const handleFactionChange = (faction) => {
     setFaction(faction)

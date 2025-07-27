@@ -7,28 +7,44 @@ import { useQuery } from "@tanstack/react-query"
 import modelService from '../../requests/models'
 import factionList from '../FactionForm/FactionList'
 import UnitTable from "./UnitTable"
+import Roster from './Roster'
+import Enhancements from "./Enhancements"
 
 const ArmyBuilder = () => {
   const [user] = useContext(UserContext)
   const [faction, setFaction] = useState(null)
   const [, setFactionImage] = useState(null)
+  const [rosterTotal, setRosterTotal] = useState(0)
   const [groupedUnits, setGroupedUnits] = useState({
-    characters: [],
+    character: [],
     battleline: [],
-    transports: [],
+    transport: [],
     vehicles: [],
-    monsters: [],
+    monster: [],
     mounted: [],
-    aircraft: []
+    aircraft: [],
+    infantry: [],
   })
   const [tableBool, setTableBool] = useState({
-    characters: false,
+    character: false,
     battleline: false,
-    transports: false,
-    vehicles: false,
-    monsters: false,
+    transport: false,
+    vehicle: false,
+    monster: false,
     mounted: false,
-    aircraft: false
+    aircraft: false,
+    infantry: false,
+  })
+
+  const [selectedUnits, setSelectedUnits] = useState({
+    character: [],
+    battleline: [],
+    transport: [],
+    mounted: [],
+    aircraft: [],
+    monster: [],
+    vehicle: [],
+    infantry: [],
   })
   
   const units = useQuery({
@@ -63,12 +79,19 @@ const ArmyBuilder = () => {
     refetchOnWindowFocus: false
   })
 
+  const enhancements = useQuery({
+    queryKey: ['enhancements'],
+    queryFn: () => modelService.getEnhancements(),
+    enabled: !!faction,
+    retry: 1,
+    refetchOnWindowFocus: false    
+  })
+
   const sortUnitsAndFetchData = async () => {
     const IDs = units.data.map(unit => unit.datasheet_id)
     const response = await modelService.getPointsForID(IDs)
     return response
   }
-  console.log('Points', points.data)
 
   const getWargearForModels = async () => {
     const response = await modelService.getWargear()
@@ -104,13 +127,14 @@ const ArmyBuilder = () => {
     }, {})
 
     const initialGroups = {
-      characters: [],
+      character: [],
       battleline: [],
-      transports: [],
-      vehicles: [],
-      monsters: [],
+      transport: [],
+      vehicle: [],
+      monster: [],
       mounted: [],
       aircraft: [],
+      infantry: [],
     }
 
     for (const unit of units.data) {
@@ -120,19 +144,21 @@ const ArmyBuilder = () => {
       const pointsAdded = { ...added,  unitPoints}
 
       if (unitKeywords.includes('Character')) {
-        initialGroups.characters.push(pointsAdded)
+        initialGroups.character.push(pointsAdded)
       } else if (unitKeywords.includes('Battleline')) {
         initialGroups.battleline.push(pointsAdded)
       } else if (unitKeywords.includes('Transport')) {
-        initialGroups.transports.push(pointsAdded)
+        initialGroups.transport.push(pointsAdded)
       } else if (unitKeywords.includes('Aircraft')) {
         initialGroups.aircraft.push(pointsAdded)
       } else if (unitKeywords.includes('Monster')) {
-        initialGroups.monsters.push(pointsAdded)
+        initialGroups.monster.push(pointsAdded)
       } else if (unitKeywords.includes('Mounted')) {
         initialGroups.mounted.push(pointsAdded)
       } else if (unitKeywords.includes('Vehicle')) {
-        initialGroups.vehicles.push(pointsAdded)
+        initialGroups.vehicle.push(pointsAdded)
+      } else if (unitKeywords.includes('Infantry')) {
+        initialGroups.infantry.push(pointsAdded)
       }
     }
 
@@ -142,6 +168,17 @@ const ArmyBuilder = () => {
   const handleFactionChange = (faction) => {
     setFaction(faction)
     setFactionImage(faction.img)
+    setRosterTotal(0)
+    setSelectedUnits({
+      character: [],
+      battleline: [],
+      transport: [],
+      mounted: [],
+      aircraft: [],
+      monster: [],
+      vehicle: [],
+      infantry: [],
+    })
   };
 
   if (!user) {
@@ -150,6 +187,36 @@ const ArmyBuilder = () => {
 
   const tableHelper = (unitType) => {
     setTableBool(object => ({ ...object, [unitType]: !object[unitType] }))
+  }
+
+  const addUnitToRoster = (unit, costStr) => {
+    if (!unit) {
+      return
+    }
+    const keywordTypes = [
+      'character',
+      'battleline',
+      'transport',
+      'aircraft',
+      'monster',
+      'mounted',
+      'vehicle',
+      'infantry',
+    ];
+
+    const lowerKeywords = unit.keywords.map(k => k.toLowerCase())
+ 
+    for (const type of keywordTypes) {
+      if (lowerKeywords.includes(type)) {
+        const unitWithInstance = { ...unit, instance: Date.now(),
+          unitPoints: costStr === 'cost2' ? { description: unit.unitPoints.description2, cost: unit.unitPoints.cost2 } :
+            { description: unit.unitPoints.description, cost: unit.unitPoints.cost }}
+
+        setSelectedUnits(prev => ({ ...prev, [type]: [ ...prev[type], unitWithInstance ]}))
+        setRosterTotal(rosterTotal => rosterTotal + unitWithInstance.unitPoints.cost)
+        break
+      }
+    }
   }
 
   const customStyles = {
@@ -203,22 +270,26 @@ const ArmyBuilder = () => {
         {units.isError && <div>Error loading data...</div>}
         {units.data &&
         <div>
-          <button onClick={() => tableHelper('characters')}>Characters</button>
-          <UnitTable groupedUnits={groupedUnits.characters} toShow={tableBool.characters} />
+          <Enhancements enhancements={enhancements.data} faction={faction}/>
+          <button onClick={() => tableHelper('character')}>Characters</button>
+          <UnitTable groupedUnits={groupedUnits.character} toShow={tableBool.character} addUnitToRoster={addUnitToRoster}/>
           <button onClick={() => tableHelper('battleline')}>BattleLine</button>
-          <UnitTable groupedUnits={groupedUnits.battleline} toShow={tableBool.battleline} />
-          <button onClick={() => tableHelper('transports')}>Transports</button>
-          <UnitTable groupedUnits={groupedUnits.transports} toShow={tableBool.transports} />
-          <button onClick={() => tableHelper('vehicles')}>Vehicles</button>
-          <UnitTable groupedUnits={groupedUnits.vehicles} toShow={tableBool.vehicles} />
-          <button onClick={() => tableHelper('monsters')}>Monsters</button>
-          <UnitTable groupedUnits={groupedUnits.monsters} toShow={tableBool.monsters} />
+          <UnitTable groupedUnits={groupedUnits.battleline} toShow={tableBool.battleline} addUnitToRoster={addUnitToRoster}/>
+          <button onClick={() => tableHelper('transport')}>Transports</button>
+          <UnitTable groupedUnits={groupedUnits.transport} toShow={tableBool.transport} addUnitToRoster={addUnitToRoster}/>
+          <button onClick={() => tableHelper('vehicle')}>Vehicles</button>
+          <UnitTable groupedUnits={groupedUnits.vehicle} toShow={tableBool.vehicle} addUnitToRoster={addUnitToRoster}/>
+          <button onClick={() => tableHelper('monster')}>Monsters</button>
+          <UnitTable groupedUnits={groupedUnits.monster} toShow={tableBool.monster} addUnitToRoster={addUnitToRoster}/>
           <button onClick={() => tableHelper('mounted')}>Mounted</button>
-          <UnitTable groupedUnits={groupedUnits.mounted} toShow={tableBool.mounted} />
+          <UnitTable groupedUnits={groupedUnits.mounted} toShow={tableBool.mounted} addUnitToRoster={addUnitToRoster}/>
           <button onClick={() => tableHelper('aircraft')}>Aircraft</button>
-          <UnitTable groupedUnits={groupedUnits.aircraft} toShow={tableBool.aircraft} />
+          <UnitTable groupedUnits={groupedUnits.aircraft} toShow={tableBool.aircraft} addUnitToRoster={addUnitToRoster}/>
+          <button onClick={() => tableHelper('infantry')}>Infantry</button>
+          <UnitTable groupedUnits={groupedUnits.infantry} toShow={tableBool.infantry} addUnitToRoster={addUnitToRoster}/>
         </div>
         }
+        <Roster selectedUnits={selectedUnits} rosterTotal={rosterTotal}/>
       </div>
     </div>
   )

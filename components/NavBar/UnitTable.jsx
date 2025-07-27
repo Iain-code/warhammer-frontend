@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const UnitTable = ({ groupedUnits, toShow }) => {
+const UnitTable = ({ groupedUnits, toShow, addUnitToRoster }) => {
 
   const viewKeywords = () => {
 
@@ -10,16 +10,11 @@ const UnitTable = ({ groupedUnits, toShow }) => {
   const viewWargear = () => {
 
   }
-
-  const addUnitToRoster = () => {
-
-  }
   
   return (
     <div>
       {toShow &&
         <table className="ABTable">
-          <caption>Units Available</caption>
           <thead>
             <tr>
               <th>Name</th>
@@ -37,7 +32,6 @@ const UnitTable = ({ groupedUnits, toShow }) => {
             </tr>
           </thead>
           <tbody>
-            {console.log('grouped in table:', groupedUnits)}
             {groupedUnits.map(unit => (
               <tr key={unit.datasheet_id}>
                 <td>{unit.name}</td>
@@ -51,7 +45,7 @@ const UnitTable = ({ groupedUnits, toShow }) => {
                 <td><button onClick={() => viewWargear()}>View Wargear</button></td>
                 <td>
                   {unit.unitPoints.description}
-                  {unit.unitPoints.description2 && (
+                  {unit.unitPoints.description2 && unit.unitPoints.cost2 && (
                     <>
                       <br />
                       {unit.unitPoints.description2}
@@ -60,7 +54,7 @@ const UnitTable = ({ groupedUnits, toShow }) => {
                 </td>
                 <td>
                   {unit.unitPoints.cost}
-                  {unit.unitPoints.cost2 && (
+                  {unit.unitPoints.cost2 && unit.unitPoints.description2 && (
                     <>
                       <br />
                       <br />
@@ -68,7 +62,15 @@ const UnitTable = ({ groupedUnits, toShow }) => {
                     </>
                   )}
                 </td>
-                <td><button onClick={addUnitToRoster}>Add</button></td>
+                <td>
+                  <button onClick={() => addUnitToRoster(unit, '')}>Add</button>
+                  {unit.unitPoints.description2 && unit.unitPoints.cost2 && (
+                    <>
+                      <br />
+                      <br />
+                      <button onClick={() => addUnitToRoster(unit, 'cost2')}>Add</button>
+                    </>)}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -82,7 +84,8 @@ UnitTable.propTypes = {
   groupedUnits: {
     characters: PropTypes.object
   },
-  toShow: PropTypes.string
+  toShow: PropTypes.string,
+  addUnitToRoster: PropTypes.func
 }
 
 export default UnitTable

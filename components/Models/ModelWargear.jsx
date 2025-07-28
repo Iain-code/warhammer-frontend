@@ -1,4 +1,4 @@
-import ModelContext from "../../modelContext"
+import ModelContext from "../../contexts/modelContext"
 import { useContext, useEffect, useState } from 'react'
 import modelService from '../../requests/models'
 import { useMutation } from "@tanstack/react-query"

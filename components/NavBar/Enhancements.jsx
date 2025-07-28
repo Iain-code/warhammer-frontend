@@ -25,6 +25,15 @@ const Enhancements = ({ enhancements, faction }) => {
     setChosenDetatchment(detachmentObj)
     setChosen(true)
   }
+  
+  const removeDetachment = () => {
+    setChosenDetatchment(null)
+    setChosen(false)
+  }
+
+  const addEnhancementToRoster = () => {
+
+  }
 
   return (
     <div>
@@ -39,10 +48,12 @@ const Enhancements = ({ enhancements, faction }) => {
       ))}
       {chosenDetachment &&
        <div>
+         <button onClick={removeDetachment}>Change Detachment</button>
          {chosenDetachment[0]}
-         {chosenDetachment.map(d =>
+         {chosenDetachment[1].map(d =>
            <p key={d.id}>
-             {d.name}
+             {d.name} - {d.cost}
+             <button onClick={addEnhancementToRoster}>Select</button>
            </p>
          )}
        </div>

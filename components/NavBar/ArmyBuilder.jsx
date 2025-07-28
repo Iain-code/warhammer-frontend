@@ -1,7 +1,7 @@
 import React from "react"
 import { useContext, useState, useEffect } from "react"
 import Select from 'react-select'
-import UserContext from "../../userContext"
+import UserContext from "../../contexts/userContext"
 import './armybuilder.css'
 import { useQuery } from "@tanstack/react-query"
 import modelService from '../../requests/models'

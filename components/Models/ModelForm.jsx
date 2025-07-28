@@ -1,9 +1,9 @@
 import React from 'react'
 import { useContext } from 'react'
 import Select from 'react-select';
-import AttackerContext from '../../attackerContext';
-import DefenderContext from '../../defenderContext';
-import ModelContext from '../../modelContext'
+import AttackerContext from '../../contexts/attackerContext';
+import DefenderContext from '../../contexts/defenderContext';
+import ModelContext from '../../contexts/modelContext'
 import ModelWargear from './ModelWargear'
 
 const ModelForm = () => {

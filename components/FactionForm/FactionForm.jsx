@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useContext, useState } from "react";
 import modelService from "../../requests/models";
 import Select from 'react-select';
-import AttackerContext from "../../attackerContext";
-import DefenderContext from "../../defenderContext";
+import AttackerContext from "../../contexts/attackerContext";
+import DefenderContext from "../../contexts/defenderContext";
 import { useMutation } from '@tanstack/react-query'
 import PropTypes from "prop-types";
 import factionList from './FactionList'

@@ -2,7 +2,7 @@ import React from 'react'
 import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import UserContext from '../../userContext'
+import UserContext from '../../contexts/userContext'
 import userService from '../../requests/users'
 import './login.css'
 

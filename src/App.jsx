@@ -4,7 +4,7 @@ import Home from "../components/NavBar/Home";
 import Login from "../components/NavBar/Login";
 import ArmyBuilder from "../components/NavBar/ArmyBuilder";
 import About from "../components/NavBar/About";
-import UserContext from "../userContext";
+import UserContext from "../contexts/userContext";
 import Logout from '../components/NavBar/Logout.jsx'
 import userService from '../requests/users'
 import Admin from '../components/NavBar/Admin.jsx'

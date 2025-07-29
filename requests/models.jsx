@@ -62,6 +62,11 @@ const getEnhancements = async () => {
   return response.data
 }
 
+const getWargearForModels = async () => {
+  const response = await axios.get(`${baseUrl}/wargears/models`)
+  return response.data
+}
+
 export default {
   getModelsForFaction,
   getWargear,
@@ -69,5 +74,6 @@ export default {
   updateWargear,
   getKeywordsForFaction,
   getPointsForID,
-  getEnhancements
+  getEnhancements,
+  getWargearForModels
 };

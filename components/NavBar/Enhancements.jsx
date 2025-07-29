@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
+import RosterContext from '../../contexts/rosterContext'
+import parse, { domToReact } from 'html-react-parser'
 
 const Enhancements = ({ enhancements, faction }) => {
   const [chosen, setChosen] = useState(false)
   const [chosenDetachment, setChosenDetatchment] = useState(null)
+  const [roster, rosterDispatch] = useContext(RosterContext)
   
   if (!enhancements) return
 
@@ -31,10 +34,40 @@ const Enhancements = ({ enhancements, faction }) => {
     setChosen(false)
   }
 
-  const addEnhancementToRoster = () => {
+  const addEnhancementToRoster = (cost, name) => {
+    console.log(roster.enhancement)
+    
+    if (roster.enhancement && roster.enhancement.includes(name)) {
+      rosterDispatch({
+        type: 'remove',
+        payload: {
+          cost: cost,
+          enhancement: name
+        }
+      })
+      return
+    }
 
+    rosterDispatch({
+      type: 'add',
+      payload: cost
+    })
+    rosterDispatch({
+      type: 'enhancement',
+      payload: name
+    })
   }
 
+  const cleanDescription = (d) => {
+    return parse(d.description, {
+      replace: domNode => {
+        if (domNode.name === 'a') {
+          return <span>{domToReact(domNode.children)}</span>;
+        }
+      }
+    })
+  }
+ 
   return (
     <div>
       {split.map(e => (
@@ -52,8 +85,10 @@ const Enhancements = ({ enhancements, faction }) => {
          {chosenDetachment[0]}
          {chosenDetachment[1].map(d =>
            <p key={d.id}>
-             {d.name} - {d.cost}
-             <button onClick={addEnhancementToRoster}>Select</button>
+             <span>{d.name} - {d.cost}</span>
+             <input type='checkbox' value={d.name} onChange={() => addEnhancementToRoster(d.cost, d.name)}/>
+             <br />
+             {cleanDescription(d)}
            </p>
          )}
        </div>

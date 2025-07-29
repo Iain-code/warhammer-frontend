@@ -4,17 +4,52 @@ import PropTypes from 'prop-types'
 
 const rosterReducer = (state, action) => {
   switch (action.type) {
-  case 'roster':
-    return action.payload
+  case 'set':
+    return {
+      ...state, 
+      cost: action.payload
+    }
+
+  case 'add':
+    return {
+      ...state,
+      cost: state.cost + action.payload
+    }
+
+  case 'minus':
+    return {
+      ...state,
+      cost: state.cost - action.payload
+    }
+
+  case 'enhancement':
+    return {
+      ...state,
+      enhancement: state.enhancement ? [ ...state.enhancement, action.payload] : [action.payload] 
+    }
+  
   case 'remove':
-    return action.payload
+    return {
+      cost: state.cost - action.payload.cost,
+      enhancement: state.enhancement.filter(item => item !== action.payload.enhancement)
+    }
+
+  default:
+    return state;
   }
 }
 
 const RosterContext = createContext()
 
 export const RosterContextProvider = ({ children }) => {
-  const [roster, rosterDispatch] = useReducer(rosterReducer, null)
+
+  const initialState = {
+    cost: 0,
+    enhancement: []
+  }
+
+  const [roster, rosterDispatch] = useReducer(rosterReducer, initialState)
+
   return (
     <RosterContext.Provider value={[roster, rosterDispatch]}>
       {children}

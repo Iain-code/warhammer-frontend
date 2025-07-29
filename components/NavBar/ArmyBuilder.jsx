@@ -9,12 +9,13 @@ import factionList from '../FactionForm/FactionList'
 import UnitTable from "./UnitTable"
 import Roster from './Roster'
 import Enhancements from "./Enhancements"
+import RosterContext from "../../contexts/rosterContext"
 
 const ArmyBuilder = () => {
-  const [user] = useContext(UserContext)
+  const user = useContext(UserContext)
   const [faction, setFaction] = useState(null)
   const [, setFactionImage] = useState(null)
-  const [rosterTotal, setRosterTotal] = useState(0)
+  const [, rosterDispatch] = useContext(RosterContext)
   const [groupedUnits, setGroupedUnits] = useState({
     character: [],
     battleline: [],
@@ -65,7 +66,7 @@ const ArmyBuilder = () => {
 
   const wargear = useQuery({
     queryKey: ['wargear', faction],
-    queryFn: () => getWargearForModels(),
+    queryFn: () => modelService.getWargearForModels(),
     enabled: !!faction,
     retry: 1,
     refetchOnWindowFocus: false
@@ -168,7 +169,10 @@ const ArmyBuilder = () => {
   const handleFactionChange = (faction) => {
     setFaction(faction)
     setFactionImage(faction.img)
-    setRosterTotal(0)
+    rosterDispatch({
+      type: 'set',
+      payload: 0
+    })
     setSelectedUnits({
       character: [],
       battleline: [],
@@ -213,7 +217,10 @@ const ArmyBuilder = () => {
             { description: unit.unitPoints.description, cost: unit.unitPoints.cost }}
 
         setSelectedUnits(prev => ({ ...prev, [type]: [ ...prev[type], unitWithInstance ]}))
-        setRosterTotal(rosterTotal => rosterTotal + unitWithInstance.unitPoints.cost)
+        rosterDispatch({
+          type: 'add',
+          payload: unitWithInstance.unitPoints.cost
+        })
         break
       }
     }
@@ -271,25 +278,73 @@ const ArmyBuilder = () => {
         {units.data &&
         <div>
           <Enhancements enhancements={enhancements.data} faction={faction}/>
-          <button onClick={() => tableHelper('character')}>Characters</button>
-          <UnitTable groupedUnits={groupedUnits.character} toShow={tableBool.character} addUnitToRoster={addUnitToRoster}/>
+          <button onClick={() => tableHelper('character')} >Characters</button>
+          <UnitTable 
+            groupedUnits={groupedUnits.character} 
+            toShow={tableBool.character} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data} 
+          />
           <button onClick={() => tableHelper('battleline')}>BattleLine</button>
-          <UnitTable groupedUnits={groupedUnits.battleline} toShow={tableBool.battleline} addUnitToRoster={addUnitToRoster}/>
+          <UnitTable 
+            groupedUnits={groupedUnits.battleline} 
+            toShow={tableBool.battleline} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data}
+          />
           <button onClick={() => tableHelper('transport')}>Transports</button>
-          <UnitTable groupedUnits={groupedUnits.transport} toShow={tableBool.transport} addUnitToRoster={addUnitToRoster}/>
+          <UnitTable
+            groupedUnits={groupedUnits.transport} 
+            toShow={tableBool.transport} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data}
+          />
           <button onClick={() => tableHelper('vehicle')}>Vehicles</button>
-          <UnitTable groupedUnits={groupedUnits.vehicle} toShow={tableBool.vehicle} addUnitToRoster={addUnitToRoster}/>
+          <UnitTable 
+            groupedUnits={groupedUnits.vehicle} 
+            toShow={tableBool.vehicle} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data}
+          />
           <button onClick={() => tableHelper('monster')}>Monsters</button>
-          <UnitTable groupedUnits={groupedUnits.monster} toShow={tableBool.monster} addUnitToRoster={addUnitToRoster}/>
+          <UnitTable 
+            groupedUnits={groupedUnits.monster} 
+            toShow={tableBool.monster} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data}
+          />
           <button onClick={() => tableHelper('mounted')}>Mounted</button>
-          <UnitTable groupedUnits={groupedUnits.mounted} toShow={tableBool.mounted} addUnitToRoster={addUnitToRoster}/>
+          <UnitTable 
+            groupedUnits={groupedUnits.mounted} 
+            toShow={tableBool.mounted} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data}
+          />
           <button onClick={() => tableHelper('aircraft')}>Aircraft</button>
-          <UnitTable groupedUnits={groupedUnits.aircraft} toShow={tableBool.aircraft} addUnitToRoster={addUnitToRoster}/>
+          <UnitTable 
+            groupedUnits={groupedUnits.aircraft} 
+            toShow={tableBool.aircraft} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data}
+          />
           <button onClick={() => tableHelper('infantry')}>Infantry</button>
-          <UnitTable groupedUnits={groupedUnits.infantry} toShow={tableBool.infantry} addUnitToRoster={addUnitToRoster}/>
+          <UnitTable 
+            groupedUnits={groupedUnits.infantry} 
+            toShow={tableBool.infantry} 
+            addUnitToRoster={addUnitToRoster} 
+            keywords={keywords.data} 
+            wargear={wargear.data}
+          />
         </div>
         }
-        <Roster selectedUnits={selectedUnits} rosterTotal={rosterTotal}/>
+        <Roster selectedUnits={selectedUnits} setSelectedUnits={setSelectedUnits}/>
       </div>
     </div>
   )

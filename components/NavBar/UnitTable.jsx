@@ -1,33 +1,49 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './unitTable.css'
+import parse, { domToReact } from 'html-react-parser'
 
-const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear }) => {
+const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, abilities }) => {
 
   const [selectedWargear, setSelectedWargear] = useState(null)
+  const [selectedKeywords, setSelectedKeywords] = useState(null)
+  const [selectedAbilities, setSelectedAbilities] = useState(null)
 
-  const viewKeywords = () => {
-
+  const viewKeywords = (unit) => {
+    setSelectedKeywords(keywords.filter(item => item.datasheet_id === unit.datasheet_id))
   }
-
-  useEffect(() => {
-    console.log('selected wargear:', selectedWargear)
-  }, [selectedWargear])
 
   const viewWargear = (unit) => {
     setSelectedWargear(wargear.filter(item => item.datasheet_id === unit.datasheet_id))
   }
 
-  const closeWargearModal = () => {
-    setSelectedWargear(null)
+  const closeModal = (str) => {
+    if (str === 'wargear') {
+      setSelectedWargear(null)
+    } else if (str === 'keyword') {
+      setSelectedKeywords(null)
+    } else if (str === 'abilities') {
+      setSelectedAbilities(null)
+    }
   }
 
-  const viewAbilities = () => {
+  const cleanDescription = (d) => {
+    return parse(d, {
+      replace: domNode => {
+        if (domNode.name === 'a') {
+          return <span>{domToReact(domNode.children)}</span>;
+        }
+      }
+    })
+  }
 
+  const viewAbilities = (unit) => {
+    console.log(abilities)
+    setSelectedAbilities(abilities.filter(item => item.datasheet_id === unit.datasheet_id))
   }
   
   return (
-    <div>
+    <div className=''>
       {toShow &&
         <table className="ABTable">
           <thead>
@@ -57,9 +73,9 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear })
                 <td>{unit.inv_sv}</td>
                 <td>{unit.Ld}</td>
                 <td>{unit.OC}</td>
-                <td><button onClick={() => viewKeywords()}>View keywords</button></td>
+                <td><button onClick={() => viewKeywords(unit)}>View keywords</button></td>
                 <td><button onClick={() => viewWargear(unit)}>View Wargear</button></td>
-                <td><button onClick={() => viewAbilities()}>View Abilities</button></td>
+                <td><button onClick={() => viewAbilities(unit)}>View Abilities</button></td>
                 <td>
                   {unit.unitPoints.description}
                   {unit.unitPoints.description2 && unit.unitPoints.cost2 && (
@@ -122,10 +138,37 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear })
                 ))}
               </tbody>
             </table>
-            <button onClick={closeWargearModal}>Close</button>
+            <button onClick={() => closeModal('wargear')}>Close</button>
           </div>
         </div>
-)}
+      )}
+      {selectedKeywords && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h2>Keywords</h2>
+            {selectedKeywords.map(word =>
+              <p key={word.id}>
+                {word.keyword}
+              </p>
+            )}
+            <button onClick={() => closeModal('keyword')}>Close</button>
+          </div>
+        </div>
+      )}
+      {selectedAbilities && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h2>Abilities</h2>
+            {selectedAbilities.map(ability =>
+              <div key={ability.id}>
+                <h6>{ability.name}</h6>
+                <p>{cleanDescription(ability.description)}</p>
+              </div>
+            )}
+            <button onClick={() => closeModal('abilities')}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -137,7 +180,8 @@ UnitTable.propTypes = {
   toShow: PropTypes.string,
   addUnitToRoster: PropTypes.func,
   keywords: PropTypes.array,
-  wargear: PropTypes.array
+  wargear: PropTypes.array,
+  abilities: PropTypes.array
 }
 
 export default UnitTable

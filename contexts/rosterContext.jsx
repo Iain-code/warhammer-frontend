@@ -34,6 +34,12 @@ const rosterReducer = (state, action) => {
       enhancement: state.enhancement.filter(item => item !== action.payload.enhancement)
     }
 
+  case 'removeEnhancements':
+    return {
+      cost: state.cost - action.payload.cost,
+      enhancement: []
+    }
+  
   default:
     return state;
   }

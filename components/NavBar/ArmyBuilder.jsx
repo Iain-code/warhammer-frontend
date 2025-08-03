@@ -88,14 +88,17 @@ const ArmyBuilder = () => {
     refetchOnWindowFocus: false    
   })
 
+  const abilities = useQuery({
+    queryKey: ['abilities'],
+    queryFn: () => modelService.getAbilities(),
+    enabled: !!faction,
+    retry: 1,
+    refetchOnWindowFocus: false    
+  })
+
   const sortUnitsAndFetchData = async () => {
     const IDs = units.data.map(unit => unit.datasheet_id)
     const response = await modelService.getPointsForID(IDs)
-    return response
-  }
-
-  const getWargearForModels = async () => {
-    const response = await modelService.getWargear()
     return response
   }
 
@@ -206,7 +209,7 @@ const ArmyBuilder = () => {
       'mounted',
       'vehicle',
       'infantry',
-    ];
+    ]
 
     const lowerKeywords = unit.keywords.map(k => k.toLowerCase())
  
@@ -262,89 +265,132 @@ const ArmyBuilder = () => {
   }
 
   return (
-    <div className="armyBuilder">
-      <h4>Army Builder</h4>
-      <Select
-        styles={customStyles}
-        options={factionList}
-        onChange={(faction) => handleFactionChange(faction.value)}
-        placeholder="Select a faction..."
-        isSearchable
-        maxMenuHeight={200}
-      />
-      <div className="armyList">
-        {units.isLoading && <div>Loading data...</div>}
-        {units.isError && <div>Error loading data...</div>}
-        {units.data &&
-        <div>
-          <Enhancements enhancements={enhancements.data} faction={faction}/>
-          <button onClick={() => tableHelper('character')} >Characters</button>
-          <UnitTable 
-            groupedUnits={groupedUnits.character} 
-            toShow={tableBool.character} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data} 
+    <div className="mt-[100px]">
+      <h4 className="mx-auto text-white text-xl white">Army Builder</h4>
+      <div className="mx-auto w-1/2 p-8">
+        <Select
+          styles={customStyles}
+          options={factionList}
+          onChange={(faction) => handleFactionChange(faction.value)}
+          placeholder="Select a faction..."
+          isSearchable
+          maxMenuHeight={200}
+        />
+      </div>
+      <div className="flex flex-col lg:flex-row justify-center gap-6 p-6 w-full max-w-[1280px] mx-auto">
+        <div className="">
+          {units.isLoading && <div>Loading data...</div>}
+          {units.isError && <div>Error loading data...</div>}
+          {units.data &&
+        <div className="">
+          <div className="flex flex-col justify-center bg-gray-900 border border-orange-500 p-4 rounded w-full">
+            <Enhancements 
+              enhancements={enhancements.data} 
+              faction={faction} 
+            />
+            <button 
+              onClick={() => tableHelper('character')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Characters</button>
+            <UnitTable 
+              groupedUnits={groupedUnits.character} 
+              toShow={tableBool.character} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+            <button 
+              onClick={() => tableHelper('battleline')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >BattleLine</button>
+            <UnitTable 
+              groupedUnits={groupedUnits.battleline} 
+              toShow={tableBool.battleline} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+            <button 
+              onClick={() => tableHelper('transport')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2" 
+            >Transports</button>
+            <UnitTable
+              groupedUnits={groupedUnits.transport} 
+              toShow={tableBool.transport} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+            <button 
+              onClick={() => tableHelper('vehicle')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Vehicles</button>
+            <UnitTable 
+              groupedUnits={groupedUnits.vehicle} 
+              toShow={tableBool.vehicle} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+            <button 
+              onClick={() => tableHelper('monster')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Monsters</button>
+            <UnitTable 
+              groupedUnits={groupedUnits.monster} 
+              toShow={tableBool.monster} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+            <button 
+              onClick={() => tableHelper('mounted')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Mounted</button>
+            <UnitTable 
+              groupedUnits={groupedUnits.mounted} 
+              toShow={tableBool.mounted} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+            <button 
+              onClick={() => tableHelper('aircraft')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Aircraft</button>
+            <UnitTable 
+              groupedUnits={groupedUnits.aircraft} 
+              toShow={tableBool.aircraft} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+            <button 
+              onClick={() => tableHelper('infantry')}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Infantry</button>
+            <UnitTable 
+              groupedUnits={groupedUnits.infantry} 
+              toShow={tableBool.infantry} 
+              addUnitToRoster={addUnitToRoster} 
+              keywords={keywords.data} 
+              wargear={wargear.data}
+              abilities={abilities.data}
+            />
+          </div>
+          <Roster 
+            selectedUnits={selectedUnits} 
+            setSelectedUnits={setSelectedUnits}
           />
-          <button onClick={() => tableHelper('battleline')}>BattleLine</button>
-          <UnitTable 
-            groupedUnits={groupedUnits.battleline} 
-            toShow={tableBool.battleline} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data}
-          />
-          <button onClick={() => tableHelper('transport')}>Transports</button>
-          <UnitTable
-            groupedUnits={groupedUnits.transport} 
-            toShow={tableBool.transport} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data}
-          />
-          <button onClick={() => tableHelper('vehicle')}>Vehicles</button>
-          <UnitTable 
-            groupedUnits={groupedUnits.vehicle} 
-            toShow={tableBool.vehicle} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data}
-          />
-          <button onClick={() => tableHelper('monster')}>Monsters</button>
-          <UnitTable 
-            groupedUnits={groupedUnits.monster} 
-            toShow={tableBool.monster} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data}
-          />
-          <button onClick={() => tableHelper('mounted')}>Mounted</button>
-          <UnitTable 
-            groupedUnits={groupedUnits.mounted} 
-            toShow={tableBool.mounted} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data}
-          />
-          <button onClick={() => tableHelper('aircraft')}>Aircraft</button>
-          <UnitTable 
-            groupedUnits={groupedUnits.aircraft} 
-            toShow={tableBool.aircraft} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data}
-          />
-          <button onClick={() => tableHelper('infantry')}>Infantry</button>
-          <UnitTable 
-            groupedUnits={groupedUnits.infantry} 
-            toShow={tableBool.infantry} 
-            addUnitToRoster={addUnitToRoster} 
-            keywords={keywords.data} 
-            wargear={wargear.data}
-          />
+        </div>}
         </div>
-        }
-        <Roster selectedUnits={selectedUnits} setSelectedUnits={setSelectedUnits}/>
       </div>
     </div>
   )

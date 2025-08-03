@@ -7,6 +7,7 @@ const Enhancements = ({ enhancements, faction }) => {
   const [chosen, setChosen] = useState(false)
   const [chosenDetachment, setChosenDetatchment] = useState(null)
   const [roster, rosterDispatch] = useContext(RosterContext)
+  const [enhanceToggle, setEnhanceToggle] = useState(true)
   
   if (!enhancements) return
 
@@ -24,18 +25,31 @@ const Enhancements = ({ enhancements, faction }) => {
   const split = Object.entries(detachments)
 
   const chooseDetachment = (detachmentObj) => {
-    console.log(detachmentObj)
     setChosenDetatchment(detachmentObj)
     setChosen(true)
+    setEnhanceToggle(true)
   }
   
   const removeDetachment = () => {
     setChosenDetatchment(null)
     setChosen(false)
+
+    const e = chosenDetachment[1].filter(item => {
+      return roster.enhancement.includes(item.name)
+    })
+
+    const cost = e.reduce((total, item) => total + item.cost, 0)
+
+    rosterDispatch({
+      type: 'removeEnhancements',
+      payload: {
+        cost: cost,
+        enhancements: []
+      }
+    })
   }
 
   const addEnhancementToRoster = (cost, name) => {
-    console.log(roster.enhancement)
     
     if (roster.enhancement && roster.enhancement.includes(name)) {
       rosterDispatch({
@@ -69,27 +83,53 @@ const Enhancements = ({ enhancements, faction }) => {
   }
  
   return (
-    <div>
+    <div className='flex flex-row justify-center text-white'>
       {split.map(e => (
         <div key={e[0]}>
           {e[1].length === 4 && !chosen && (
-            <button onClick={() => chooseDetachment(e)}>
+            <button 
+              onClick={() => chooseDetachment(e)}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >
               {e[0]}
             </button>
           )}
         </div>
       ))}
-      {chosenDetachment &&
-       <div>
-         <button onClick={removeDetachment}>Change Detachment</button>
-         {chosenDetachment[0]}
+      {chosen && !enhanceToggle && 
+        <div>
+          <button
+            onClick={() => setEnhanceToggle(true)}
+            className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+          >Show Enhancements</button>
+        </div>}
+      {chosenDetachment && enhanceToggle &&
+       <div className="flex flex-col justify-center">
+         <div className="flex flex-row justify-center">
+           <button 
+             onClick={() => removeDetachment()}
+             className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 mx-auto"
+           >Change Detachment</button>
+           <button 
+             onClick={() => setEnhanceToggle(false)}
+             className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 mx-auto"
+           >Close Enhancements</button>
+         </div>
+         <br />
+         <h4 className='mx-auto m-3 text-xl font-semibold'>
+           {chosenDetachment[0]}
+         </h4>
          {chosenDetachment[1].map(d =>
-           <p key={d.id}>
-             <span>{d.name} - {d.cost}</span>
-             <input type='checkbox' value={d.name} onChange={() => addEnhancementToRoster(d.cost, d.name)}/>
+           <div key={d.id} className="border-b border-gray-600 pb-4 mb-6 w-3/4 mx-auto">
+             <span className='flex justify-center mx-auto font-semibold text-lg'>{d.name} - {d.cost}</span>
              <br />
-             {cleanDescription(d)}
-           </p>
+             <p className="text-center mx-auto px-2">{cleanDescription(d)}</p>
+             <br />
+             <button
+               onClick={() => addEnhancementToRoster(d.cost, d.name)}
+               className="flex text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 mx-auto"  
+             >Add/Remove</button>
+           </div>
          )}
        </div>
       }
@@ -99,7 +139,9 @@ const Enhancements = ({ enhancements, faction }) => {
 
 Enhancements.propTypes = {
   enhancements: PropTypes.object,
-  faction: PropTypes.string
+  faction: PropTypes.string,
+  changeEnhanceToggle: PropTypes.func,
+  enhanceToggle: PropTypes.bool
 }
 
 export default Enhancements

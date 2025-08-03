@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .navBar .logo {
   max-width: 75px;
   max-height: 75px;

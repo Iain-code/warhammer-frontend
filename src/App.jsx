@@ -76,7 +76,7 @@ const App = () => {
         <a href="/" >
           <img src='logo.png' alt="Logo" className="logo" />
         </a>
-        <h1 className="title">Average Dice</h1>
+        <h1 className="text-base sm:text-xl md:text-3xl lg:text-5xl text-orange-500 font-sans font-semibold tracking-widest shadow-md">Average Dice</h1>
         <Link className="home" to="/">Home</Link>
         <Link className="about" to="/about">About</Link>
         <Link className="armybuilder" to="/armybuilder">Army Builder</Link>

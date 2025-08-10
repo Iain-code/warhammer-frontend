@@ -19,7 +19,6 @@ const getWargear = async (id) => {
 }
 
 const updateModel = async (user, modelObj) => {
-  console.log('model Obj Request:', modelObj)
   const tokenHeader = userService.setToken(user.token)
   const config = {
     headers: { Authorization: tokenHeader },
@@ -72,6 +71,19 @@ const getAbilities = async () => {
   return response.data
 }
 
+const saveToRoster = async (roster) => {
+  const response = await axios.post(`${baseUrl}/rosters/save`, roster)
+  return response.data
+}
+
+const getArmies = async (userId) => {
+  const response = await axios.get(`${baseUrl}/rosters/armies`, {
+    params: { user_id: userId }
+  })
+  console.log('response', response.data)
+  return response.data
+}
+
 export default {
   getModelsForFaction,
   getWargear,
@@ -81,5 +93,7 @@ export default {
   getPointsForID,
   getEnhancements,
   getWargearForModels,
-  getAbilities
+  getAbilities,
+  saveToRoster,
+  getArmies
 };

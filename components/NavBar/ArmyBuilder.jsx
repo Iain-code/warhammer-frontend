@@ -2,7 +2,6 @@ import React from "react"
 import { useContext, useState, useEffect } from "react"
 import Select from 'react-select'
 import UserContext from "../../contexts/userContext"
-import './armybuilder.css'
 import { useQuery } from "@tanstack/react-query"
 import modelService from '../../requests/models'
 import factionList from '../FactionForm/FactionList'
@@ -188,8 +187,8 @@ const ArmyBuilder = () => {
     })
   };
 
-  if (!user) {
-    return <div className="builderError">Please login to use the army builder</div>
+  if (!user[0]) {
+    return <div className="flex justify-center text-center flex-wrap mt-[100px] mx-10 text-orange-600 text-xl">Please login to use the army builder</div>
   }
 
   const tableHelper = (unitType) => {
@@ -267,7 +266,7 @@ const ArmyBuilder = () => {
   return (
     <div className="mt-[100px]">
       <h4 className="mx-auto text-white text-xl white">Army Builder</h4>
-      <div className="mx-auto w-1/2 p-8">
+      <div className="mx-auto w-3/4 lg:w-1/2 p-2 lg:p-8 md:p-4">
         <Select
           styles={customStyles}
           options={factionList}
@@ -277,17 +276,17 @@ const ArmyBuilder = () => {
           maxMenuHeight={200}
         />
       </div>
-      <div className="flex flex-col lg:flex-row justify-center gap-6 p-6 w-full max-w-[1280px] mx-auto">
-        <div className="">
-          {units.isLoading && <div>Loading data...</div>}
+      <div className="flex flex-col lg:flex-row justify-center gap-6 p-6 w-full max-w-[1280px] mx-auto ">
+        <div className="w-full lg:w-2/3">
+          {units.isLoading && <></>}
           {units.isError && <div>Error loading data...</div>}
           {units.data &&
         <div className="">
-          <div className="flex flex-col justify-center bg-gray-900 border border-orange-500 p-4 rounded w-full">
-            <Enhancements 
-              enhancements={enhancements.data} 
-              faction={faction} 
-            />
+          <Enhancements 
+            enhancements={enhancements.data} 
+            faction={faction} 
+          />
+          <div className="flex flex-col justify-center p-4 rounded w-full mx-auto">
             <button 
               onClick={() => tableHelper('character')}
               className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
@@ -385,11 +384,14 @@ const ArmyBuilder = () => {
               abilities={abilities.data}
             />
           </div>
+        </div>}
+        </div>
+        <div className="flex justify-center w-full lg:w-1/3 lg:sticky lg:top-6">
           <Roster 
             selectedUnits={selectedUnits} 
             setSelectedUnits={setSelectedUnits}
+            faction={faction}
           />
-        </div>}
         </div>
       </div>
     </div>

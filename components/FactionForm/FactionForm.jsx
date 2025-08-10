@@ -27,7 +27,7 @@ const FactionForm = ({ setShowForm }) => {
   const handleAttackerChange = (faction) => {
     setAttack(faction.value)
     setSelectedAttackImage(faction.img)
-  };
+  }
 
   const handleDefenderChange = (faction) => {
     setDefend(faction.value)

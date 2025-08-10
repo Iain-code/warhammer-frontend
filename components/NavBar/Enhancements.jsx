@@ -83,7 +83,7 @@ const Enhancements = ({ enhancements, faction }) => {
   }
  
   return (
-    <div className='flex flex-row justify-center text-white'>
+    <div className='flex lg:flex-row flex-wrap justify-center text-white'>
       {split.map(e => (
         <div key={e[0]}>
           {e[1].length === 4 && !chosen && (

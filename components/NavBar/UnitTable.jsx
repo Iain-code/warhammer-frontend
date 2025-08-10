@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import './unitTable.css'
 import parse, { domToReact } from 'html-react-parser'
 
 const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, abilities }) => {
@@ -45,16 +44,10 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, a
   return (
     <div className=''>
       {toShow &&
-        <table className="ABTable">
-          <thead>
+        <table className="min-w-[600px] w-full mx-auto border-collapse bg-[#1b1b1b] rounded-lg text-white">
+          <thead className="bg-[#2a2a2a] px-3 py-3 font-medium border-b-2 border-[#444]">
             <tr>
               <th>Name</th>
-              <th>Movement</th>
-              <th>Toughness</th>
-              <th>Save</th>
-              <th>Inv Save</th>
-              <th>Ld</th>
-              <th>OC</th>
               <th>Keywords</th>
               <th>Wargear</th>
               <th>Abilites</th>
@@ -65,18 +58,12 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, a
           </thead>
           <tbody>
             {groupedUnits.map(unit => (
-              <tr key={unit.datasheet_id}>
-                <td>{unit.name}</td>
-                <td>{unit.M}</td>
-                <td>{unit.T}</td>
-                <td>{unit.Sv}</td>
-                <td>{unit.inv_sv}</td>
-                <td>{unit.Ld}</td>
-                <td>{unit.OC}</td>
-                <td><button onClick={() => viewKeywords(unit)}>View keywords</button></td>
-                <td><button onClick={() => viewWargear(unit)}>View Wargear</button></td>
-                <td><button onClick={() => viewAbilities(unit)}>View Abilities</button></td>
-                <td>
+              <tr key={unit.datasheet_id} className="hover:bg-[#2a2a2a]">
+                <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>
+                <td className="px-4 py-4 border-b border-[#333]"><button onClick={() => viewKeywords(unit)}>View keywords</button></td>
+                <td className="px-4 py-4 border-b border-[#333]"><button onClick={() => viewWargear(unit)}>View Wargear</button></td>
+                <td className="px-4 py-4 border-b border-[#333]"><button onClick={() => viewAbilities(unit)}>View Abilities</button></td>
+                <td className="px-4 py-4 border-b border-[#333]">
                   {unit.unitPoints.description}
                   {unit.unitPoints.description2 && unit.unitPoints.cost2 && (
                     <>
@@ -85,7 +72,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, a
                     </>
                   )}
                 </td>
-                <td>
+                <td className="px-4 py-4 border-b border-[#333]">
                   {unit.unitPoints.cost}
                   {unit.unitPoints.cost2 && unit.unitPoints.description2 && (
                     <>
@@ -95,7 +82,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, a
                     </>
                   )}
                 </td>
-                <td>
+                <td className="px-4 py-4 border-b border-[#333]">
                   <button onClick={() => addUnitToRoster(unit, '')}>Add</button>
                   {unit.unitPoints.description2 && unit.unitPoints.cost2 && (
                     <>
@@ -110,31 +97,32 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, a
         </table>
       }
       {selectedWargear && (
-        <div className="modal-backdrop">
-          <div className="modal">
+        <div className="flex bg-black/50 text-white p-4 z-[1000] fixed inset-0 items-center justify-center text-xl">
+          <div className="">
             <h2>Wargear</h2>
-            <table>
+            <table className="text-center border-collapse w-full">
               <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Range</th>
-                  <th>Attacks</th>
-                  <th>Strength</th>
-                  <th>AP</th>
-                  <th>Damage</th>
+                <tr className="">
+                  <th className="p-2">Name</th>
+                  <td className="p-2">Type</td>
+                  <th className="p-2">Range</th>
+                  <th className="p-2">Attacks</th>
+                  <th className="p-2">Strength</th>
+                  <th className="p-2">AP</th>
+                  <th className="p-2">Damage</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="">
                 {selectedWargear.map(item => (
                   <tr key={item.id}>
-                    <td>{item.name}</td>
-                    <td>{item.type}</td>
-                    <td>{item.range}</td>
-                    <td>{item.attacks}</td>
-                    <td>{item.strength}</td>
-                    <td>{item.AP.int32}</td>
-                    <td>{item.damage}</td>
-                  </tr>
+                    <td className='border-b border-collapse border-orange-600 p-2'>{item.name}</td>
+                    <td className='border-b border-collapse border-orange-600 p-2'>{item.type}</td>
+                    <td className='border-b border-collapse border-orange-600 p-2'>{item.range}</td>
+                    <td className='border-b border-collapse border-orange-600 p-2'>{item.attacks}</td>
+                    <td className='border-b border-collapse border-orange-600 p-2'>{item.strength}</td>
+                    <td className='border-b border-collapse border-orange-600 p-2'>{item.AP.int32}</td>
+                    <td className='border-b border-collapse border-orange-600 p-2'>{item.damage}</td>
+                  </tr> 
                 ))}
               </tbody>
             </table>

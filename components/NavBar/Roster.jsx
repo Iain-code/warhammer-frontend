@@ -34,19 +34,21 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
     }
   })
 
+  console.log('selectedUnits:', selectedUnits)
+
   const saveArmy = () => {
 
     if (armyName === null || armyName === '') {
       return window.confirm('please insert army name')
     }
-
+    
     const army = Object.values(selectedUnits).filter(arr =>
       arr.length > 0 && arr[0]?.datasheet_id)
-      .map(unit => unit[0].datasheet_id)
-    
+      .map(unit => unit.map(singleUnit => singleUnit.datasheet_id).flat())
+
     const collectedData = {
       user_id: user[0].id,
-      army_list: army,
+      army_list: army[0],
       enhancements: roster.enhancement ?? [],
       name: armyName,
       faction: faction

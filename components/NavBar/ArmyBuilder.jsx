@@ -46,6 +46,13 @@ const ArmyBuilder = () => {
     vehicle: [],
     infantry: [],
   })
+
+  useQuery({
+    queryKey: ['models'],
+    queryFn: () => modelService.getAllUnits(),
+    retry: 1,
+    refetchOnWindowFocus: false,
+  })
   
   const units = useQuery({
     queryKey: ['faction', faction],

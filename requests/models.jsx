@@ -72,7 +72,13 @@ const getAbilities = async () => {
 }
 
 const saveToRoster = async (roster) => {
+  console.log(roster)
   const response = await axios.post(`${baseUrl}/rosters/save`, roster)
+  return response.data
+}
+
+const getAllUnits = async () => {
+  const response = await axios.get(`${baseUrl}/models/all`)
   return response.data
 }
 
@@ -80,7 +86,6 @@ const getArmies = async (userId) => {
   const response = await axios.get(`${baseUrl}/rosters/armies`, {
     params: { user_id: userId }
   })
-  console.log('response', response.data)
   return response.data
 }
 
@@ -95,5 +100,6 @@ export default {
   getWargearForModels,
   getAbilities,
   saveToRoster,
-  getArmies
+  getArmies,
+  getAllUnits
 };

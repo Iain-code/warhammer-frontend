@@ -39,6 +39,12 @@ const rosterReducer = (state, action) => {
       cost: state.cost - action.payload.cost,
       enhancement: []
     }
+
+  case 'reset':
+    return {
+      cost: 0,
+      enhancement: []
+    }
   
   default:
     return state;

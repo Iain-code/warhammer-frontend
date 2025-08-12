@@ -89,6 +89,11 @@ const getArmies = async (userId) => {
   return response.data
 }
 
+const deleteArmy = async (armyId) => {
+  const response = await axios.delete(`${baseUrl}/rosters/remove/${armyId}`)
+  return response.data
+}
+
 export default {
   getModelsForFaction,
   getWargear,
@@ -101,5 +106,6 @@ export default {
   getAbilities,
   saveToRoster,
   getArmies,
-  getAllUnits
+  getAllUnits,
+  deleteArmy
 };

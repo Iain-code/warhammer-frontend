@@ -1,13 +1,16 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import PropTypes from "prop-types"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
 import modelService from '../../requests/models'
 import UserContext from "../../contexts/userContext"
 
-const ArmyList = () => {
+const ArmyList = ({ setSelectedUnits }) => {
 
   const queryClient = useQueryClient()
   const models = queryClient.getQueryData(['models'])
+  const [selectedArmy, setSelectedArmy] = useState(null)
+  const [toggle, setToggle] = useState(false)
+
   const user = useContext(UserContext)
   const userId = user?.[0]?.id
   
@@ -19,23 +22,43 @@ const ArmyList = () => {
     refetchOnWindowFocus: false
   })
 
-  if (!userId) return <div>Loading user…</div>;
-  if (isLoading) return <div>Loading armies…</div>;
-  if (error) return <div>Failed to load armies</div>;
+  const deleteArmyMutation = useMutation({
+    mutationFn: async (armyId) => await modelService.deleteArmy(armyId),
+    onSuccess: () => {
+      showMessage('army deleted')
+      queryClient.invalidateQueries({ queryKey: ['armyList'] })
+    },
+    onError: (error) => console.error('failed to delete army', error)
+  })
+
+  const showMessage = (msg) => {
+    window.confirm(msg)
+  }
+
+  if (!userId) return <div>Loading user…</div>
+  if (isLoading) return <div>Loading armies…</div>
+  if (error) return <div>Failed to load armies</div>
 
   const filterArmy = (army) => {
+    console.log('army:', army)
     const filtered = army.army_list.map(armylistUnit => models.find(modelsUnit => modelsUnit.datasheet_id === armylistUnit ))
     const withID = filtered.map(unit => ({ ...unit, new_id: crypto.randomUUID() }))
     console.log('withID:', withID)
   }
-  
-  // need to added filtering of units so if datasheet id matches i get a new list of all the datasheets i have in array and display those
+
+  const deleteArmy = (armyId) => {
+    deleteArmyMutation.mutate(armyId)
+  }
 
   return (
     <div className="text-white">
-      {data && 
+      <h6>Army List</h6>
+      <button
+        onClick={() => setToggle(!toggle)}
+        className="border mx-3 my-1 p-1"
+      >Open/Close</button>
+      {data && toggle &&
         <div>
-          Army List
           {data.map(list => 
             <div key={list.id}>
               {list.name}
@@ -44,6 +67,7 @@ const ArmyList = () => {
                 onClick={() => filterArmy(list)}
               >Select</button>
               <button
+                onClick={() => deleteArmy(list.id)}
                 className="border mx-3 my-1 p-1"
               >Delete</button>
             </div>

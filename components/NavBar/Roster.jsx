@@ -34,21 +34,20 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
     }
   })
 
-  console.log('selectedUnits:', selectedUnits)
-
   const saveArmy = () => {
 
     if (armyName === null || armyName === '') {
       return window.confirm('please insert army name')
     }
     
-    const army = Object.values(selectedUnits).filter(arr =>
-      arr.length > 0 && arr[0]?.datasheet_id)
-      .map(unit => unit.map(singleUnit => singleUnit.datasheet_id).flat())
+    const army = Object.values(selectedUnits)
+      .filter(arr => arr.length > 0 && arr[0]?.datasheet_id)
+      .map(unit => unit.map(singleUnit => singleUnit.datasheet_id)).flat()
+
 
     const collectedData = {
       user_id: user[0].id,
-      army_list: army[0],
+      army_list: army,
       enhancements: roster.enhancement ?? [],
       name: armyName,
       faction: faction
@@ -56,9 +55,25 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
     saveMutation.mutate(collectedData)
   }
 
+  const clearRoster = () => {
+    setSelectedUnits({
+      character: [],
+      battleline: [],
+      transport: [],
+      mounted: [],
+      aircraft: [],
+      monster: [],
+      vehicle: [],
+      infantry: [],
+    })
+    rosterDispatch({
+      type: 'reset'
+    })
+  }
+
   return (
     <div className='lg:sticky lg:top-24 h-screen overflow-auto'>
-      <div><ArmyList /></div>
+      <div><ArmyList SetSelectedUnits={setSelectedUnits} /></div>
       {(roster.cost > 0) &&
     <div className="text-white w-full">
       <table className="w-full mx-auto border-collapse bg-[#1b1b1b] rounded-lg text-white">
@@ -161,6 +176,10 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
         onClick={saveArmy}
         className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
       >Save Army</button>
+      <button
+        onClick={() => clearRoster()}
+        className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+      >Clear</button>
     </div>}
     </div>
   )

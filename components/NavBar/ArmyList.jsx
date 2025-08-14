@@ -39,7 +39,7 @@ const ArmyList = ({ setSelectedUnits }) => {
   if (isLoading) return <div>Loading armies…</div>
   if (error) return <div>Failed to load armies</div>
 
-  const filterArmy = (army) => {
+  const selectArmy = (army) => {
     console.log('army:', army)
     const filtered = army.army_list.map(armylistUnit => models.find(modelsUnit => modelsUnit.datasheet_id === armylistUnit ))
     const withID = filtered.map(unit => ({ ...unit, new_id: crypto.randomUUID() }))
@@ -64,7 +64,7 @@ const ArmyList = ({ setSelectedUnits }) => {
               {list.name}
               <button 
                 className="border mx-3 my-1 p-1"
-                onClick={() => filterArmy(list)}
+                onClick={() => selectArmy(list)}
               >Select</button>
               <button
                 onClick={() => deleteArmy(list.id)}

@@ -71,6 +71,8 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
     })
   }
 
+  console.log(selectedUnits)
+
   return (
     <div className='lg:sticky lg:top-24 h-screen overflow-auto'>
       <div><ArmyList SetSelectedUnits={setSelectedUnits} /></div>

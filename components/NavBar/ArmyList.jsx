@@ -41,9 +41,8 @@ const ArmyList = ({ setSelectedUnits }) => {
 
   const selectArmy = (army) => {
     console.log('army:', army)
-    const filtered = army.army_list.map(armylistUnit => models.find(modelsUnit => modelsUnit.datasheet_id === armylistUnit ))
-    const withID = filtered.map(unit => ({ ...unit, new_id: crypto.randomUUID() }))
-    console.log('withID:', withID)
+    const filtered = Object.values(army.army_list).map(armylistUnit => models.find(modelsUnit => modelsUnit.datasheet_id === armylistUnit ))
+    console.log('filtered:', filtered)
   }
 
   const deleteArmy = (armyId) => {

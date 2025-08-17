@@ -72,7 +72,7 @@ const getAbilities = async () => {
 }
 
 const saveToRoster = async (roster) => {
-  console.log(roster)
+  console.log('request roster:', roster)
   const response = await axios.post(`${baseUrl}/rosters/save`, roster)
   return response.data
 }

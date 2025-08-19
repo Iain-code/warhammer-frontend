@@ -272,7 +272,7 @@ const ArmyBuilder = () => {
 
   return (
     <div className="mt-[100px]">
-      <h4 className="mx-auto text-white text-xl white">Army Builder</h4>
+      <h4 className="mx-auto text-3xl text-center text-white font-semibold underline">Army Builder</h4>
       <div className="mx-auto w-3/4 lg:w-1/2 p-2 lg:p-8 md:p-4">
         <Select
           styles={customStyles}

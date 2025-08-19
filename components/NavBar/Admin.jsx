@@ -101,7 +101,7 @@ const Admin = ({ user }) => {
 
   return (
     <div>
-      <div className='adminAuth'>
+      <div className='flex flex-col mx-auto justify-center pt-[100px] text-center w-full md:w-1/2'>
         <Select
           className="adminSelect"
           placeholder="Select a faction"
@@ -124,11 +124,20 @@ const Admin = ({ user }) => {
           getOptionLabel={(option) => (option.name)}
         />
       </div>
-      <div>
-        <button onClick={() => setEditing(!editing)}>Edit</button>
-        <button onClick={handleCancel}>Cancel</button>
+      <div className='flex justify-center'>
+        <button 
+          onClick={() => setEditing(!editing)}
+          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+        >Edit</button>
+        <button 
+          onClick={handleCancel}
+          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"  
+        >Cancel</button>
         <br />
-        <button onClick={handleSaveUpdate}>Save Model Update</button>
+        <button 
+          onClick={handleSaveUpdate}
+          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+        >Save Model Update</button>
       </div>
       <div className='modelTables'>
         {selectedModel &&
@@ -208,10 +217,13 @@ const Admin = ({ user }) => {
         </tbody>
       </table>
         }
-        {console.log('selected wargear:', selectedWargear)}
         {selectedWargear &&
         <div>
-          <button onClick={handleUpdateWargear}>Save Wargear Update</button>
+          <button 
+            onClick={handleUpdateWargear}
+            className="flex mx-auto justify-center text-sm bg-orange-500 hover:bg-orange-600 
+            text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+          >Save Wargear Update</button>
           <table className='attackTable'>
             <caption className='caption'>Wargear Profile</caption>
             <thead>

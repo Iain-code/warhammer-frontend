@@ -9,9 +9,12 @@ import ArmyList from './ArmyList'
 const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
 
   const user = useContext(UserContext)
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
+  const armyList = queryClient.getQueryData(['armyList'])
   const [roster, rosterDispatch] = useContext(RosterContext)
   const [armyName, setArmyName] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+  const [modalMsg, setModalMsg] = useState('')
 
   const removeFromRoster = (unit, group) => {
     const filteredUnits = selectedUnits[group].filter(u => u.instance !== unit.instance)
@@ -26,7 +29,8 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
   const saveMutation = useMutation({
     mutationFn: async (collectedData) => await modelService.saveToRoster(collectedData),
     onSuccess: () => {
-      window.confirm('army list saved'),
+      setModalMsg('Army list saved successfully'),
+      setIsOpen(true)
       queryClient.invalidateQueries({ queryKey: ['armyList']})
     },
     onError: (error) => {
@@ -37,9 +41,17 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
   const saveArmy = () => {
 
     if (armyName === null || armyName === '') {
-      return window.confirm('please insert army name')
+      setModalMsg('please enter an army name')
+      setIsOpen(true)
+      return
     }
 
+    if (armyList.filter(name => name.name === armyName).length > 0) {
+      setModalMsg('army name already taken')
+      setIsOpen(true)
+      return
+    }
+  
     const collectedData = {
       user_id: user[0].id,
       army_list: selectedUnits,
@@ -47,7 +59,6 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
       name: armyName,
       faction: faction
     }
-    console.log(collectedData)
     saveMutation.mutate(collectedData)
   }
 
@@ -67,11 +78,9 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
     })
   }
 
-  console.log(selectedUnits)
-
   return (
     <div className='lg:sticky lg:top-24 h-screen overflow-auto'>
-      <div><ArmyList SetSelectedUnits={setSelectedUnits} /></div>
+      <div><ArmyList setSelectedUnits={setSelectedUnits} /></div>
       {(roster.cost > 0) &&
     <div className="text-white w-full">
       <table className="w-full mx-auto border-collapse bg-[#1b1b1b] rounded-lg text-white">
@@ -83,15 +92,23 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
             <th>Remove</th>
           </tr>
         </thead>
-        <tbody className=''>
-          <tr><th colSpan={3} className='text-xl text-orange-600'>Enhancements</th></tr>
-          {roster.enhancement && roster.enhancement.map(e =>
-            <tr
-              key={e}
-              className="hover:bg-[#2a2a2a]"
-            >
-              <td colSpan={3} className="px-4 py-4 border-b border-[#333] text-center">{e}</td>
+        <tbody>
+          <tr><th colSpan={3} className="text-xl text-orange-600">Enhancements</th></tr>
+
+          {(roster.enhancement?.length ?? 0) === 0 ? (
+            <tr>
+              <td colSpan={3} className="px-4 py-4 text-center text-gray-400 italic">
+                No enhancements selected
+              </td>
             </tr>
+          ) : (
+            roster.enhancement.map(e => (
+              <tr key={e} className="hover:bg-[#2a2a2a]">
+                <td colSpan={3} className="px-4 py-4 border-b border-[#333] text-center">
+                  {e}
+                </td>
+              </tr>
+            ))
           )}
         
           {selectedUnits.character.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Characters</th></tr>}
@@ -179,6 +196,19 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
         className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
       >Clear</button>
     </div>}
+      {isOpen &&
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full">
+            <p className="mb-6 text-white">{modalMsg}</p>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      }
     </div>
   )
 }

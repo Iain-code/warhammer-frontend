@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import PropTypes, { object } from 'prop-types'
+import PropTypes from 'prop-types'
 import parse, { domToReact } from 'html-react-parser'
 
-const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, keywords, wargear, abilities }) => {
+const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }) => {
 
   const [selectedWargear, setSelectedWargear] = useState(null)
   const [selectedKeywords, setSelectedKeywords] = useState(null)

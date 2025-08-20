@@ -4,7 +4,7 @@ import modelService from '../../requests/models'
 import './admin.css'
 import factionList from '../FactionForm/FactionList'
 import PropTypes from 'prop-types'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 const Admin = ({ user }) => {
   const [models, setModels] = useState(null)
@@ -14,10 +14,30 @@ const Admin = ({ user }) => {
   const [selectedWargear, setSelectedWargear] = useState(null)
   const [updatedWargear, setUpdatedWargear] = useState(null)
   const [editing, setEditing] = useState(false)
+  const [faction, setFaction] = useState(null)
+  const [modelPoints, setModelPoints] = useState(null)
+
+  const points = useQuery({
+    queryKey: ['pointsForAdmin', faction],
+    queryFn: () => sortUnitsAndFetchData(),
+    enabled: !!models,
+    retry: 1,
+    refetchOnWindowFocus: false
+  })
+
+  const sortUnitsAndFetchData = async () => {
+    const IDs = models.map(unit => unit.datasheet_id)
+    const response = await modelService.getPointsForID(IDs)
+    return response
+  }
+
+  console.log('points.data', points.data)
 
   const getModelsMutation = useMutation({
-    mutationFn: async (faction) => await modelService.getModelsForFaction(faction),
-    onSuccess: (response) => setModels(response),
+    mutationFn: async () => await modelService.getModelsForFaction(faction),
+    onSuccess: (response) => {
+      setModels(response)
+    },
     onError: (error) => {
       console.error('failed to fetch models:', error)
     }
@@ -48,7 +68,12 @@ const Admin = ({ user }) => {
   })
 
   const handleModelChoice = (model) => {
+    setSelectedWargear(null)
     setSelectedModel(model)
+    if (points.data && selectedModel) {
+      const gotten = points.data.filter(points => points.datasheet_id === selectedModel.datasheet_id)
+      setModelPoints(gotten)
+    }
     getWargearMutation.mutate(model.datasheet_id)
   }
 
@@ -66,7 +91,6 @@ const Admin = ({ user }) => {
     } else {
       setUpdatedWargear({ ...selectedWargear, [field]: value })
     }
-    console.log('updated wargear', updatedWargear)
   }
 
   const handleSaveUpdate = () => {
@@ -99,29 +123,133 @@ const Admin = ({ user }) => {
     return null
   }
 
+  const getmodels = (option) => {
+    setModels(null)
+    setSelectedModel(null)
+    setUpdatedModel(null)
+    setWargear(null)
+    setSelectedWargear(null)
+    setUpdatedWargear(null)
+    setEditing(false)
+    setFaction(option)
+    if (option) getModelsMutation.mutate()
+  }
+
   return (
     <div>
       <div className='flex flex-col mx-auto justify-center pt-[100px] text-center w-full md:w-1/2'>
         <Select
-          className="adminSelect"
+          className="bg-neutral-800"
           placeholder="Select a faction"
           options={factionList}
           isSearchable
-          onChange={(option) => getModelsMutation.mutate(option.value)}
+          onChange={(option) => getmodels(option.value)}
+          styles={{
+            control: (base) => ({
+              ...base,
+              backgroundColor: '#1b1b1b',
+              borderColor: 'transparent',
+              boxShadow: 'none',
+              minHeight: '2.5rem',
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: '#1b1b1b',
+            }),
+            option: (base, { isFocused, isSelected }) => ({
+              ...base,
+              backgroundColor: isSelected
+                ? '#374151'
+                : isFocused
+                  ? '#1f2937'
+                  : '#1b1b1b',
+              color: 'white',
+            }),
+            singleValue: (base) => ({
+              ...base,
+              color: 'white',
+            }),
+            placeholder: (base) => ({
+              ...base,
+              color: '#9ca3af',
+            }),
+          }}
         />
         <Select 
           placeholder="Select a model"
           options={models}
           isSearchable
+          value={selectedModel}
           onChange={(model) => handleModelChoice(model)}
           getOptionLabel={(option) => (option.name)}
+          styles={{
+            control: (base) => ({
+              ...base,
+              backgroundColor: '#1b1b1b',
+              borderColor: 'transparent',
+              boxShadow: 'none',
+              minHeight: '2.5rem',
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: '#1b1b1b',
+            }),
+            option: (base, { isFocused, isSelected }) => ({
+              ...base,
+              backgroundColor: isSelected
+                ? '#374151'
+                : isFocused
+                  ? '#1f2937'
+                  : '#1b1b1b',
+              color: 'white',
+            }),
+            singleValue: (base) => ({
+              ...base,
+              color: 'white',
+            }),
+            placeholder: (base) => ({
+              ...base,
+              color: '#9ca3af', 
+            }),
+          }}
         />
         <Select
           placeholder="Select Wargear"
           options={wargear}
+          value={selectedWargear}
           isSearchable
           onChange={(option) => setSelectedWargear(option)}
           getOptionLabel={(option) => (option.name)}
+          styles={{
+            control: (base) => ({
+              ...base,
+              backgroundColor: '#1b1b1b',
+              borderColor: 'transparent',
+              boxShadow: 'none',
+              minHeight: '2.5rem',
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: '#1b1b1b',
+            }),
+            option: (base, { isFocused, isSelected }) => ({
+              ...base,
+              backgroundColor: isSelected
+                ? '#374151'
+                : isFocused
+                  ? '#1f2937'
+                  : '#1b1b1b',
+              color: 'white',
+            }),
+            singleValue: (base) => ({
+              ...base,
+              color: 'white',
+            }),
+            placeholder: (base) => ({
+              ...base,
+              color: '#9ca3af',
+            }),
+          }}
         />
       </div>
       <div className='flex justify-center'>
@@ -153,6 +281,7 @@ const Admin = ({ user }) => {
             <th>Inv</th>
             <th>Ld</th>
             <th>OC</th>
+            <th>Cost</th>
           </tr>   
         </thead>
         <tbody>
@@ -160,58 +289,74 @@ const Admin = ({ user }) => {
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.name : selectedModel.name}
+                value={updatedModel && updatedModel.name != null ? updatedModel.name : (selectedModel.name ?? '')}
                 onChange={(e) => handleFieldChange( 'name', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.name }
             </td>
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.M : selectedModel.M}
+                value={updatedModel?.M ?? selectedModel?.M ?? ''}
                 onChange={(e) => handleFieldChange( 'M', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.M }
             </td>
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.T : selectedModel.T}
+                value={updatedModel?.T ?? selectedModel?.T ?? ''}
                 onChange={(e) => handleFieldChange( 'T', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.T }
             </td>
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.W : selectedModel.W}
+                value={updatedModel?.W ?? selectedModel?.W ?? ''}
                 onChange={(e) => handleFieldChange( 'W', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.W }
             </td>
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.Sv : selectedModel.Sv}
+                value={updatedModel?.Sv ?? selectedModel?.Sv ?? ''}
                 onChange={(e) => handleFieldChange( 'Sv', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.Sv }
             </td>
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.inv_sv : selectedModel.inv_sv}
+                value={updatedModel?.inv_sv ?? selectedModel?.inv_sv ?? ''}
                 onChange={(e) => handleFieldChange( 'inv_sv', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.inv_sv }
             </td>
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.Ld : selectedModel.Ld}
+                value={updatedModel?.Ld ?? selectedModel?.Ld ?? ''}
                 onChange={(e) => handleFieldChange( 'Ld', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.Ld }
             </td>
             <td>{ editing ?
               <input
                 type="text"
-                value={updatedModel ? updatedModel.OC : selectedModel.OC}
+                value={updatedModel?.OC ?? selectedModel?.OC ?? ''}
                 onChange={(e) => handleFieldChange( 'OC', e.target.value)}
+                className='text-center bg-neutral-800'
               /> : selectedModel.OC }
+            </td>
+            <td>{ editing ?
+              <input
+                type="text"
+                value={updatedModel?.cost ?? modelPoints?.cost ?? ''}
+                onChange={(e) => handleFieldChange( 'cost', e.target.value)}
+                className='text-center bg-neutral-800'
+              /> : modelPoints.cost }
             </td>
           </tr>
         </tbody>
@@ -245,6 +390,7 @@ const Admin = ({ user }) => {
                     type='text' 
                     value={(updatedWargear?.name ?? selectedWargear.name) ?? ''}
                     onChange={(e) => handleWargearChange('name', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.name}
                 </td>
                 <td>{editing ? 
@@ -252,6 +398,7 @@ const Admin = ({ user }) => {
                     type='text' 
                     value={(updatedWargear?.type ?? selectedWargear.type) ?? ''}
                     onChange={(e) => handleWargearChange('type', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.type}
                 </td>
                 <td>{editing ? 
@@ -259,6 +406,7 @@ const Admin = ({ user }) => {
                     type='text' 
                     value={(updatedWargear?.range ?? selectedWargear.range) ?? ''}
                     onChange={(e) => handleWargearChange('range', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.range}
                 </td>
                 <td>{editing ? 
@@ -266,6 +414,7 @@ const Admin = ({ user }) => {
                     type='text' 
                     value={(updatedWargear?.BS_WS ?? selectedWargear.BS_WS) ?? ''}
                     onChange={(e) => handleWargearChange('BS_WS', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.BS_WS}
                 </td>
                 <td>{editing ? 
@@ -273,6 +422,7 @@ const Admin = ({ user }) => {
                     type='text' 
                     value={(updatedWargear?.attacks ?? selectedWargear.attacks) ?? ''}
                     onChange={(e) => handleWargearChange('attacks', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.attacks}
                 </td>
                 <td>{editing ? 
@@ -280,6 +430,7 @@ const Admin = ({ user }) => {
                     type='text' 
                     value={(updatedWargear?.strength ?? selectedWargear.strength) ?? ''}
                     onChange={(e) => handleWargearChange('strength', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.strength}
                 </td>
                 <td>{editing ? 
@@ -287,6 +438,7 @@ const Admin = ({ user }) => {
                     type='text' 
                     value={(updatedWargear?.AP ?? selectedWargear.AP) ?? '0'}
                     onChange={(e) => handleWargearChange('AP', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.AP}
                 </td>
                 <td>{editing ?
@@ -294,6 +446,7 @@ const Admin = ({ user }) => {
                     type='text'
                     value={(updatedWargear?.damage ?? selectedWargear.damage) ?? ''}
                     onChange={(e) => handleWargearChange('damage', e.target.value)}
+                    className='text-center bg-neutral-800'
                   /> : selectedWargear.damage}
                 </td>
               </tr>

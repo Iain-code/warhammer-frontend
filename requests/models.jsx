@@ -94,6 +94,11 @@ const deleteArmy = async (armyId) => {
   return response.data
 }
 
+const updatePoints = async (Id) => {
+  const response = await axios.put(`${baseUrl}/admins/points/${Id}`)
+  return response.data
+}
+
 export default {
   getModelsForFaction,
   getWargear,
@@ -107,5 +112,6 @@ export default {
   saveToRoster,
   getArmies,
   getAllUnits,
-  deleteArmy
+  deleteArmy,
+  updatePoints
 };

@@ -15,7 +15,10 @@ const Admin = ({ user }) => {
   const [updatedWargear, setUpdatedWargear] = useState(null)
   const [editing, setEditing] = useState(false)
   const [faction, setFaction] = useState(null)
-  const [modelPoints, setModelPoints] = useState(null)
+  const [modelPoints1, setModelPoints1] = useState(null)
+  const [modelPoints2, setModelPoints2] = useState(null)
+  const [updatedPoints1, setUpdatedPoints1] = useState(null)
+  const [updatedPoints2, setUpdatedPoints2] = useState(null)
 
   const points = useQuery({
     queryKey: ['pointsForAdmin', faction],
@@ -30,8 +33,6 @@ const Admin = ({ user }) => {
     const response = await modelService.getPointsForID(IDs)
     return response
   }
-
-  console.log('points.data', points.data)
 
   const getModelsMutation = useMutation({
     mutationFn: async () => await modelService.getModelsForFaction(faction),
@@ -70,9 +71,12 @@ const Admin = ({ user }) => {
   const handleModelChoice = (model) => {
     setSelectedWargear(null)
     setSelectedModel(model)
-    if (points.data && selectedModel) {
-      const gotten = points.data.filter(points => points.datasheet_id === selectedModel.datasheet_id)
-      setModelPoints(gotten)
+    if (points.data && model) {
+      const foundUnits = points.data.filter(points => points.datasheet_id === model.datasheet_id)
+      setModelPoints1(foundUnits[0])
+      if (foundUnits[1]) {
+        setModelPoints2(foundUnits[1])
+      }
     }
     getWargearMutation.mutate(model.datasheet_id)
   }
@@ -82,6 +86,22 @@ const Admin = ({ user }) => {
       setUpdatedModel({ ...updatedModel, [field]: value })
     } else {
       setUpdatedModel({ ...selectedModel, [field]: value })
+    }
+  }
+
+  const handlePointsChange1 = (value) => {
+    if (updatedPoints1) {
+      setUpdatedPoints1({ ...updatedPoints1, cost: value })
+    } else {
+      setUpdatedPoints1({ ...modelPoints1, cost: value })
+    }
+  }
+
+  const handlePointsChange2 = (value) => {
+    if (updatedPoints2) {
+      setUpdatedPoints2({ ...updatedPoints2, cost: value })
+    } else {
+      setUpdatedPoints2({ ...modelPoints2, cost: value })
     }
   }
 
@@ -135,6 +155,9 @@ const Admin = ({ user }) => {
     if (option) getModelsMutation.mutate()
   }
 
+  console.log('modelPoints1:', modelPoints1)
+  console.log('modelPoints2:', modelPoints2)
+
   return (
     <div>
       <div className='flex flex-col mx-auto justify-center pt-[100px] text-center w-full md:w-1/2'>
@@ -177,7 +200,7 @@ const Admin = ({ user }) => {
         />
         <Select 
           placeholder="Select a model"
-          options={models}
+          options={models ?? []}
           isSearchable
           value={selectedModel}
           onChange={(model) => handleModelChoice(model)}
@@ -215,7 +238,7 @@ const Admin = ({ user }) => {
         />
         <Select
           placeholder="Select Wargear"
-          options={wargear}
+          options={wargear ?? []}
           value={selectedWargear}
           isSearchable
           onChange={(option) => setSelectedWargear(option)}
@@ -269,98 +292,109 @@ const Admin = ({ user }) => {
       </div>
       <div className='modelTables'>
         {selectedModel &&
-      <table>
-        <caption>Existing Models Stats</caption>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>M</th>
-            <th>T</th>
-            <th>W</th>
-            <th>Sv</th>
-            <th>Inv</th>
-            <th>Ld</th>
-            <th>OC</th>
-            <th>Cost</th>
-          </tr>   
-        </thead>
-        <tbody>
-          <tr>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel && updatedModel.name != null ? updatedModel.name : (selectedModel.name ?? '')}
-                onChange={(e) => handleFieldChange( 'name', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.name }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.M ?? selectedModel?.M ?? ''}
-                onChange={(e) => handleFieldChange( 'M', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.M }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.T ?? selectedModel?.T ?? ''}
-                onChange={(e) => handleFieldChange( 'T', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.T }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.W ?? selectedModel?.W ?? ''}
-                onChange={(e) => handleFieldChange( 'W', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.W }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.Sv ?? selectedModel?.Sv ?? ''}
-                onChange={(e) => handleFieldChange( 'Sv', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.Sv }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.inv_sv ?? selectedModel?.inv_sv ?? ''}
-                onChange={(e) => handleFieldChange( 'inv_sv', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.inv_sv }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.Ld ?? selectedModel?.Ld ?? ''}
-                onChange={(e) => handleFieldChange( 'Ld', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.Ld }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.OC ?? selectedModel?.OC ?? ''}
-                onChange={(e) => handleFieldChange( 'OC', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : selectedModel.OC }
-            </td>
-            <td>{ editing ?
-              <input
-                type="text"
-                value={updatedModel?.cost ?? modelPoints?.cost ?? ''}
-                onChange={(e) => handleFieldChange( 'cost', e.target.value)}
-                className='text-center bg-neutral-800'
-              /> : modelPoints.cost }
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <div>
+          <table className="table-auto min-w-full text-sm">
+            <caption>Existing Models Stats</caption>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>M</th>
+                <th>T</th>
+                <th>W</th>
+                <th>Sv</th>
+                <th>Inv</th>
+                <th>Ld</th>
+                <th>OC</th>
+                <th>Cost 1</th>
+                <th>Cost 2</th>
+              </tr>   
+            </thead>
+            <tbody>
+              <tr className='hover:bg-neutral-600'>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24 '>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel && updatedModel.name != null ? updatedModel.name : (selectedModel.name ?? '')}
+                    onChange={(e) => handleFieldChange( 'name', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.name }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel?.M ?? selectedModel?.M ?? ''}
+                    onChange={(e) => handleFieldChange( 'M', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.M }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel?.T ?? selectedModel?.T ?? ''}
+                    onChange={(e) => handleFieldChange( 'T', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.T }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel?.W ?? selectedModel?.W ?? ''}
+                    onChange={(e) => handleFieldChange( 'W', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.W }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel?.Sv ?? selectedModel?.Sv ?? ''}
+                    onChange={(e) => handleFieldChange( 'Sv', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.Sv }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel?.inv_sv ?? selectedModel?.inv_sv ?? ''}
+                    onChange={(e) => handleFieldChange( 'inv_sv', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.inv_sv }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel?.Ld ?? selectedModel?.Ld ?? ''}
+                    onChange={(e) => handleFieldChange( 'Ld', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.Ld }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
+                  <input
+                    type="text"
+                    value={updatedModel?.OC ?? selectedModel?.OC ?? ''}
+                    onChange={(e) => handleFieldChange( 'OC', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedModel.OC }
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing && modelPoints1 ?
+                  <input
+                    type="text"
+                    value={updatedPoints1?.cost ?? modelPoints1?.cost ?? ''}
+                    onChange={(e) => handlePointsChange1( e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : modelPoints1?.cost}
+                </td>
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing && modelPoints2 ?
+                  <input
+                    type="text"
+                    value={updatedPoints2?.cost ?? modelPoints2?.cost ?? ''}
+                    onChange={(e) => handlePointsChange2( e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : modelPoints2?.cost }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         }
         {selectedWargear &&
         <div>

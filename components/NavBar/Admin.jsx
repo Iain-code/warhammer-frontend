@@ -68,8 +68,31 @@ const Admin = ({ user }) => {
     }
   })
 
+  const updatePointsMutation = useMutation({
+    mutationFn: async ({ updatedPoints, user}) => await modelService.updatePoints(updatedPoints, user),
+    onSuccess: (response) => {
+      console.log(response)
+      if (response.line === 1) {
+        setModelPoints1(response)
+        setEditing(false)
+        setUpdatedPoints1(null)
+      } else {
+        setModelPoints2(response)
+        setEditing(false)
+        setUpdatedPoints2(null)
+      }
+    },
+    onError: (error) => {
+      console.error('failed to update points cost:', error)
+    }
+  })
+
   const handleModelChoice = (model) => {
     setSelectedWargear(null)
+    setModelPoints1(null)
+    setModelPoints2(null)
+    setUpdatedPoints1(null)
+    setUpdatedPoints2(null)
     setSelectedModel(model)
     if (points.data && model) {
       const foundUnits = points.data.filter(points => points.datasheet_id === model.datasheet_id)
@@ -123,6 +146,20 @@ const Admin = ({ user }) => {
     setUpdatedModel(null)
   }
 
+  const handleSavePoints = () => {
+    console.log('updatedPoints1', updatedPoints1)
+    console.log('updatedPoints2', updatedPoints2)
+
+    if (updatedPoints1) {
+      const pointsWithCostInt = { ...updatedPoints1, cost: parseInt(updatedPoints1.cost) }
+      updatePointsMutation.mutate({ updatedPoints: pointsWithCostInt, user: user })
+    }
+    if (updatedPoints2) {
+      const pointsWithCostInt = { ...updatedPoints2, cost: parseInt(updatedPoints2.cost) }
+      updatePointsMutation.mutate({ updatedPoints: pointsWithCostInt, user: user })
+    }
+  }
+
   const handleUpdateWargear = () => {
     if (!editing) {
       window.alert("edit something before saving")
@@ -155,9 +192,8 @@ const Admin = ({ user }) => {
     if (option) getModelsMutation.mutate()
   }
 
-  console.log('modelPoints1:', modelPoints1)
-  console.log('modelPoints2:', modelPoints2)
-
+  console.log('modelPoints1', modelPoints1)
+  console.log('modelPoints2', modelPoints2)
   return (
     <div>
       <div className='flex flex-col mx-auto justify-center pt-[100px] text-center w-full md:w-1/2'>
@@ -289,6 +325,10 @@ const Admin = ({ user }) => {
           onClick={handleSaveUpdate}
           className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
         >Save Model Update</button>
+        <button 
+          onClick={handleSavePoints}
+          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+        >Save Points Update</button>
       </div>
       <div className='modelTables'>
         {selectedModel &&
@@ -305,8 +345,8 @@ const Admin = ({ user }) => {
                 <th>Inv</th>
                 <th>Ld</th>
                 <th>OC</th>
-                <th>Cost 1</th>
-                <th>Cost 2</th>
+                <th>Cost - Description</th>
+                <th>Cost - Description</th>
               </tr>   
             </thead>
             <tbody>
@@ -375,21 +415,23 @@ const Admin = ({ user }) => {
                     className='text-center bg-neutral-800'
                   /> : selectedModel.OC }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing && modelPoints1 ?
-                  <input
-                    type="text"
-                    value={updatedPoints1?.cost ?? modelPoints1?.cost ?? ''}
-                    onChange={(e) => handlePointsChange1( e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : modelPoints1?.cost}
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing && modelPoints1 ?
+                    <input
+                      type="text"
+                      value={updatedPoints1?.cost ?? modelPoints1?.cost ?? ''}
+                      onChange={(e) => handlePointsChange1( e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : `${modelPoints1?.description ?? ''} - ${modelPoints1?.cost ?? ''}`}
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing && modelPoints2 ?
-                  <input
-                    type="text"
-                    value={updatedPoints2?.cost ?? modelPoints2?.cost ?? ''}
-                    onChange={(e) => handlePointsChange2( e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : modelPoints2?.cost }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing && modelPoints2 ?
+                    <input
+                      type="text"
+                      value={updatedPoints2?.cost ?? modelPoints2?.cost ?? ''}
+                      onChange={(e) => handlePointsChange2( e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : `${modelPoints2?.description ?? ''} - ${modelPoints2?.cost ?? ''}` }
                 </td>
               </tr>
             </tbody>

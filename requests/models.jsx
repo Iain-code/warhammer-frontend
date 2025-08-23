@@ -94,8 +94,15 @@ const deleteArmy = async (armyId) => {
   return response.data
 }
 
-const updatePoints = async (Id) => {
-  const response = await axios.put(`${baseUrl}/admins/points/${Id}`)
+const updatePoints = async (obj, user) => {
+  console.log('obj:', obj)
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader },
+    withCredentials: true
+  }
+
+  const response = await axios.put(`${baseUrl}/admins/points/${obj.id}/${obj.line}`, obj, config)
   return response.data
 }
 

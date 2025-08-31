@@ -79,7 +79,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
   }
 
   return (
-    <div className='lg:sticky lg:top-24 h-screen overflow-auto'>
+    <div className='lg:sticky lg:top-24 h-full'>
       <div><ArmyList setSelectedUnits={setSelectedUnits} /></div>
       {(roster.cost > 0) &&
     <div className="text-white w-full">

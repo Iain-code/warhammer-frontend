@@ -21,6 +21,7 @@ const factionList = [
   { value: 'TAU', label: 'Tau Empire', img: '/tau.jpg' },
   { value: 'TYR', label: 'Tyranids', img: '/TYR.jpg' },
   { value: 'WE', label: 'World Eaters', img: '/WE.jpg' },
+  { value: 'EC', label: 'Emperors Children', img: '/EC.avif' },
 ];
 
 export default factionList

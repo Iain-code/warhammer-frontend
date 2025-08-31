@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-// import MyBarChart from './Chart'
+import MyBarChart from './Chart'
 
 const Fight = ({ wargear, rules, defender }) => {
   const [hits, setHits] = useState(null)
@@ -10,7 +10,11 @@ const Fight = ({ wargear, rules, defender }) => {
   const [unitSize, setUnitSize] = useState(1)
   const [modelsKilled, setModelsKilled] = useState(null)
   const [toggle, setToggle] = useState(false)
-  // const [hitRoll, setHitRoll] = useState(null) 
+  const [hitRoll, setHitRoll] = useState(null)
+  const [woundRolls, setWoundRoll] = useState(null)
+  const [damageRoll, setDamageRoll] = useState(null)
+  const [woundModifier, setWoundModifier] = useState(null)
+  const [damageModifier, setDamageModifier] = useState(null)
 
   const attacks = Number(wargear.attacks)
   const hitTarget = Number(wargear.BS_WS)
@@ -55,27 +59,25 @@ const Fight = ({ wargear, rules, defender }) => {
     let modifier = 0
     let successfulWounds = 0
 
-    if (strength > toughness * 2) {
+    if (strength >= (toughness * 2)) {
       modifier = 2
-    }
-    if (strength === toughness) {
+    } else if (strength === toughness) {
       modifier = 4
-    }
-    if (strength * 2 < toughness) {
+    } else if (strength * 2 < toughness) {
       modifier = 6
-    }
-    if (strength < toughness) {
+    } else if (strength < toughness) {
       modifier = 5
-    }
-    if (strength > toughness) {
+    } else if (strength > toughness) {
       modifier = 3
     }
+
     if (rules.isPlusWound && modifier > 2) {
       modifier = modifier - 1
     }
     if (rules.isMinusWound && modifier < 6) {
       modifier = modifier + 1
     }
+
     if (rules.isLethal) {
       successfulWounds += localHits / 6
       localHits -= successfulWounds
@@ -94,7 +96,8 @@ const Fight = ({ wargear, rules, defender }) => {
       const rolled = diceRoll(reRoll)
       successfulWounds += woundRollSort(rolled, modifier)
     }
-
+    setWoundRoll(woundRoll)
+    setWoundModifier(modifier)
     return successfulWounds
   }
 
@@ -114,7 +117,7 @@ const Fight = ({ wargear, rules, defender }) => {
     const unitAttacks = unitSize * attacks
 
     const results = diceRoll(10000 * unitAttacks)
-    // setHitRoll(results)
+    setHitRoll(results)
 
     const localHits = hitCalculation(results, hitTarget)
     setHits(localHits)
@@ -193,6 +196,7 @@ const Fight = ({ wargear, rules, defender }) => {
 
   const damageCalculation = (localFailedSaves) => {
     const damage = localFailedSaves * wargear.damage
+
     return Number(damage)
   }
 
@@ -217,23 +221,28 @@ const Fight = ({ wargear, rules, defender }) => {
         </form>
         {toggle &&
         <div>
-          <h2 className='fightheader'>Fight Calculations</h2>
+          <h2 className='text-white pt-5 underline'>Fight Calculations</h2>
           <br />
-          <div className='fightInfo'>
-            Average Successful Hits: {hits / 10000}
+          <div className='text-white'>
+            Average Successful Hits: {(hits / 10000).toFixed(2) }
             <br />
-            Average Successful Wounds: {wounds / 10000}
+            Average Successful Wounds: {(wounds / 10000).toFixed(2)}
             <br />
-            Average Wounds Through Saves: {failedSaves / 10000}
+            Average Wounds Through Saves: {(failedSaves / 10000).toFixed(2)}
             <br />
-            Damage: {damage / 10000}
+            Damage: {(damage / 10000).toFixed(2)}
             <br />
-            Models killed: {modelsKilled / 10000}
+            Models killed: {(modelsKilled / 10000).toFixed(2)}
           </div>
           <div className='charts'>
           </div>
         </div>
         }
+        <div className="flex flex-wrap gap-4 w-full">
+          {hitRoll && <div className="flex-1 min-w-[240px] h-64"><MyBarChart input={hitRoll} name="Hit Rolls" modifier={hitTarget} /></div>}
+          {woundRolls && <div className="flex-1 min-w-[240px] h-64"><MyBarChart input={woundRolls} name="Wound Rolls" modifier={woundModifier} /></div>}
+          {damageRoll&& <div className="flex-1 min-w-[240px] h-64"><MyBarChart input={damageRoll} name="Damage Rolls" modifier={damageModifier}/></div>}
+        </div>
       </div>
     </div>
   )

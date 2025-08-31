@@ -16,8 +16,17 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
       return [...arr, { keyword: word, index: index}]
       
     }, [])
+    
+    const uniqueWords = []
 
-    setSelectedKeywords(wordsWithIndex)
+    wordsWithIndex.forEach(word => {
+      const found = uniqueWords.find(keyword => keyword.keyword === word.keyword)
+      if (!found) {
+        return uniqueWords.push(word)
+      }
+    })
+
+    setSelectedKeywords(uniqueWords)
   }
 
   const viewWargear = (unit) => {
@@ -143,8 +152,10 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
           </div>
         </div>
       )}
+      
       {selectedKeywords && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center text-white">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center text-white 
+        max-h-1/2 overflow-y-auto">
           <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full">
             <h2 className="text-xl text-orange-500 font-bold mb-4">Keywords</h2>
             {selectedKeywords.map(word =>

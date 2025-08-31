@@ -1,12 +1,45 @@
 import React from 'react'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import ModelContext from '../../contexts/modelContext'
 import PropTypes from 'prop-types'
 import './modelWargear.css'
+import { useQuery } from '@tanstack/react-query'
+import modelService from '../../requests/models'
+import parse, { domToReact } from 'html-react-parser'
 
 const ModelProfile = ({ wargear }) => {
   const [model] = useContext(ModelContext)
+  const [activeTab, setActiveTab] = useState('attacker')
   const defender = model.defence
+
+  const cleanDescription = (description) => {
+    return parse(description, {
+      replace: domNode => {
+        if (domNode.name === 'a') {
+          return <span>{domToReact(domNode.children)}</span>;
+        }
+      }
+    })
+  }
+
+  const attackerAbilities = useQuery({
+    queryKey: ['attackerAbilities', model.attack],
+    queryFn: () => modelService.getAbilitiesForModel(model.attack.datasheet_id),
+    enabled: !!model.attack,
+    retry: 1,
+    refetchOnWindowFocus: false
+  })
+
+  const defenderAbilities = useQuery({
+    queryKey: ['defenderAbilities', model.defence],
+    queryFn: () => modelService.getAbilitiesForModel(model.defence.datasheet_id),
+    enabled: !!model.defence,
+    retry: 1,
+    refetchOnWindowFocus: false
+  })
+
+  console.log('AA', attackerAbilities.data)
+  console.log('DA', defenderAbilities.data)
 
   return (
     <div className='modelTables'>
@@ -64,6 +97,51 @@ const ModelProfile = ({ wargear }) => {
           </tr>
         </tbody>
       </table>
+      <div className="w-full mx-auto rounded shadow-lg overflow-hidden">
+        <h1 className='py-3 text-xl font-family:sans'>Abilities</h1>
+        <div>
+          <div className="flex border-b bg-neutral-600 text-white">
+            <button
+              className={`flex-1 px-4 py-2 ${
+                activeTab === 'attacker' ? "bg-neutral-500 font-bold" : "bg-neutral-700"
+              }`}
+              onClick={() => setActiveTab('attacker')}
+            >
+              Attacker
+            </button>
+            <button
+              className={`flex-1 px-4 py-2 ${
+                activeTab === 'defender' ? 'bg-neutral-500 font-bold' : 'bg-neutral-700'
+              }`}
+              onClick={() => setActiveTab('defender')}
+            >
+              Defender
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="flex border-b bg-neutral-800 text-white justify-center py-4 mb-4">
+        {activeTab === "attacker" && (
+          <div>
+            {attackerAbilities.data && attackerAbilities.data.map(ability => 
+              <div key={ability.Line} className='flex flex-col mx-auto w-3/4'>
+                <h1 className='text-xl mt-5 underline font-semibold'>{ability.Name}</h1>
+                <p className='text-lg'>{cleanDescription(ability.Description)}</p>
+              </div>
+            )}
+          </div>
+        )}
+        {activeTab === "defender" && (
+          <div>
+            {defenderAbilities.data && defenderAbilities.data.map(ability => 
+              <div key={ability.Line} className='flex flex-col mx-auto w-3/4'>
+                <h1 className='text-xl mt-5 underline font-semibold'>{ability.Name}</h1>
+                <p className='text-lg'>{cleanDescription(ability.Description)}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

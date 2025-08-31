@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import Select from 'react-select'
 import modelService from '../../requests/models'
+import updateService from '../../requests/updates'
 import './admin.css'
 import factionList from '../FactionForm/FactionList'
 import PropTypes from 'prop-types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const Admin = ({ user }) => {
   const [models, setModels] = useState(null)
@@ -19,11 +20,29 @@ const Admin = ({ user }) => {
   const [modelPoints2, setModelPoints2] = useState(null)
   const [updatedPoints1, setUpdatedPoints1] = useState(null)
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
+  const [abilityState, setAbilityState] = useState([])
+  const queryClient = useQueryClient()
 
   const points = useQuery({
     queryKey: ['pointsForAdmin', faction],
     queryFn: () => sortUnitsAndFetchData(),
     enabled: !!models,
+    retry: 1,
+    refetchOnWindowFocus: false
+  })
+  
+  const keywords = useQuery({
+    queryKey: ['keywordForAdmin', selectedModel],
+    queryFn: () => modelService.getKeywordsForModel(selectedModel.datasheet_id),
+    enabled: !!selectedModel,
+    retry: 1,
+    refetchOnWindowFocus: false
+  })
+
+  const abilities = useQuery({
+    queryKey: ['AbilitiesForAdmin', selectedModel],
+    queryFn: () => modelService.getAbilitiesForModel(selectedModel.datasheet_id),
+    enabled: !!selectedModel,
     retry: 1,
     refetchOnWindowFocus: false
   })
@@ -71,7 +90,6 @@ const Admin = ({ user }) => {
   const updatePointsMutation = useMutation({
     mutationFn: async ({ updatedPoints, user}) => await modelService.updatePoints(updatedPoints, user),
     onSuccess: (response) => {
-      console.log(response)
       if (response.line === 1) {
         setModelPoints1(response)
         setEditing(false)
@@ -87,6 +105,24 @@ const Admin = ({ user }) => {
     }
   })
 
+  const updateAbilityMutation = useMutation({
+    mutationFn: async (ability) => await updateService.updateAbilities(ability, user),
+    onSuccess: (response) => {
+      setEditing(false)
+      queryClient.invalidateQueries({ queryKey: ['AbilitiesForAdmin', selectedModel] });
+      setAbilityState( abilityState.map(state => {
+        if (state.name === response[0]) {
+          return { ...state, name: response[0], description: response[1] }
+        }
+      },
+      ))
+      window.alert(`${response[0]} successfully updated`)
+    },
+    onError: (error) => {
+      console.error(`failed to update ability`, error)
+    }
+  })
+
   const handleModelChoice = (model) => {
     setSelectedWargear(null)
     setModelPoints1(null)
@@ -94,14 +130,17 @@ const Admin = ({ user }) => {
     setUpdatedPoints1(null)
     setUpdatedPoints2(null)
     setSelectedModel(model)
+    setAbilityState([])
+
     if (points.data && model) {
-      const foundUnits = points.data.filter(points => points.datasheet_id === model.datasheet_id)
-      setModelPoints1(foundUnits[0])
-      if (foundUnits[1]) {
-        setModelPoints2(foundUnits[1])
-      }
+      const foundUnits = points.data.filter(p => p.datasheet_id === model.datasheet_id)
+      const line1 = foundUnits.find(u => u.line === 1) || null
+      const line2 = foundUnits.find(u => u.line === 2) || null
+      setModelPoints1(line1);
+      setModelPoints2(line2);
     }
-    getWargearMutation.mutate(model.datasheet_id)
+
+    getWargearMutation.mutate(model.datasheet_id);
   }
 
   const handleFieldChange = (field, value) => {
@@ -147,8 +186,6 @@ const Admin = ({ user }) => {
   }
 
   const handleSavePoints = () => {
-    console.log('updatedPoints1', updatedPoints1)
-    console.log('updatedPoints2', updatedPoints2)
 
     if (updatedPoints1) {
       const pointsWithCostInt = { ...updatedPoints1, cost: parseInt(updatedPoints1.cost) }
@@ -192,8 +229,23 @@ const Admin = ({ user }) => {
     if (option) getModelsMutation.mutate()
   }
 
-  console.log('modelPoints1', modelPoints1)
-  console.log('modelPoints2', modelPoints2)
+  const handleDescriptionChange = (name, description, line, datasheet_id) => {
+    setAbilityState(prev => {
+      const exists = prev.some(item => item.name === name)
+      if (exists) {
+        return prev.map(item => item.name === name ? { name: name, description: description, line: line, datasheet_id: datasheet_id } : item)
+      }
+      return  [ ...prev, { name: name, description: description, line: line, datasheet_id: datasheet_id }]
+    }
+    )
+  }
+
+  const saveAbility = () => {
+    for (const ability of abilityState) {
+      updateAbilityMutation.mutate(ability)
+    }
+  }
+
   return (
     <div>
       <div className='flex flex-col mx-auto justify-center pt-[100px] text-center w-full md:w-1/2'>
@@ -530,6 +582,54 @@ const Admin = ({ user }) => {
           </table>
         </div>
         }
+        {keywords.data && (
+          <ul className="flex flex-wrap gap-4 justify-center py-4">
+            {keywords.data.keyword.map(word => {
+              if (word !== '') {
+                return (
+                  !editing ? <li key={word}>{word}</li> :
+                    <div className='text-black' key={word}>
+                      <input
+                        type='text'
+                        value={word}
+                        className='text-center'
+                      />
+                    </div>
+                )
+              }
+            })}
+          </ul>
+        )}
+        {abilities.data && (
+          <div className='text-center'>
+            <h1 className='text-lg font-semibold underline'>Abilities</h1>
+            <ul>
+              {abilities.data.map(ability => (
+                <li key={`${ability.DatasheetID}-${ability.Line}`}>
+                  <h2 className='text-lg text-orange-500'>{ability.Name}</h2>
+                  {editing ?
+                    <div className='text-white'>
+                      <textarea 
+                        value={(abilityState.find(item => ability.Name === item.name)?.description ?? ability.Description) ?? ''}
+                        onChange={(e) => handleDescriptionChange(ability.Name, e.target.value, ability.Line, selectedModel.datasheet_id)}
+                        className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
+                        w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
+                      />
+                    </div> : 
+                    <p className='mb-4 w-5/6 mx-auto text-lg'>{ability.Description}</p>
+                  }
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div>
+          <button
+            onClick={saveAbility}
+            className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2
+            justify-center flex mx-auto"
+          >Save Ability Changes</button>
+        </div>
       </div>
     </div>
   )

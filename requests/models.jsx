@@ -49,6 +49,11 @@ const getKeywordsForFaction = async (faction) => {
   return response.data
 }
 
+const getKeywordsForModel = async (modelId) => {
+  const response = await axios.get(`${baseUrl}/keywords/${modelId}`)
+  return response.data
+}
+
 const getPointsForID = async (IdArr) => {
   const response = await axios.get(`${baseUrl}/points`, {
     params: { points_id: IdArr}
@@ -68,6 +73,11 @@ const getWargearForModels = async () => {
 
 const getAbilities = async () => {
   const response = await axios.get(`${baseUrl}/abilities`)
+  return response.data
+}
+
+const getAbilitiesForModel = async (modelId) => {
+  const response = await axios.get(`${baseUrl}/abilities/${modelId}`)
   return response.data
 }
 
@@ -112,6 +122,8 @@ export default {
   updateModel,
   updateWargear,
   getKeywordsForFaction,
+  getKeywordsForModel,
+  getAbilitiesForModel,
   getPointsForID,
   getEnhancements,
   getWargearForModels,

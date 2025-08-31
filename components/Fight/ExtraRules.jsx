@@ -5,6 +5,8 @@ import Fight from './Fight'
 import PropTypes from 'prop-types'
 
 const ExtraRules = ({ wargear, defender }) => {
+  const [strengthGain, setStrengthGain] = useState(0)
+  const [toughnessGain, setToughnessGain] = useState(0)
   const [extraRules, setExtraRules] = useState({
     isSustained: false,
     isLethal: false,
@@ -37,6 +39,32 @@ const ExtraRules = ({ wargear, defender }) => {
       <div> 
         <br />
         <CheckBoxes handleCheckboxChange={handleCheckboxChange}/>
+        <div className='text-white'>
+          <label htmlFor="strSlider" className="block mb-2">
+            Weapon Strength Gain/Loss - Modifier: <span className="font-bold">{strengthGain}</span>
+          </label>
+          <input
+            id="strSlider"
+            type='range'
+            min='0'
+            max='10'
+            step='1'
+            value={strengthGain}
+            onChange={(e) => setStrengthGain(e.target.value)}
+          />
+          <label htmlFor="toughSlider" className="block mb-2">
+            Defender Toughness Gain/Loss - Modifier: <span className="font-bold">{toughnessGain}</span>
+          </label>
+          <input
+            id="toughSlider"
+            type='range'
+            min='0'
+            max='10'
+            step='1'
+            value={toughnessGain}
+            onChange={(e) => setToughnessGain(e.target.value)}
+          />
+        </div>
         <Fight
           wargear={wargear} 
           rules={extraRules} 

@@ -8,107 +8,96 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
   }
 
   return (
-    <div className='tick-boxes'>
-      <label className='tick-boxes-label'>
+    <div className='flex flex-wrap justify-center font-semibold text-xl w-3/4 mx-auto gap-3'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isSustained')}
         />
-        <br />
         Sustained
       </label>
       
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isLethal')}
         />
-        <br />
         Lethal
       </label>
       
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isCrit5')}
         />
-        <br />
         Critical 5s
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isDev')}
         />
-        <br />
         Dev Wounds
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isIgnoreCover')}
         />
-        <br />
         Ignore Cover
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isTorrent')}
         />
-        <br />
         Torrent
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isTwinLinked')}
         />
-        <br />
         Twin Linked
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isPlusHit')}
         />
-        <br />
-        Plus to Hit
+        +1 to Hit
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isPlusWound')}
         />
-        <br />
-        Plus to Wound
+        +1 to Wound
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isMinusHit')}
         />
-        <br />
-        Minus to Hit
+        -1 to Hit
       </label>
-      <label className='tick-boxes-label'>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
         <input
           className='tick-boxes-box'
           type="checkbox"
           onChange={() => changeRule('isMinusWound')}
         />
-        <br />
-        Minus to Wound
+        -1 to Wound
       </label>
     </div>
   )

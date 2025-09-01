@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import MyBarChart from './Chart'
 
-const Fight = ({ wargear, rules, defender }) => {
+const Fight = ({ wargear, rules, defender, strengthModifier, toughnessModifier }) => {
   const [hits, setHits] = useState(null)
   const [wounds, setWounds] = useState(null)
   const [failedSaves, setFailedSaves] = useState(null)
@@ -18,8 +18,8 @@ const Fight = ({ wargear, rules, defender }) => {
 
   const attacks = Number(wargear.attacks)
   const hitTarget = Number(wargear.BS_WS)
-  const strength = Number(wargear.strength)
-  const toughness = Number(defender.T)
+  let strength = Number(wargear.strength)
+  let toughness = Number(defender.T)
 
   const hitCalculation = (results, hitChance) => {
     let hits = 0
@@ -58,6 +58,13 @@ const Fight = ({ wargear, rules, defender }) => {
   const woundCalculation = (localHits) => {
     let modifier = 0
     let successfulWounds = 0
+
+    if (strengthModifier !== 0) {
+      strength = strength + Number(strengthModifier)
+    }
+    if (toughnessModifier !== 0) {
+      toughness = toughness + Number(toughnessModifier)
+    }
 
     if (strength >= (toughness * 2)) {
       modifier = 2
@@ -207,7 +214,7 @@ const Fight = ({ wargear, rules, defender }) => {
 
   return (
     <div>
-      <div>
+      <div className='flex justify-center'> 
         <input 
           className='modelSizeInput' 
           type='text' 
@@ -215,26 +222,45 @@ const Fight = ({ wargear, rules, defender }) => {
           onChange={(event) => setUnitSize(event.target.value || 1)}
         />
       </div>
-      <div className='fightCalc'>
+      <div className='flex flex-col items-center'>
         <form onSubmit={(event) => handleCalculations(event)}>
-          <button type='submit' className='calculate' >Calculate</button>
+          <button 
+            type='submit'
+            className="
+              text-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded 
+              border border-orange-600 m-2"
+          >Calculate Fight Statistics</button>
         </form>
         {toggle &&
         <div>
-          <h2 className='text-white pt-5 underline'>Fight Calculations</h2>
+          <h2 className='text-white pt-5 underline justify-center flex'>Fight Calculations</h2>
           <br />
-          <div className='text-white'>
-            Average Successful Hits: {(hits / 10000).toFixed(2) }
-            <br />
-            Average Successful Wounds: {(wounds / 10000).toFixed(2)}
-            <br />
-            Average Wounds Through Saves: {(failedSaves / 10000).toFixed(2)}
-            <br />
-            Damage: {(damage / 10000).toFixed(2)}
-            <br />
-            Models killed: {(modelsKilled / 10000).toFixed(2)}
-          </div>
-          <div className='charts'>
+          <div className='text-white flex flex-wrap gap-4 justify-center'>
+            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            Average Successful Hits
+              <br />
+              {(hits / 10000).toFixed(2) }
+            </div>
+            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            Average Successful Wounds
+              <br />
+              {(wounds / 10000).toFixed(2)}
+            </div>
+            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            Average Wounds Through Saves
+              <br />
+              {(failedSaves / 10000).toFixed(2)}
+            </div>
+            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            Damage
+              <br />
+              {(damage / 10000).toFixed(2)}
+            </div>
+            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            Models killed
+              <br />
+              {(modelsKilled / 10000).toFixed(2)}
+            </div>
           </div>
         </div>
         }
@@ -251,7 +277,9 @@ const Fight = ({ wargear, rules, defender }) => {
 Fight.propTypes = {
   wargear: PropTypes.object.isRequired,
   rules: PropTypes.object.isRequired,
-  defender: PropTypes.object.isRequired
+  defender: PropTypes.object.isRequired,
+  strengthModifier: PropTypes.number,
+  toughnessModifier: PropTypes.number
 }
 
 export default Fight

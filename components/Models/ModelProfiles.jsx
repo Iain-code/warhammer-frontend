@@ -38,12 +38,9 @@ const ModelProfile = ({ wargear }) => {
     refetchOnWindowFocus: false
   })
 
-  console.log('AA', attackerAbilities.data)
-  console.log('DA', defenderAbilities.data)
-
   return (
     <div className='modelTables'>
-      <table className='attackTable'>
+      <table className=''>
         <caption className='caption'>Attackers Wargear Profile</caption>
         <thead>
           <tr>
@@ -98,7 +95,7 @@ const ModelProfile = ({ wargear }) => {
         </tbody>
       </table>
       <div className="w-full mx-auto rounded shadow-lg overflow-hidden">
-        <h1 className='py-3 text-xl font-family:sans'>Abilities</h1>
+        <h1 className='py-3 text-xl font-family:sans text-center'>Abilities</h1>
         <div>
           <div className="flex border-b bg-neutral-600 text-white">
             <button
@@ -124,7 +121,7 @@ const ModelProfile = ({ wargear }) => {
         {activeTab === "attacker" && (
           <div>
             {attackerAbilities.data && attackerAbilities.data.map(ability => 
-              <div key={ability.Line} className='flex flex-col mx-auto w-3/4'>
+              <div key={ability.Line} className='flex flex-col mx-auto w-3/4 text-center'>
                 <h1 className='text-xl mt-5 underline font-semibold'>{ability.Name}</h1>
                 <p className='text-lg'>{cleanDescription(ability.Description)}</p>
               </div>
@@ -134,7 +131,7 @@ const ModelProfile = ({ wargear }) => {
         {activeTab === "defender" && (
           <div>
             {defenderAbilities.data && defenderAbilities.data.map(ability => 
-              <div key={ability.Line} className='flex flex-col mx-auto w-3/4'>
+              <div key={ability.Line} className='flex flex-col mx-auto w-3/4 text-center'>
                 <h1 className='text-xl mt-5 underline font-semibold'>{ability.Name}</h1>
                 <p className='text-lg'>{cleanDescription(ability.Description)}</p>
               </div>

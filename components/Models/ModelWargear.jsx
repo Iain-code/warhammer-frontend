@@ -47,65 +47,45 @@ const ModelWargear = () => {
     setChosenWargear(wargear)
   }
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: '#2b2a2a',
-      borderColor: 'orangered',
-      borderRadius: '8px',
-      padding: '4px',
-      boxShadow: 'none',
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      color: state.isFocused ? 'orangered' : 'antiquewhite',
-      backgroundColor: state.isFocused ? 'white' : '#2b2a2a',
-    }),
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: '#2b2a2a',
-      width: 'inherit',
-      minWidth: '100%',
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      backgroundColor: '#2b2a2a',
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: 'antiquewhite',
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: 'AntiqueWhite'
-    })
-  }
+  console.log('atkwargear', atkWargear)
 
   return (
-    <div className="modelWargear">
-      <Select className="modelWargear-select"
-        styles={customStyles}
-        options={atkWargear}
-        onChange={(wargear) => chooseWargear(wargear)}
-        placeholder='Choose your weapon...'
-        isSearchable
-        getOptionLabel={(option) => option.name}
-        getOptionValue={(option) => option.FIELD2}
-        maxMenuHeight={150}
-      />
-
-      {atkWargear && chosenWargear &&
+    <div>
       <div>
-        <ModelProfile 
-          wargear={chosenWargear}
-        />
-        <ExtraRules 
-          className='extraRules' 
-          wargear={chosenWargear} 
-          defender={defender}
-        />
+        {atkWargear && atkWargear.length > 0 &&
+        <div  className='flex justify-center text-white'>
+          <ul className="flex w-3/4 gap-3">
+            {atkWargear.map(item =>
+              <li key={item.id} className="flex flex-1">
+                <button
+                  onClick={() => chooseWargear(item)}
+                  className="
+              flex-1 rounded-2xl border border-white/10 bg-white/5
+              shadow-lg lg:px-4 lg:py-6 lg:mb-5 lg:gap-2
+              hover:bg-white/10 hover:shadow-xl
+              transition-all duration-200 ease-in-out
+            "
+                >{item.name} <br /> {item.type}</button>
+              </li>
+            )}
+          </ul>
+        </div>
+        }
       </div>
-      }
+      <div>
+        {atkWargear && chosenWargear &&
+        <div  className="">
+          <ModelProfile 
+            wargear={chosenWargear}
+          />
+          <ExtraRules 
+            className='extraRules' 
+            wargear={chosenWargear} 
+            defender={defender}
+          />
+        </div>
+        }
+      </div>
     </div>
   ) 
 }

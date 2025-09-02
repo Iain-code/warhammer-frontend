@@ -296,8 +296,9 @@ const ArmyBuilder = () => {
           <div className="flex flex-col justify-center p-4 rounded w-full mx-auto">
             <button 
               onClick={() => tableHelper('character')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-            >Characters</button>
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
+            >
+              Characters</button>
             <UnitTable 
               groupedUnits={groupedUnits.character} 
               toShow={tableBool.character} 
@@ -308,7 +309,7 @@ const ArmyBuilder = () => {
             />
             <button 
               onClick={() => tableHelper('battleline')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
             >BattleLine</button>
             <UnitTable 
               groupedUnits={groupedUnits.battleline} 
@@ -320,7 +321,7 @@ const ArmyBuilder = () => {
             />
             <button 
               onClick={() => tableHelper('transport')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2" 
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
             >Transports</button>
             <UnitTable
               groupedUnits={groupedUnits.transport} 
@@ -332,7 +333,7 @@ const ArmyBuilder = () => {
             />
             <button 
               onClick={() => tableHelper('vehicle')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
             >Vehicles</button>
             <UnitTable 
               groupedUnits={groupedUnits.vehicle} 
@@ -344,7 +345,7 @@ const ArmyBuilder = () => {
             />
             <button 
               onClick={() => tableHelper('monster')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
             >Monsters</button>
             <UnitTable 
               groupedUnits={groupedUnits.monster} 
@@ -356,7 +357,7 @@ const ArmyBuilder = () => {
             />
             <button 
               onClick={() => tableHelper('mounted')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
             >Mounted</button>
             <UnitTable 
               groupedUnits={groupedUnits.mounted} 
@@ -368,7 +369,7 @@ const ArmyBuilder = () => {
             />
             <button 
               onClick={() => tableHelper('aircraft')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
             >Aircraft</button>
             <UnitTable 
               groupedUnits={groupedUnits.aircraft} 
@@ -380,7 +381,7 @@ const ArmyBuilder = () => {
             />
             <button 
               onClick={() => tableHelper('infantry')}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="text-sm bg-neutral-700 hover:bg-neutral-600 shadow-md hover:shadow-xl text-white font-semibold py-1 px-3 rounded border border-white m-2"
             >Infantry</button>
             <UnitTable 
               groupedUnits={groupedUnits.infantry} 

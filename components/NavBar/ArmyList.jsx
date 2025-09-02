@@ -63,10 +63,12 @@ const ArmyList = ({ setSelectedUnits }) => {
   return (
     <div className="text-white text-center">
       <h6 className="text-center text-xl">Army Lists</h6>
-      <button
-        onClick={() => setToggle(!toggle)}
-        className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-      >Open/Close</button>
+      {data && data.length > 0 &&
+        <button
+          onClick={() => setToggle(!toggle)}
+          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+        >Open/Close</button>
+      }
       {data && toggle &&
         <div>
           {data.map(list => 

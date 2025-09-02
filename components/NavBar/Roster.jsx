@@ -93,7 +93,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
           </tr>
         </thead>
         <tbody>
-          <tr><th colSpan={3} className="text-xl text-orange-600">Enhancements</th></tr>
+          <tr><th colSpan={3} className="text-xl text-orange-400">Enhancements</th></tr>
 
           {(roster.enhancement?.length ?? 0) === 0 ? (
             <tr>
@@ -111,7 +111,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
             ))
           )}
         
-          {selectedUnits.character.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Characters</th></tr>}
+          {selectedUnits.character.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Characters</th></tr>}
           {selectedUnits.character && selectedUnits.character.map(unit =>
             <tr key={unit.instance} className="hover:bg-[#2a2a2a]">
               <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>
@@ -119,7 +119,8 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
               <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => removeFromRoster(unit, 'character')}>Remove</button></td>
             </tr>
           )}
-          {selectedUnits.battleline > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Battleline</th></tr>}
+          {selectedUnits.battleline.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Battleline</th></tr>}
+          {console.log('selectedUnits:', selectedUnits)}
           {selectedUnits.battleline && selectedUnits.battleline.map(unit => 
             <tr key={unit.instance} className="hover:bg-[#2a2a2a]">
               <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>
@@ -127,7 +128,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
               <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => removeFromRoster(unit, 'battleline')}>Remove</button></td>
             </tr>
           )}
-          {selectedUnits.transport.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Transport</th></tr>}
+          {selectedUnits.transport.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Transports</th></tr>}
           {selectedUnits.transport && selectedUnits.transport.map(unit => 
             <tr key={unit.instance} className="hover:bg-[#2a2a2a]">
               <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>
@@ -135,7 +136,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
               <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => removeFromRoster(unit, 'transport')}>Remove</button></td>
             </tr>
           )}
-          {selectedUnits.monster > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Monsters</th></tr>}
+          {selectedUnits.monster > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Monsters</th></tr>}
           {selectedUnits.monster && selectedUnits.monster.map(unit => 
             <tr key={unit.instance} className="hover:bg-[#2a2a2a]">
               <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>
@@ -143,7 +144,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
               <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => removeFromRoster(unit, 'monster')}>Remove</button></td>
             </tr>
           )}
-          {selectedUnits.vehicle.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Vehicle</th></tr>}
+          {selectedUnits.vehicle.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Vehicle</th></tr>}
           {selectedUnits.vehicle && selectedUnits.vehicle.map(unit => 
             <tr key={unit.instance} className="hover:bg-[#2a2a2a]">
               <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>
@@ -151,7 +152,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
               <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => removeFromRoster(unit, 'vehicle')}>Remove</button></td>
             </tr>
           )}
-          {selectedUnits.mounted.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Mounted</th></tr>}
+          {selectedUnits.mounted.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Mounted</th></tr>}
           {selectedUnits.mounted && selectedUnits.mounted.map(unit => 
             <tr key={unit.instance} className="hover:bg-[#2a2a2a]">
               <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>
@@ -159,7 +160,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
               <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => removeFromRoster(unit, 'mounted')}>Remove</button></td>
             </tr>
           )}
-          {selectedUnits.aircraft.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Aircraft</th></tr>}
+          {selectedUnits.aircraft.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Aircraft</th></tr>}
           {selectedUnits.aircraft && selectedUnits.aircraft.map(unit => 
             <tr key={unit.instance} className="hover:bg-[#2a2a2a]">
               <td>{unit.name}</td>
@@ -167,7 +168,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
               <td><button onClick={() => removeFromRoster(unit, 'aircraft')}>Remove</button></td>
             </tr>
           )}
-          {selectedUnits.infantry.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-600'>Infantry</th></tr>}
+          {selectedUnits.infantry.length > 0 && <tr><th colSpan={3} className='text-xl text-orange-400'>Infantry</th></tr>}
           {selectedUnits.infantry && selectedUnits.infantry.map(unit => 
             <tr key={unit.instance}>
               <td className="px-4 py-4 border-b border-[#333]">{unit.name}</td>

@@ -227,36 +227,36 @@ const Fight = ({ wargear, rules, defender, strengthModifier, toughnessModifier }
           <button 
             type='submit'
             className="
-              text-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded 
+              text-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded-lg 
               border border-orange-600 m-2"
           >Calculate Fight Statistics</button>
         </form>
         {toggle &&
-        <div>
+        <div className='w-full mb-6'>
           <h2 className='text-white pt-5 underline justify-center flex'>Fight Calculations</h2>
           <br />
           <div className='text-white flex flex-wrap gap-4 justify-center'>
-            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Average Successful Hits
               <br />
               {(hits / 10000).toFixed(2) }
             </div>
-            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Average Successful Wounds
               <br />
               {(wounds / 10000).toFixed(2)}
             </div>
-            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Average Wounds Through Saves
               <br />
               {(failedSaves / 10000).toFixed(2)}
             </div>
-            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Damage
               <br />
               {(damage / 10000).toFixed(2)}
             </div>
-            <div className='flex items-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-2/6 lg:h-[100px]'>
+            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Models killed
               <br />
               {(modelsKilled / 10000).toFixed(2)}
@@ -264,7 +264,7 @@ const Fight = ({ wargear, rules, defender, strengthModifier, toughnessModifier }
           </div>
         </div>
         }
-        <div className="flex flex-wrap gap-4 w-full">
+        <div className="flex flex-wrap gap-4 w-3/4">
           {hitRoll && <div className="flex-1 min-w-[240px] h-64"><MyBarChart input={hitRoll} name="Hit Rolls" modifier={hitTarget} /></div>}
           {woundRolls && <div className="flex-1 min-w-[240px] h-64"><MyBarChart input={woundRolls} name="Wound Rolls" modifier={woundModifier} /></div>}
           {damageRoll&& <div className="flex-1 min-w-[240px] h-64"><MyBarChart input={damageRoll} name="Damage Rolls" modifier={damageModifier}/></div>}

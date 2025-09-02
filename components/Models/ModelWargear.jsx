@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react'
 import modelService from '../../requests/models'
 import { useMutation } from "@tanstack/react-query"
 import React from 'react'
-import Select from 'react-select'
 import PropTypes from "prop-types"
 import ExtraRules from "../Fight/ExtraRules"
 import ModelProfile from "../Models/ModelProfiles"

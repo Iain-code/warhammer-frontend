@@ -83,15 +83,20 @@ const Enhancements = ({ enhancements, faction }) => {
   }
  
   return (
-    <div className='flex lg:flex-row flex-wrap justify-center text-white'>
+    <div className='flex flex-wrap justify-center gap-2 text-white'>
       {split.map(e => (
-        <div key={e[0]}>
+        <div key={e[0]} className=''>
           {e[1].length === 4 && !chosen && (
             <button 
               onClick={() => chooseDetachment(e)}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+              overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+               group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+               focus:ring-pink-200 dark:focus:ring-pink-800"
             >
-              {e[0]}
+              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                {e[0]}
+              </span>
             </button>
           )}
         </div>
@@ -100,35 +105,57 @@ const Enhancements = ({ enhancements, faction }) => {
         <div>
           <button
             onClick={() => setEnhanceToggle(true)}
-            className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-          >Show Enhancements</button>
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+              overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+               group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+               focus:ring-pink-200 dark:focus:ring-pink-800"
+          >
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            Show Enhancements</span></button>
         </div>}
       {chosenDetachment && enhanceToggle &&
        <div className="flex flex-col justify-center">
          <div className="flex flex-row justify-center">
            <button 
              onClick={() => removeDetachment()}
-             className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 mx-auto"
-           >Change Detachment</button>
+             className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+              overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+               group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+               focus:ring-pink-200 dark:focus:ring-pink-800"
+           >
+             <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+              Change Detachment
+             </span>
+           </button>
            <button 
              onClick={() => setEnhanceToggle(false)}
-             className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 mx-auto"
-           >Close Enhancements</button>
+             className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+              overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+               group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+               focus:ring-pink-200 dark:focus:ring-pink-800"
+           >
+             <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+             Close Enhancements
+             </span>
+           </button>
          </div>
          <br />
          <h4 className='mx-auto m-3 text-xl font-semibold'>
            {chosenDetachment[0]}
          </h4>
          {chosenDetachment[1].map(d =>
-           <div key={d.id} className="border-b border-gray-600 pb-4 mb-6 w-3/4 mx-auto">
-             <span className='flex justify-center mx-auto font-semibold text-lg'>{d.name} - {d.cost}</span>
-             <br />
+           <div key={d.id} className="flex flex-col border-b border-gray-600 pb-4 mb-6">
+             <span className='mx-auto font-semibold text-lg'>{d.name} - {d.cost}</span>
              <p className="text-center mx-auto px-2">{cleanDescription(d)}</p>
-             <br />
              <button
                onClick={() => addEnhancementToRoster(d.cost, d.name)}
-               className="flex text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 mx-auto"  
-             >Add/Remove</button>
+               className="flex
+                items-center justify-center mx-auto p-0.5 mb-2 text-md font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+               group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+               focus:ring-pink-200 dark:focus:ring-pink-800" 
+             >
+               <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+              Add/Remove</span></button>
            </div>
          )}
        </div>

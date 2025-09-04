@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import MyBarChart from './Chart'
+import ModelContext from '../../contexts/modelContext'
 
-const Fight = ({ wargear, rules, defender, strengthModifier, toughnessModifier }) => {
+const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
+  const [model] = useContext(ModelContext)
   const [hits, setHits] = useState(null)
   const [wounds, setWounds] = useState(null)
   const [failedSaves, setFailedSaves] = useState(null)
@@ -15,7 +17,8 @@ const Fight = ({ wargear, rules, defender, strengthModifier, toughnessModifier }
   const [damageRoll, setDamageRoll] = useState(null)
   const [woundModifier, setWoundModifier] = useState(null)
   const [damageModifier, setDamageModifier] = useState(null)
-
+  
+  const defender = model.defence
   const attacks = Number(wargear.attacks)
   const hitTarget = Number(wargear.BS_WS)
   let strength = Number(wargear.strength)
@@ -119,8 +122,7 @@ const Fight = ({ wargear, rules, defender, strengthModifier, toughnessModifier }
     return successfulWounds
   }
 
-  const handleCalculations = (event) => {
-    event.preventDefault()
+  const handleCalculations = () => {
     const unitAttacks = unitSize * attacks
 
     const results = diceRoll(10000 * unitAttacks)
@@ -214,23 +216,30 @@ const Fight = ({ wargear, rules, defender, strengthModifier, toughnessModifier }
 
   return (
     <div>
-      <div className='flex justify-center'> 
-        <input 
-          className='modelSizeInput' 
-          type='text' 
-          placeholder='Input Unit Size' 
-          onChange={(event) => setUnitSize(event.target.value || 1)}
+      <div className='flex flex-col lg:w-1/6 mx-auto text-center m-4 text-white'>
+        <label htmlFor="unitSlider" className="mb-2">
+            Attacking Model Count: <span className="font-bold">{unitSize}</span>
+        </label>
+        <input
+          id='unitSlider'
+          className='bg-neutral-600 rounded-sm text-white text-center' 
+          type='range' 
+          min='1'
+          max='20'
+          value={unitSize}
+          onChange={(e) => setUnitSize(e.target.value)}
         />
       </div>
       <div className='flex flex-col items-center'>
-        <form onSubmit={(event) => handleCalculations(event)}>
-          <button 
-            type='submit'
-            className="
-              text-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded-lg 
-              border border-orange-600 m-2"
-          >Calculate Fight Statistics</button>
-        </form>
+        <button
+          onClick={() => handleCalculations()}
+          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+              overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+               group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+               focus:ring-pink-200"
+        >
+          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+          Calculate Fight Statistics</span></button>
         {toggle &&
         <div className='w-full mb-6'>
           <h2 className='text-white pt-5 underline justify-center flex'>Fight Calculations</h2>

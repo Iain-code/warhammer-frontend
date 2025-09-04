@@ -181,21 +181,33 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
             <tr><td colSpan={3} className="text-center text-xl py-2">Total Points {roster.cost}</td></tr>}
         </tbody>
       </table>
-      <input 
-        type='text' 
-        value={armyName} 
-        onChange={(event) => setArmyName(event.target.value)} 
-        style={{ color: "black", background: "white" }}
-        placeholder='Input Army Name'
-      />
-      <button
-        onClick={saveArmy}
-        className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-      >Save Army</button>
-      <button
-        onClick={() => clearRoster()}
-        className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-      >Clear</button>
+      <div>
+        <input 
+          type='text' 
+          value={armyName} 
+          onChange={(event) => setArmyName(event.target.value)} 
+          placeholder='Input Roster Name'
+          className='flex mx-auto my-1 bg-neutral-600 text-center text-white'
+        /> 
+      </div>
+      <div className='flex justify-center'>
+        <button
+          onClick={saveArmy}
+          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                  group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                  focus:ring-pink-200 dark:focus:ring-pink-800"
+        ><span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+          Save Army</span></button>
+        <button
+          onClick={() => clearRoster()}
+          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                  group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                  focus:ring-pink-200 dark:focus:ring-pink-800"
+        ><span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+          Clear</span></button>
+      </div>
     </div>}
       {isOpen &&
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center">
@@ -203,9 +215,13 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
             <p className="mb-6 text-white">{modalMsg}</p>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+              className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                focus:ring-pink-200 dark:focus:ring-pink-800"
             >
-              Close
+              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                Close</span>
             </button>
           </div>
         </div>

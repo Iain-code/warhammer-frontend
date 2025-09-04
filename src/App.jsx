@@ -2,12 +2,12 @@ import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom";
 import React, { useContext, useEffect } from "react";
 import Home from "../components/NavBar/Home";
 import Login from "../components/NavBar/Login";
-import ArmyBuilder from "../components/NavBar/ArmyBuilder";
+import ArmyBuilder from "../components/ArmyBuilder/ArmyBuilder";
 import About from "../components/NavBar/About";
 import UserContext from "../contexts/userContext";
 import Logout from '../components/NavBar/Logout.jsx'
 import userService from '../requests/users'
-import Admin from '../components/NavBar/Admin.jsx'
+import Admin from '../components/Admin/Admin.jsx'
 
 const App = () => {
   const [user, userDispatch] = useContext(UserContext)

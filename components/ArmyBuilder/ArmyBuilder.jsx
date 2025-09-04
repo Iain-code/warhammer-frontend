@@ -206,6 +206,9 @@ const ArmyBuilder = () => {
     if (!unit) {
       return
     }
+    console.log('unit:', unit)
+    console.log('costStr:', costStr)
+    
     const keywordTypes = [
       'character',
       'battleline',

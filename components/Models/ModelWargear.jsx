@@ -46,8 +46,6 @@ const ModelWargear = () => {
     setChosenWargear(wargear)
   }
 
-  console.log('atkwargear', atkWargear)
-
   return (
     <div>
       <div>
@@ -79,8 +77,7 @@ const ModelWargear = () => {
           />
           <ExtraRules 
             className='extraRules' 
-            wargear={chosenWargear} 
-            defender={defender}
+            wargear={chosenWargear}
           />
         </div>
         }

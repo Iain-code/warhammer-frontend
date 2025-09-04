@@ -9,8 +9,6 @@ import PropTypes from "prop-types";
 import factionList from './FactionList'
 
 const FactionForm = ({ setShowForm }) => {
-  const [attack, setAttack] = useState(null)
-  const [defend, setDefend] = useState(null)
   const [attacker, attackerDispatch] = useContext(AttackerContext)
   const [defender, defenderDispatch] = useContext(DefenderContext)
   const [selectedAttackImage, setSelectedAttackImage] = useState(null);
@@ -25,13 +23,13 @@ const FactionForm = ({ setShowForm }) => {
   }, [attacker, defender, setShowForm])
 
   const handleAttackerChange = (faction) => {
-    setAttack(faction.value)
     setSelectedAttackImage(faction.img)
+    attackerMutation.mutate(faction.value)
   }
 
   const handleDefenderChange = (faction) => {
-    setDefend(faction.value)
     setSelectedDefenceImage(faction.img)
+    defenderMutation.mutate(faction.value)
   }
 
   const defenderMutation = useMutation({
@@ -60,12 +58,10 @@ const FactionForm = ({ setShowForm }) => {
     }
   })
 
-  const findFaction = (attack, defend) => {
-    attackerMutation.mutate(attack)
-    defenderMutation.mutate(defend)
-  }
-
   const customStyles = {
+    menuPortal: (base) => ({ 
+      ...base, zIndex: 5000 
+    }),
     control: (provided) => ({
       ...provided,
       backgroundColor: '#2b2a2a',
@@ -85,10 +81,12 @@ const FactionForm = ({ setShowForm }) => {
       backgroundColor: '#2b2a2a',
       width: 'inherit',
       minWidth: '100%',
+      zIndex: 5000
     }),
     menuList: (provided) => ({
       ...provided,
       backgroundColor: '#2b2a2a',
+      
     }),
     placeholder: (provided) => ({
       ...provided,
@@ -103,12 +101,13 @@ const FactionForm = ({ setShowForm }) => {
 
   return (
     <div 
-      className="factionForm" 
+      className="pt-[120px] w-1/2 mx-auto" 
       style={{
         '--ffa-image': selectedAttackImage ? `url(${selectedAttackImage})` : 'none',
         '--ffb-image': selectedDefenceImage ? `url(${selectedDefenceImage})` : 'none'
       }}>
-      <form onSubmit={(event) => {event.preventDefault(), findFaction(attack, defend)}}>
+      <div className="my-5">
+        <h1 className="text-center text-white">Attacker</h1>
         <Select
           styles={customStyles}
           className="factionForm-selectA"
@@ -116,9 +115,11 @@ const FactionForm = ({ setShowForm }) => {
           onChange={handleAttackerChange}
           placeholder="Select an attacker..."
           isSearchable
-          maxMenuHeight={200}
+          menuPosition="fixed"
         />
-        <button className='factionFormButton' type='submit'>Get Models</button>
+      </div>
+      <div>
+        <h1 className="text-center text-white">Defender</h1>
         <Select
           styles={customStyles}
           className="factionForm-selectB"
@@ -126,9 +127,9 @@ const FactionForm = ({ setShowForm }) => {
           onChange={handleDefenderChange}
           placeholder='Select a defender...'
           isSearchable
-          maxMenuHeight={200}
+          menuPosition="fixed"
         />
-      </form>
+      </div>
     </div>
   );
 }

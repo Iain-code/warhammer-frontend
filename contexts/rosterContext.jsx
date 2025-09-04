@@ -13,13 +13,13 @@ const rosterReducer = (state, action) => {
   case 'add':
     return {
       ...state,
-      cost: state.cost + action.payload
+      cost: state.cost += action.payload
     }
 
   case 'minus':
     return {
       ...state,
-      cost: state.cost - action.payload
+      cost: state.cost -= action.payload
     }
 
   case 'enhancement':

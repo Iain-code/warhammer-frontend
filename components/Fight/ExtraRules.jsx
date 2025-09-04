@@ -4,7 +4,7 @@ import CheckBoxes from './CheckBoxes'
 import Fight from './Fight'
 import PropTypes from 'prop-types'
 
-const ExtraRules = ({ wargear, defender }) => {
+const ExtraRules = ({ wargear }) => {
   const [strengthGain, setStrengthGain] = useState(0)
   const [toughnessGain, setToughnessGain] = useState(0)
   const [extraRules, setExtraRules] = useState({
@@ -68,8 +68,7 @@ const ExtraRules = ({ wargear, defender }) => {
           strengthModifier={strengthGain}
           toughnessModifier={toughnessGain}
           wargear={wargear} 
-          rules={extraRules} 
-          defender={defender} 
+          rules={extraRules}
         />
       </div>
     </div>

@@ -192,10 +192,10 @@ const ArmyBuilder = () => {
       vehicle: [],
       infantry: [],
     })
-  };
+  }
 
   if (!user[0]) {
-    return <div className="flex justify-center text-center flex-wrap mt-[100px] mx-10 text-orange-600 text-xl">Please login to use the army builder</div>
+    return <div className="flex justify-center text-center flex-wrap mx-10 text-white text-2xl">Please login to use the army builder</div>
   }
 
   const tableHelper = (unitType) => {
@@ -206,8 +206,6 @@ const ArmyBuilder = () => {
     if (!unit) {
       return
     }
-    console.log('unit:', unit)
-    console.log('costStr:', costStr)
     
     const keywordTypes = [
       'character',
@@ -239,42 +237,52 @@ const ArmyBuilder = () => {
   }
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
-      backgroundColor: '#2b2a2a',
-      borderColor: 'orangered',
-      borderRadius: '8px',
-      padding: '4px',
-      boxShadow: 'none',
-
+      border: "none",
+      borderRadius: "0.5rem",
+      padding: "2px",
+      minHeight: 44,
+      background: "linear-gradient(to bottom right, #ec4899, #f97316)",
+      boxShadow: state.isFocused ? "0 0 0 4px rgba(236,72,153,.3)" : provided.boxShadow,
+      alignItems: "center",
     }),
-    option: (provided, state) => ({
+    valueContainer: (provided) => ({
       ...provided,
-      color: state.isFocused ? 'orangered' : 'antiquewhite',
-      backgroundColor: state.isFocused ? 'white' : '#2b2a2a',
+      backgroundColor: "#2b2a2a",
+      borderRadius: "0.375rem",
+      padding: "0.5rem 1rem",
     }),
-    menu: (provided) => ({
+    input: (provided) => ({
       ...provided,
-      backgroundColor: '#2b2a2a',
-      width: 'inherit',
-      minWidth: '100%',
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      backgroundColor: '#2b2a2a',
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: 'antiquewhite',
+      color: "white",
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: 'AntiqueWhite'
-    })
+      color: "white",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "white", 
+      opacity: 0.9,
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "0.5rem",
+      marginTop: 2,
+      backgroundColor: "#2b2a2a",
+      color: "white",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "pink" : 'white',        // text color on hover vs normal
+      backgroundColor: state.isFocused ? "white" : "transparent", 
+      cursor: "pointer",
+    }),
   }
 
   return (
-    <div className="mt-[100px]">
+    <div className="md:mt-[100px]">
       <h4 className="mx-auto text-3xl text-center text-white font-semibold underline">Army Builder</h4>
       <div className="mx-auto w-3/4 lg:w-1/2 p-2 lg:p-8 md:p-4">
         <Select

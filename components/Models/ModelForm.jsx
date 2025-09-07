@@ -40,46 +40,56 @@ const ModelForm = () => {
   }
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
-      backgroundColor: '#2b2a2a',
-      borderColor: 'orangered',
-      borderRadius: '8px',
-      padding: '4px',
-      boxShadow: 'none',
+      border: "none",
+      borderRadius: "0.5rem",
+      padding: "2px",
+      minHeight: 44,
+      background: "linear-gradient(to bottom right, #ec4899, #f97316)",
+      boxShadow: state.isFocused ? "0 0 0 4px rgba(236,72,153,.3)" : provided.boxShadow,
+      alignItems: "center",
     }),
-    option: (provided, state) => ({
+    valueContainer: (provided) => ({
       ...provided,
-      color: state.isFocused ? 'orangered' : 'antiquewhite',
-      backgroundColor: state.isFocused ? 'white' : '#2b2a2a',
+      backgroundColor: "#2b2a2a",
+      borderRadius: "0.375rem",
+      padding: "0.5rem 1rem",
     }),
-    menu: (provided) => ({
+    input: (provided) => ({
       ...provided,
-      backgroundColor: '#2b2a2a',
-      width: 'inherit',
-      minWidth: '100%',
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      backgroundColor: '#2b2a2a',
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: 'antiquewhite',
+      color: "white",                // typing color
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: 'AntiqueWhite'
-    })
+      color: "white",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "white", 
+      opacity: 0.9,
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "0.5rem",
+      marginTop: 2,
+      backgroundColor: "#2b2a2a",
+      color: "white",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "pink" : 'white',
+      backgroundColor: state.isFocused ? "white" : "transparent", 
+      cursor: "pointer",
+    }),
   }
-
 
   return (
     <div>
-      <div className='flex justify-center m-5'>
+      <div className='flex flex-col lg:flex-row justify-center my-3 w-5/6 mx-auto lg:gap-10'>
         <Select
           styles={customStyles}
-          className='modelForm-select'
+          className='lg:w-1/4 lg:flex-col my-1'
           options={attacker}
           onChange={(model) => handleAttackerModel(model)}
           placeholder="Select an attacker..."
@@ -89,7 +99,7 @@ const ModelForm = () => {
         />
         <Select
           styles={customStyles}
-          className='modelForm-select'
+          className='lg:w-1/4 my-1'
           options={defender}
           onChange={(model) => handleDefenderModel(model)}
           placeholder="Select a defender..."
@@ -98,7 +108,7 @@ const ModelForm = () => {
           getOptionValue={(option) => option.datasheet_id}
         />
       </div>
-      <div className='flex justify-center m-4'>
+      <div className='flex flex-wrap justify-center lg:m-4 w-100%'>
         <button 
           className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
             overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400

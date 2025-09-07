@@ -59,55 +59,59 @@ const FactionForm = ({ setShowForm }) => {
   })
 
   const customStyles = {
-    menuPortal: (base) => ({ 
-      ...base, zIndex: 5000 
-    }),
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
-      backgroundColor: '#2b2a2a',
-      borderColor: 'orangered',
-      borderRadius: '8px',
-      padding: '4px',
-      boxShadow: 'none',
-
+      border: "none",
+      borderRadius: "0.5rem",
+      padding: "2px",
+      minHeight: 44,
+      background: "linear-gradient(to bottom right, #ec4899, #f97316)",
+      boxShadow: state.isFocused ? "0 0 0 4px rgba(236,72,153,.3)" : provided.boxShadow,
+      alignItems: "center",
     }),
-    option: (provided, state) => ({
+    valueContainer: (provided) => ({
       ...provided,
-      color: state.isFocused ? 'orangered' : 'antiquewhite',
-      backgroundColor: state.isFocused ? 'white' : '#2b2a2a',
+      backgroundColor: "#2b2a2a",
+      borderRadius: "0.375rem",
+      padding: "0.5rem 1rem",
     }),
-    menu: (provided) => ({
+    input: (provided) => ({
       ...provided,
-      backgroundColor: '#2b2a2a',
-      width: 'inherit',
-      minWidth: '100%',
-      zIndex: 5000
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      backgroundColor: '#2b2a2a',
-      
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: 'antiquewhite',
+      color: "white",                // typing color
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: 'AntiqueWhite'
-    })
+      color: "white",                // selected value color
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "white",                // placeholder color
+      opacity: 0.9,
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "0.5rem",
+      marginTop: 2,
+      backgroundColor: "#2b2a2a",
+      color: "white",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? "pink" : 'white',        // text color on hover vs normal
+      backgroundColor: state.isFocused ? "white" : "transparent", 
+      cursor: "pointer",
+    }),
   }
-
 
   return (
     <div 
-      className="pt-[120px] w-1/2 mx-auto" 
+      className="lg:w-1/2 mx-auto" 
       style={{
         '--ffa-image': selectedAttackImage ? `url(${selectedAttackImage})` : 'none',
         '--ffb-image': selectedDefenceImage ? `url(${selectedDefenceImage})` : 'none'
       }}>
       <div className="my-5">
-        <h1 className="text-center text-white">Attacker</h1>
+        <h1 className="text-center text-white my-2 text-xl">Attacking Models Faction</h1>
         <Select
           styles={customStyles}
           className="factionForm-selectA"
@@ -119,7 +123,7 @@ const FactionForm = ({ setShowForm }) => {
         />
       </div>
       <div>
-        <h1 className="text-center text-white">Defender</h1>
+        <h1 className="text-center text-white my-2 text-xl">Defending Models Faction</h1>
         <Select
           styles={customStyles}
           className="factionForm-selectB"

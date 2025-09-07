@@ -9,7 +9,6 @@ import { ModelContextProvider } from "../contexts/modelContext";
 import { UserContextProvider } from "../contexts/userContext";
 import { RosterContextProvider } from "../contexts/rosterContext";
 import './../components/FactionForm/factionForm.css'
-import './../components/Models/modelForm.css'
 import './../components/Fight/fight.css'
 import './../components/Models/modelWargear.css'
 

@@ -187,7 +187,7 @@ const Roster = ({ selectedUnits, setSelectedUnits, faction }) => {
           value={armyName} 
           onChange={(event) => setArmyName(event.target.value)} 
           placeholder='Input Roster Name'
-          className='flex mx-auto my-1 bg-neutral-600 text-center text-white'
+          className='flex mx-auto my-1 bg-neutral-600 text-center text-white my-4 rounded-md'
         /> 
       </div>
       <div className='flex justify-center'>

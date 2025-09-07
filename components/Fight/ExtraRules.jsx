@@ -37,10 +37,9 @@ const ExtraRules = ({ wargear }) => {
         <h1 className='flex justify-center text-3xl text-white shadow:lg'>Special Rules</h1>
       </div>
       <div> 
-        <br />
         <CheckBoxes handleCheckboxChange={handleCheckboxChange}/>
-        <div className='flex flex-col lg:w-1/6 sm:w-3/4 mx-auto text-white justify-center mt-6'>
-          <label htmlFor="strSlider" className="block mb-2">
+        <div className='flex flex-col lg:w-1/6 md:w-3/4 sm:w-3/4 mx-auto text-white justify-center mt-6'>
+          <label htmlFor="strSlider" className="mb-2 text-center">
             Weapon Strength Gain/Loss - Modifier: <span className="font-bold">{strengthGain}</span>
           </label>
           <input
@@ -52,7 +51,7 @@ const ExtraRules = ({ wargear }) => {
             onChange={(e) => setStrengthGain(e.target.value)}
             className='my-2 mb-6'
           />
-          <label htmlFor="toughSlider" className="block mb-2">
+          <label htmlFor="toughSlider" className="mb-2 text-center">
             Defender Toughness Gain/Loss - Modifier: <span className="font-bold">{toughnessGain}</span>
           </label>
           <input

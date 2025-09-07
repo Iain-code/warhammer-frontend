@@ -59,34 +59,34 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
   }
   
   return (
-    <div className=''>
+    <div className='overflow-x-auto'>
       {toShow &&
         <table className="min-w-[600px] w-full mx-auto border-collapse bg-[#1b1b1b] rounded-lg text-white">
           <thead className="bg-[#2a2a2a] px-3 py-3 font-medium border-b-2 border-[#444]">
             <tr>
               <th>Name</th>
+              <th>Add</th>
+              <th>Points Cost</th>
+              <th>Unit Size</th>
               <th>Keywords</th>
               <th>Wargear</th>
               <th>Abilites</th>
-              <th>Unit Size</th>
-              <th>Points Cost</th>
-              <th>Add to Roster</th>
             </tr>
           </thead>
           <tbody>
             {groupedUnits.map(unit => (
               <tr key={unit.datasheet_id} className="hover:bg-[#2a2a2a]">
                 <td className="px-4 py-4 border-b border-[#333] text-center">{unit.name}</td>
-                <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => viewKeywords(unit)}>View keywords</button></td>
-                <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => viewWargear(unit)}>View Wargear</button></td>
-                <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => viewAbilities(unit)}>View Abilities</button></td>
-                <td className="px-4 py-4 border-b border-[#333] text-center">
-                  {unit.unitPoints.description}
+                <td className="px-4 py-4 border-b border-[#333]">
+                  <button onClick={() => addUnitToRoster(unit, '')}>Add to Roster</button>
                   {unit.unitPoints.description2 && unit.unitPoints.cost2 && (
-                    <>
-                      <br />
-                      {unit.unitPoints.description2}
-                    </>
+                    <div>
+                      <p className='border-b my-1'></p>
+                      <div>
+                        <button onClick={() => addUnitToRoster(unit, 'cost2')}>Add to Roster</button>
+                      </div>
+                    </div>
+                   
                   )}
                 </td>
                 <td className="px-4 py-4 border-b border-[#333]">
@@ -99,15 +99,18 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
                     </>
                   )}
                 </td>
-                <td className="px-4 py-4 border-b border-[#333]">
-                  <button onClick={() => addUnitToRoster(unit, '')}>Add</button>
+                <td className="px-4 py-4 border-b border-[#333] text-center">
+                  {unit.unitPoints.description}
                   {unit.unitPoints.description2 && unit.unitPoints.cost2 && (
                     <>
                       <br />
-                      <br />
-                      <button onClick={() => addUnitToRoster(unit, 'cost2')}>Add</button>
-                    </>)}
+                      {unit.unitPoints.description2}
+                    </>
+                  )}
                 </td>
+                <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => viewKeywords(unit)}>View keywords</button></td>
+                <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => viewWargear(unit)}>View Wargear</button></td>
+                <td className="px-4 py-4 border-b border-[#333] text-center"><button onClick={() => viewAbilities(unit)}>View Abilities</button></td>
               </tr>
             ))}
           </tbody>

@@ -48,10 +48,10 @@ const ModelWargear = () => {
 
   return (
     <div>
-      <div>
+      <div className=''>
         {atkWargear && atkWargear.length > 0 &&
         <div  className='flex justify-center text-white'>
-          <ul className="flex w-3/4 gap-3">
+          <ul className="flex flex-col lg:flex-row w-3/4 gap-3">
             {atkWargear.map(item =>
               <li key={item.id} className="flex flex-1">
                 <button
@@ -62,7 +62,7 @@ const ModelWargear = () => {
               hover:bg-white/10 hover:shadow-xl
               transition-all duration-200 ease-in-out
             "
-                >{item.name} <br /> {item.type}</button>
+                ><p className="font-semibold">{item.name}</p> <p>{item.type}</p></button>
               </li>
             )}
           </ul>
@@ -71,7 +71,7 @@ const ModelWargear = () => {
       </div>
       <div>
         {atkWargear && chosenWargear &&
-        <div  className="">
+        <div className="mt-4">
           <ModelProfile 
             wargear={chosenWargear}
           />

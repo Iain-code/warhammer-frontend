@@ -8,10 +8,8 @@ import PropTypes from 'prop-types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const Admin = ({ user }) => {
-  const [models, setModels] = useState(null)
   const [selectedModel, setSelectedModel] = useState(null)
   const [updatedModel, setUpdatedModel] = useState(null)
-  const [wargear, setWargear] = useState(null)
   const [selectedWargear, setSelectedWargear] = useState(null)
   const [updatedWargear, setUpdatedWargear] = useState(null)
   const [editing, setEditing] = useState(false)
@@ -24,15 +22,15 @@ const Admin = ({ user }) => {
   const queryClient = useQueryClient()
 
   const points = useQuery({
-    queryKey: ['pointsForAdmin', faction],
+    queryKey: ['adminPoints', faction],
     queryFn: () => sortUnitsAndFetchData(),
-    enabled: !!models,
+    enabled: !!faction,
     retry: 1,
     refetchOnWindowFocus: false
   })
   
   const keywords = useQuery({
-    queryKey: ['keywordForAdmin', selectedModel],
+    queryKey: ['adminKeywords', selectedModel?.datasheet_id],
     queryFn: () => modelService.getKeywordsForModel(selectedModel.datasheet_id),
     enabled: !!selectedModel,
     retry: 1,
@@ -40,39 +38,37 @@ const Admin = ({ user }) => {
   })
 
   const abilities = useQuery({
-    queryKey: ['AbilitiesForAdmin', selectedModel],
+    queryKey: ['adminAbilities', selectedModel?.datasheet_id],
     queryFn: () => modelService.getAbilitiesForModel(selectedModel.datasheet_id),
     enabled: !!selectedModel,
     retry: 1,
     refetchOnWindowFocus: false
   })
 
+  const wargearQuery = useQuery({
+    queryKey: ['adminWargear', selectedModel?.datasheet_id],
+    queryFn: () => modelService.getWargear(selectedModel.datasheet_id),
+    enabled: !!selectedModel,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  })
+
   const sortUnitsAndFetchData = async () => {
-    const IDs = models.map(unit => unit.datasheet_id)
+    const IDs = getModels?.data.map(unit => unit.datasheet_id)
     const response = await modelService.getPointsForID(IDs)
     return response
   }
 
-  const getModelsMutation = useMutation({
-    mutationFn: async () => await modelService.getModelsForFaction(faction),
-    onSuccess: (response) => {
-      setModels(response)
-    },
-    onError: (error) => {
-      console.error('failed to fetch models:', error)
-    }
-  })
-
-  const getWargearMutation = useMutation({
-    mutationFn: async (id) => await modelService.getWargear(id),
-    onSuccess: (response) => setWargear(response),
-    onError: (error) => {
-      console.error('failed to fetch wargear:', error)
-    }
+  const getModels = useQuery({
+    queryKey: ['adminModels', faction],
+    queryFn: () => modelService.getModelsForFaction(faction),
+    enabled: !!faction,
+    retry: 1,
+    refetchOnWindowFocus: false,
   })
 
   const updateModelMutation = useMutation({
-    mutationFn: async ({ user, updatedModel }) => await modelService.updateModel(user, updatedModel),
+    mutationFn: ({ user, updatedModel }) => modelService.updateModel(user, updatedModel),
     onSuccess: (response) => setSelectedModel(response),
     onError: (error) => {
       console.error('failed to update model:', error)
@@ -80,15 +76,25 @@ const Admin = ({ user }) => {
   })
 
   const updateWargearMutation = useMutation({
-    mutationFn: async ({ user, updatedWargear }) => await modelService.updateWargear(user, updatedWargear),
-    onSuccess: (response) => setSelectedWargear(response),
+    mutationFn: ({ user, updatedWargear }) => modelService.updateWargear(user, updatedWargear),
+    onSuccess: (response) => {
+      setSelectedWargear(response)
+      queryClient.invalidateQueries({ queryKey: ['adminWargear', selectedModel?.datasheet_id] })
+    },
     onError: (error) => {
       console.error('failed to update wargear:', error)
     }
   })
 
+  const deleteModelMutation = useMutation({
+    mutationFn: (Id) => updateService.deleteUnit(Id, user),
+    onError: (error) => {
+      console.error('failed to delete model:', error)
+    }
+  })
+
   const updatePointsMutation = useMutation({
-    mutationFn: async ({ updatedPoints, user}) => await modelService.updatePoints(updatedPoints, user),
+    mutationFn: ({ updatedPoints, user}) => modelService.updatePoints(updatedPoints, user),
     onSuccess: (response) => {
       if (response.line === 1) {
         setModelPoints1(response)
@@ -99,6 +105,7 @@ const Admin = ({ user }) => {
         setEditing(false)
         setUpdatedPoints2(null)
       }
+      queryClient.invalidateQueries({ queryKey: ['adminPoints', faction] })
     },
     onError: (error) => {
       console.error('failed to update points cost:', error)
@@ -106,7 +113,7 @@ const Admin = ({ user }) => {
   })
 
   const updateAbilityMutation = useMutation({
-    mutationFn: async (ability) => await updateService.updateAbilities(ability, user),
+    mutationFn: (ability) => updateService.updateAbilities(ability, user),
     onSuccess: (response) => {
       setEditing(false)
       queryClient.invalidateQueries({ queryKey: ['AbilitiesForAdmin', selectedModel] });
@@ -116,6 +123,7 @@ const Admin = ({ user }) => {
         }
       },
       ))
+      queryClient.invalidateQueries({ queryKey: ['adminAbilities', selectedModel?.datasheet_id] })
       window.alert(`${response[0]} successfully updated`)
     },
     onError: (error) => {
@@ -139,8 +147,6 @@ const Admin = ({ user }) => {
       setModelPoints1(line1);
       setModelPoints2(line2);
     }
-
-    getWargearMutation.mutate(model.datasheet_id);
   }
 
   const handleFieldChange = (field, value) => {
@@ -152,7 +158,9 @@ const Admin = ({ user }) => {
   }
 
   const handlePointsChange1 = (value) => {
+    console.log('updatedPoints1', updatedPoints1)
     if (updatedPoints1) {
+      console.log('updated points in IF', updatedPoints1)
       setUpdatedPoints1({ ...updatedPoints1, cost: value })
     } else {
       setUpdatedPoints1({ ...modelPoints1, cost: value })
@@ -211,6 +219,9 @@ const Admin = ({ user }) => {
     setUpdatedModel(null)
     setUpdatedWargear(null)
     setEditing(false)
+    setUpdatedPoints2(null)
+    setUpdatedPoints1(null)
+    setAbilityState([])
   }
 
   if (!user || user.isAdmin === false) {
@@ -218,15 +229,12 @@ const Admin = ({ user }) => {
   }
 
   const getmodels = (option) => {
-    setModels(null)
     setSelectedModel(null)
     setUpdatedModel(null)
-    setWargear(null)
     setSelectedWargear(null)
     setUpdatedWargear(null)
     setEditing(false)
     setFaction(option)
-    if (option) getModelsMutation.mutate()
   }
 
   const handleDescriptionChange = (name, description, line, datasheet_id) => {
@@ -245,6 +253,21 @@ const Admin = ({ user }) => {
       updateAbilityMutation.mutate(ability)
     }
   }
+
+  const handleKeywordChange = () => {
+
+  }
+
+  const deleteUnit = async () => {
+    const ok = window.confirm(
+      `Delete "${selectedModel.name}"? This action cannot be undone.`
+    )
+
+    if (!ok) return
+
+    deleteModelMutation.mutate(selectedModel.datasheet_id)
+  }
+
 
   return (
     <div>
@@ -288,7 +311,7 @@ const Admin = ({ user }) => {
         />
         <Select 
           placeholder="Select a model"
-          options={models ?? []}
+          options={getModels.data ?? []}
           isSearchable
           value={selectedModel}
           onChange={(model) => handleModelChoice(model)}
@@ -326,11 +349,11 @@ const Admin = ({ user }) => {
         />
         <Select
           placeholder="Select Wargear"
-          options={wargear ?? []}
+          options={wargearQuery.data ?? []}
           value={selectedWargear}
           isSearchable
           onChange={(option) => setSelectedWargear(option)}
-          getOptionLabel={(option) => (option.name)}
+          getOptionLabel={(option) => (`${option.name} - ${option.type}`)}
           styles={{
             control: (base) => ({
               ...base,
@@ -363,24 +386,27 @@ const Admin = ({ user }) => {
           }}
         />
       </div>
-      <div className='flex justify-center'>
-        <button 
-          onClick={() => setEditing(!editing)}
-          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-        >Edit</button>
-        <button 
-          onClick={handleCancel}
-          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"  
-        >Cancel</button>
-        <br />
-        <button 
-          onClick={handleSaveUpdate}
-          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-        >Save Model Update</button>
-        <button 
-          onClick={handleSavePoints}
-          className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-        >Save Points Update</button>
+      <div className='flex flex-col text-center'>
+        <div>
+          <button 
+            onClick={() => setEditing(!editing)}
+            className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+          >Edit</button>
+        </div>
+        <div>
+          <button 
+            onClick={handleCancel}
+            className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"  
+          >Cancel Editing</button>
+        </div>
+        {(updatedPoints1 || updatedPoints2) &&
+          <div>
+            <button 
+              onClick={handleSavePoints}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Save Points Update</button>
+          </div>
+        }
       </div>
       <div className='modelTables'>
         {selectedModel &&
@@ -411,61 +437,68 @@ const Admin = ({ user }) => {
                     className='text-center bg-neutral-800'
                   /> : selectedModel.name }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
-                  <input
-                    type="text"
-                    value={updatedModel?.M ?? selectedModel?.M ?? ''}
-                    onChange={(e) => handleFieldChange( 'M', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedModel.M }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing ?
+                    <input
+                      type="text"
+                      value={updatedModel?.M ?? selectedModel?.M ?? ''}
+                      onChange={(e) => handleFieldChange( 'M', e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : selectedModel.M }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
-                  <input
-                    type="text"
-                    value={updatedModel?.T ?? selectedModel?.T ?? ''}
-                    onChange={(e) => handleFieldChange( 'T', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedModel.T }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing ?
+                    <input
+                      type="text"
+                      value={updatedModel?.T ?? selectedModel?.T ?? ''}
+                      onChange={(e) => handleFieldChange( 'T', e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : selectedModel.T }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
-                  <input
-                    type="text"
-                    value={updatedModel?.W ?? selectedModel?.W ?? ''}
-                    onChange={(e) => handleFieldChange( 'W', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedModel.W }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing ?
+                    <input
+                      type="text"
+                      value={updatedModel?.W ?? selectedModel?.W ?? ''}
+                      onChange={(e) => handleFieldChange( 'W', e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : selectedModel.W }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
-                  <input
-                    type="text"
-                    value={updatedModel?.Sv ?? selectedModel?.Sv ?? ''}
-                    onChange={(e) => handleFieldChange( 'Sv', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedModel.Sv }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing ?
+                    <input
+                      type="text"
+                      value={updatedModel?.Sv ?? selectedModel?.Sv ?? ''}
+                      onChange={(e) => handleFieldChange( 'Sv', e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : selectedModel.Sv }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
-                  <input
-                    type="text"
-                    value={updatedModel?.inv_sv ?? selectedModel?.inv_sv ?? ''}
-                    onChange={(e) => handleFieldChange( 'inv_sv', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedModel.inv_sv }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing ?
+                    <input
+                      type="text"
+                      value={updatedModel?.inv_sv ?? selectedModel?.inv_sv ?? ''}
+                      onChange={(e) => handleFieldChange( 'inv_sv', e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : selectedModel.inv_sv }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
-                  <input
-                    type="text"
-                    value={updatedModel?.Ld ?? selectedModel?.Ld ?? ''}
-                    onChange={(e) => handleFieldChange( 'Ld', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedModel.Ld }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing ?
+                    <input
+                      type="text"
+                      value={updatedModel?.Ld ?? selectedModel?.Ld ?? ''}
+                      onChange={(e) => handleFieldChange( 'Ld', e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : selectedModel.Ld }
                 </td>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
-                  <input
-                    type="text"
-                    value={updatedModel?.OC ?? selectedModel?.OC ?? ''}
-                    onChange={(e) => handleFieldChange( 'OC', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedModel.OC }
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
+                  { editing ?
+                    <input
+                      type="text"
+                      value={updatedModel?.OC ?? selectedModel?.OC ?? ''}
+                      onChange={(e) => handleFieldChange( 'OC', e.target.value)}
+                      className='text-center bg-neutral-800'
+                    /> : selectedModel.OC }
                 </td>
                 <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
                   { editing && modelPoints1 ?
@@ -488,15 +521,16 @@ const Admin = ({ user }) => {
               </tr>
             </tbody>
           </table>
+          <div className='flex justify-center'>
+            <button
+              onClick={handleSaveUpdate}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Save Model Update</button>
+          </div>
         </div>
         }
         {selectedWargear &&
         <div>
-          <button 
-            onClick={handleUpdateWargear}
-            className="flex mx-auto justify-center text-sm bg-orange-500 hover:bg-orange-600 
-            text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
-          >Save Wargear Update</button>
           <table className='attackTable'>
             <caption className='caption'>Wargear Profile</caption>
             <thead>
@@ -580,6 +614,13 @@ const Admin = ({ user }) => {
               </tr>
             </tbody>
           </table>
+          <div>
+            <button 
+              onClick={handleUpdateWargear}
+              className="flex mx-auto justify-center text-sm bg-orange-500 hover:bg-orange-600 
+            text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
+            >Save Wargear Update</button>
+          </div>
         </div>
         }
         {keywords.data && (
@@ -593,6 +634,7 @@ const Admin = ({ user }) => {
                         type='text'
                         value={word}
                         className='text-center'
+                        onChange={(event) => handleKeywordChange(event.target.value)}
                       />
                     </div>
                 )
@@ -623,14 +665,28 @@ const Admin = ({ user }) => {
             </ul>
           </div>
         )}
-        <div>
-          <button
-            onClick={saveAbility}
-            className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2
+        {abilityState.length > 0 &&
+          <div>
+            <button
+              onClick={saveAbility}
+              className="text-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2
             justify-center flex mx-auto"
-          >Save Ability Changes</button>
-        </div>
+            >Save Ability Changes</button>
+          </div>
+        }
       </div>
+      {selectedModel &&
+        <div className='flex justify-center my-5'>
+          <button
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                focus:ring-pink-200 dark:focus:ring-pink-800"
+            onClick={() => deleteUnit()}
+          ><span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            DELETE SELECTED MODEL</span></button>
+        </div>
+      }
     </div>
   )
 }

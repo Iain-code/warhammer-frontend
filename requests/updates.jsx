@@ -1,7 +1,7 @@
 import axios from "axios"
 import userService from './users'
 
-const baseUrl = "http://localhost:8080";
+const baseUrl = import.meta.env.VITE_API_BASE
 
 const updateAbilities = async (ability, user) => {
   const tokenHeader = userService.setToken(user.token)

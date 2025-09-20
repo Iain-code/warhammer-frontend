@@ -11,7 +11,6 @@ const getModelsForFaction = async (faction) => {
   return response.data
 };
 
-
 const getWargear = async (id) => {
   const newID = Math.round(id)
   const response = await axios.get(`${baseUrl}/wargears`, {

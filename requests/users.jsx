@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = import.meta.env.VITE_API_BASE
+const baseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
 
 const setToken = (tokenStr) => {
   const newToken = `Bearer ${tokenStr}`

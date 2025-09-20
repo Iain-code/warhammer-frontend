@@ -2,7 +2,7 @@ import axios from "axios"
 import userService from './users'
 
 
-const baseUrl = import.meta.env.VITE_API_BASE
+const baseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
 
 const getModelsForFaction = async (faction) => {
   const response = await axios.get(`${baseUrl}/factions`, {

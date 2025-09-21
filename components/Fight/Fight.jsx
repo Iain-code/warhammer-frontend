@@ -54,6 +54,10 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   if (wargear.attacks.length === 3) {
     const diceTypeToRoll = splitDiceType(wargear.attacks)
     const diceAmountToRoll = splitDiceAmount(wargear.attacks)
+
+    console.log('Type', diceTypeToRoll)
+    console.log('amount', diceAmountToRoll)
+
     if (diceTypeToRoll === 3) {
       if (diceAmountToRoll === 1) {
         attacks = 2
@@ -68,6 +72,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
         attacks = 8
       }
     }
+
     if (diceTypeToRoll === 6) {
       if (diceAmountToRoll === 2) {
         attacks = 7
@@ -80,6 +85,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
       }
     }
   }
+
+  console.log('attacks at end:', attacks)
 
   const hitCalculation = (results, hitChance) => {
     let hits = 0

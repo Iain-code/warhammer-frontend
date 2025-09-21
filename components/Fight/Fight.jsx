@@ -58,7 +58,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
   }
 
-  const woundCalculation = (localHits) => {
+  const woundCalculation = (results, localHits) => {
     let modifier = 0
     let successfulWounds = 0
 
@@ -89,7 +89,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     if (rules.isLethal) {
-      successfulWounds += (hits / 6)
+      successfulWounds += results[6]
       console.log('successfulWounds with lethal 1:', successfulWounds)
       console.log('local hits BEFORE lethals:', localHits)
       localHits -= successfulWounds
@@ -97,9 +97,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
 
       if (rules.isCrit5) {
         console.log('local hits BEFORE CRIT 5s', localHits)
-        const crit5 = hits / 6
-        successfulWounds += crit5
-        localHits -= crit5 
+        successfulWounds += results[5]
+        localHits -= results[5]
         console.log('local hits AFTER CRIT 5s', localHits)
       }
     }
@@ -141,7 +140,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     const localHits = hitCalculation(results, hitTarget)
     setHits(localHits)
 
-    const localWounds = woundCalculation(localHits)
+    const localWounds = woundCalculation(results, localHits)
     setWounds(localWounds)
 
     const localFailedSaves = savesCalculatuion(localWounds)

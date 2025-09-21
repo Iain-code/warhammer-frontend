@@ -89,17 +89,16 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     if (rules.isLethal) {
+      console.log('successfulWounds before lethal:', successfulWounds)
       successfulWounds += results[6]
-      console.log('successfulWounds with lethal 1:', successfulWounds)
+      console.log('successfulWounds with lethal:', successfulWounds)
       console.log('local hits BEFORE lethals:', localHits)
       localHits -= successfulWounds
       console.log('local hits AFTER lethals:', localHits)
 
       if (rules.isCrit5) {
-        console.log('local hits BEFORE CRIT 5s', localHits)
         successfulWounds += results[5]
         localHits -= results[5]
-        console.log('local hits AFTER CRIT 5s', localHits)
       }
     }
 

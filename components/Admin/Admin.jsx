@@ -411,7 +411,7 @@ const Admin = ({ user }) => {
       <div className='modelTables'>
         {selectedModel &&
         <div>
-          <table className="table-auto min-w-full text-sm">
+          <table className="table-fixed w-full text-sm">
             <caption>Existing Models Stats</caption>
             <thead>
               <tr>
@@ -531,7 +531,7 @@ const Admin = ({ user }) => {
         }
         {selectedWargear &&
         <div>
-          <table className='attackTable'>
+          <table className="table-fixed w-full text-sm">
             <caption className='caption'>Wargear Profile</caption>
             <thead>
               <tr>

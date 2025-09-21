@@ -278,7 +278,12 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   }
 
   const damageCalculation = (localFailedSaves) => {
-    const damage = localFailedSaves * wargear.damage
+    let modifiedDamage = wargear.damage
+    if (wargear.damage > 1 && rules.isMinusDamage) {
+      modifiedDamage -= 1
+    }
+    
+    const damage = localFailedSaves * modifiedDamage
 
     return Number(damage)
   }

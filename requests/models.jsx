@@ -56,9 +56,7 @@ const getKeywordsForModel = async (modelId) => {
 }
 
 const getPointsForID = async (IdArr) => {
-  const response = await axios.get(`${baseUrl}/points`, {
-    params: { points_id: IdArr}
-  })
+  const response = await axios.get(`${baseUrl}/points/${IdArr.join(",")}`)
   return response.data
 }
 

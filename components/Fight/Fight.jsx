@@ -89,7 +89,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     if (rules.isLethal) {
-      successfulWounds += localHits / 6
+      successfulWounds += (localHits / 6)
       localHits -= successfulWounds
       if (rules.isCrit5) {
         const crit5 = localHits / 6

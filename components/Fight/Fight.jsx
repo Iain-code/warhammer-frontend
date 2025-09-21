@@ -259,10 +259,14 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
       devs = localWounds / 6
       localWounds -= devs
     }
+
     const passed = localWounds / 100 * savePercentage
+    console.log('passed:', passed)
 
     const failed = localWounds - passed
+    console.log('failed:', failed)
     const failedWithDev = failed + devs
+    console.log('failedwithDev:', failedWithDev)
 
     return (Number(failedWithDev.toFixed(2)))
   }

@@ -79,8 +79,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
   }
 
-  console.log('attacks AFTER', attacks)
-
   const hitCalculation = (results, hitChance) => {
     let hits = 0
     let updatedResults = { ...results }
@@ -233,7 +231,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     if (save > 6) {
       save = 0
     }
-    if (inv_save < save) {
+    if (inv_save === Number && inv_save < save) {
       save = inv_save
     }
 

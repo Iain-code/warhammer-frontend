@@ -25,6 +25,16 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   let toughness = Number(defender.T)
   let attacks = 0
 
+  const splitDiceType = (dice) => {
+    const parts = dice.toUpperCase().split("D")
+    return parseInt(parts[1], 10)
+  }
+
+  const splitDiceAmount = (dice) => {
+    const parts = dice.toUpperCase().split("D")
+    return parseInt(parts[0], 10)
+  }
+  
   if (wargear.attacks.length === 1) {
     attacks = Number(wargear.attacks)
   }
@@ -71,16 +81,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
 
   console.log('attacks AFTER', attacks)
 
-  const splitDiceType = (dice) => {
-    const parts = dice.toUpperCase().split("D")
-    return parseInt(parts[1], 10)
-  }
-
-  const splitDiceAmount = (dice) => {
-    const parts = dice.toUpperCase().split("D")
-    return parseInt(parts[0], 10)
-  }
-  
   const hitCalculation = (results, hitChance) => {
     let hits = 0
     let updatedResults = { ...results }

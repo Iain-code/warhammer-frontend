@@ -221,8 +221,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   }
 
   const calculateSave = () => {
-    let ap = wargear.AP
-    let save = Number(defender.Sv.replace("+", "")) - ap
+    let ap = wargear.AP.replace("-", "")
+    let save = (Number(defender.Sv.replace("+", ""))) + ap
     let inv_save
 
     if (defender.inv_sv !== '' || defender.inv_sv !== "-" || defender.inv_sv === null) {
@@ -236,18 +236,12 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     switch (save) {
-    case 2:
-      return 83.3
-    case 3:
-      return 66.7
-    case 4:
-      return 50
-    case 5:
-      return 33.3
-    case 6:
-      return 16.7
-    case 0:
-      return 0
+    case 2: return 5/6
+    case 3: return 4/6
+    case 4: return 3/6
+    case 5: return 2/6
+    case 6: return 1/6
+    default: return 0
     }
   }
 

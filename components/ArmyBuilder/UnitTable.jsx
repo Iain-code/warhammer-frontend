@@ -118,7 +118,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
       }
       {selectedWargear && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-white"> 
-          <div className="bg-[#1b1b1b] p-6 rounded-xl shadow-lg max-w-4xl w-full text-center overflow-x-auto">
+          <div className="bg-[#1b1b1b] p-6 rounded-xl shadow-lg max-w-4xl w-full text-center max-h-[80vh] overflow-y-auto">
             <div>
               <h2 className="text-xl text-orange-500 font-bold mb-4">Wargear</h2>
               <table className="min-w-[600px] w-full mx-auto border-collapse bg-[#1b1b1b] rounded-lg text-white">
@@ -159,7 +159,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
       {selectedKeywords && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center text-white 
         max-h-1/2 overflow-y-auto">
-          <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full overflow-x-auto">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl text-orange-500 font-bold mb-4">Keywords</h2>
             {selectedKeywords.map(word =>
               <p key={word.index} className="mb-6">
@@ -175,7 +175,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
       )}
       {selectedAbilities && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center text-white">
-          <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full overflow-x-auto">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl text-orange font-bold mb-4 text-orange-500">Abilities</h2>
             {selectedAbilities.map(ability =>
               <div className='mt-8' key={ability.id}>

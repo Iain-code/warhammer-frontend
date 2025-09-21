@@ -89,6 +89,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     if (rules.isLethal) {
+      console.log('results[6]:', results[6])
       console.log('successfulWounds before lethal:', successfulWounds)
       successfulWounds += results[6]
       console.log('successfulWounds with lethal:', successfulWounds)

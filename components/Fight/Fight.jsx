@@ -221,7 +221,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   }
 
   const calculateSave = () => {
-    let ap = wargear.AP.replace("-", "")
+    let ap = Number(String(wargear.AP).replace("-", ""))
     let save = (Number(defender.Sv.replace("+", ""))) + ap
     let inv_save
 

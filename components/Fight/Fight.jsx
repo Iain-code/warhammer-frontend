@@ -89,7 +89,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     if (rules.isLethal) {
-      successfulWounds += (localHits / 6)
+      successfulWounds += (hits / 6)
       console.log('successfulWounds with lethal 1:', successfulWounds)
       console.log('local hits BEFORE lethals:', localHits)
       localHits -= successfulWounds
@@ -97,7 +97,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
 
       if (rules.isCrit5) {
         console.log('local hits BEFORE CRIT 5s', localHits)
-        const crit5 = localHits / 6
+        const crit5 = hits / 6
         successfulWounds += crit5
         localHits -= crit5 
         console.log('local hits AFTER CRIT 5s', localHits)
@@ -105,7 +105,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     console.log('local hits BEFORE WOUND ROLL', localHits)
-    
+
     const woundRoll = diceRoll(localHits)
     successfulWounds += woundRollSort(woundRoll, modifier)
     let reRoll = 0
@@ -115,6 +115,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
       const rolled = diceRoll(reRoll)
       successfulWounds += woundRollSort(rolled, modifier)
     }
+
     setWoundRoll(woundRoll)
     setWoundModifier(modifier)
     return successfulWounds

@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import MyBarChart from './Chart'
 import ModelContext from '../../contexts/modelContext'
+import { registerables } from 'chart.js'
 
 const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   const [model] = useContext(ModelContext)
@@ -89,28 +90,29 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     if (rules.isLethal) {
-      console.log('results[6]:', results[6])
-      console.log('successfulWounds before lethal:', successfulWounds)
       successfulWounds += results[6]
-      console.log('successfulWounds with lethal:', successfulWounds)
-      console.log('local hits BEFORE lethals:', localHits)
-      localHits -= successfulWounds
-      console.log('local hits AFTER lethals:', localHits)
+      localHits -= results[6]
 
       if (rules.isCrit5) {
         successfulWounds += results[5]
         localHits -= results[5]
       }
     }
-
     console.log('local hits BEFORE WOUND ROLL', localHits)
 
     const woundRoll = diceRoll(localHits)
     successfulWounds += woundRollSort(woundRoll, modifier)
     let reRoll = 0
+    let failedRollsWithoutLethals = successfulWounds
 
     if (rules.isTwinLinked) {
-      reRoll = (woundRoll[1] + woundRoll[2] + woundRoll[3] + woundRoll[4] + woundRoll[5] + woundRoll[6]) - successfulWounds
+      if (rules.isLethal) {
+        failedRollsWithoutLethals = successfulWounds - results[6]
+        if (rules.isCrit5) {
+          failedRollsWithoutLethals = successfulWounds - results[5]
+        }
+      }
+      reRoll = (woundRoll[1] + woundRoll[2] + woundRoll[3] + woundRoll[4] + woundRoll[5] + woundRoll[6]) - failedRollsWithoutLethals
       const rolled = diceRoll(reRoll)
       successfulWounds += woundRollSort(rolled, modifier)
     }

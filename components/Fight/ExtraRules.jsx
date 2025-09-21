@@ -12,13 +12,17 @@ const ExtraRules = ({ wargear }) => {
     isLethal: false,
     isCrit5: false,
     isDev: false,
-    isIgnoreCover: false,
+    isWithCover: false,
     isTorrent: false,
     isTwinLinked: false,
     isPlusHit: false,
     isPlusWound: false,
     isMinusHit: false,
     isMinusWound: false,
+    isMinusDamage: false,
+    isReRollHits: false,
+    isReRollHits1: false,
+    isReRollWounds1: false,
   })
 
   const handleCheckboxChange = (stateToChange) => {

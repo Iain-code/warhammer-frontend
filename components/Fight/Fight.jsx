@@ -20,11 +20,65 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   const [damageModifier, setDamageModifier] = useState(null)
   
   const defender = model.defence
-  const attacks = Number(wargear.attacks)
   const hitTarget = Number(wargear.BS_WS)
   let strength = Number(wargear.strength)
   let toughness = Number(defender.T)
+  let attacks = 0
 
+  if (attacks.length === 1) {
+    attacks = Number(wargear.attacks)
+  }
+
+  if (attacks.length === 2) {
+    const diceTypeToRoll = splitDiceType(wargear.attacks)
+    if (diceTypeToRoll === 3) {
+      attacks = 2
+    }
+    if (diceTypeToRoll === 6) {
+      attacks = 3.5
+    }
+  }
+
+  if (attacks.length === 3) {
+    const diceTypeToRoll = splitDiceType(wargear.attacks)
+    const diceAmountToRoll = splitDiceAmount(wargear.attacks)
+    if (diceTypeToRoll === 3) {
+      if (diceAmountToRoll === 1) {
+        attacks = 2
+      }
+      if (diceAmountToRoll === 2) {
+        attacks = 4
+      }
+      if (diceAmountToRoll === 3) {
+        attacks = 6
+      }
+      if (diceAmountToRoll === 4) {
+        attacks = 8
+      }
+    }
+    if (diceTypeToRoll === 6) {
+      if (diceAmountToRoll === 2) {
+        attacks = 7
+      }
+      if (diceAmountToRoll === 3) {
+        attacks = 10.5
+      }
+      if (diceAmountToRoll === 4) {
+        attacks = 14
+      }
+    }
+  }
+
+  const splitDiceType = (dice) => {
+    const parts = dice.toUpperCase().split("D")
+    return parseInt(parts[1], 10)
+  }
+
+  const splitDiceAmount = (dice) => {
+    const parts = dice.toUpperCase().split("D")
+    return parseInt(parts[0], 10)
+  }
+  
   const hitCalculation = (results, hitChance) => {
     let hits = 0
     let updatedResults = { ...results }
@@ -98,7 +152,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
         localHits -= results[5]
       }
     }
-    console.log('local hits BEFORE WOUND ROLL', localHits)
 
     const woundRoll = diceRoll(localHits)
     successfulWounds += woundRollSort(woundRoll, modifier)

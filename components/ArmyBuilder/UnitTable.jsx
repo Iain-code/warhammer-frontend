@@ -117,7 +117,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
         </table>
       }
       {selectedWargear && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-white max-h-[80vh] overflow-y-auto"> 
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-white overflow-y-auto"> 
           <div className="bg-[#1b1b1b] p-6 rounded-xl shadow-lg max-w-4xl w-full text-center max-h-[80vh] overflow-y-auto">
             <div>
               <h2 className="text-xl text-orange-500 font-bold mb-4">Wargear</h2>
@@ -158,7 +158,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
       
       {selectedKeywords && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center text-white 
-        max-h-1/2 overflow-y-auto max-h-[80vh]">
+        max-h-1/2 overflow-y-auto">
           <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl text-orange-500 font-bold mb-4">Keywords</h2>
             {selectedKeywords.map(word =>
@@ -174,7 +174,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
         </div>
       )}
       {selectedAbilities && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center text-white max-h-[80vh] overflow-y-auto">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 text-center text-white overflow-y-auto">
           <div className="bg-gray-800 p-6 rounded-xl shadow-xl max-w-sm w-full max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl text-orange font-bold mb-4 text-orange-500">Abilities</h2>
             {selectedAbilities.map(ability =>

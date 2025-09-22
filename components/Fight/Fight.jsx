@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import MyBarChart from './Chart'
 import ModelContext from '../../contexts/modelContext'
-import { registerables } from 'chart.js'
 
 const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   const [model] = useContext(ModelContext)
@@ -24,8 +23,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   let strength = Number(wargear.strength)
   let toughness = Number(defender.T)
   let attacks = 0
-
-  console.log('attacking wargear', wargear.attacks)
 
   const splitDiceType = (dice) => {
     const parts = dice.toUpperCase().split("D")
@@ -55,9 +52,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     const diceTypeToRoll = splitDiceType(wargear.attacks)
     const diceAmountToRoll = splitDiceAmount(wargear.attacks)
 
-    console.log('Type', diceTypeToRoll)
-    console.log('amount', diceAmountToRoll)
-
     if (diceTypeToRoll === 3) {
       if (diceAmountToRoll === 1) {
         attacks = 2
@@ -86,40 +80,55 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
   }
 
-  console.log('attacks at end:', attacks)
-
   const hitCalculation = (results, hitChance) => {
     let hits = 0
     let updatedResults = { ...results }
-    let newResults = null
 
-    if (rules.isSustained) {
-      newResults = { ...updatedResults, 6: updatedResults[6] * 2}
+    if (rules.isReRollHits) {
+      let failedHitsToReRoll = 0
 
-      if (rules.isCrit5) {
-        newResults = { ...newResults, 5: updatedResults[5] * 2 }
+      for (let numberRolled in updatedResults) {
+        if (Number(numberRolled) < hitChance) {
+          failedHitsToReRoll += updatedResults[numberRolled]
+          updatedResults[numberRolled] = 0
+        }
+      }
+      const reRolledHits = diceRoll(failedHitsToReRoll)
+
+      for (let key in reRolledHits) {
+        updatedResults[key] = (updatedResults[key] || 0) + (reRolledHits[key] || 0)
       }
     }
+
+    if (rules.isSustained) {
+      updatedResults = { ...updatedResults, 6: updatedResults[6] * 2}
+
+      if (rules.isCrit5) {
+        updatedResults = { ...updatedResults, 5: updatedResults[5] * 2 }
+      }
+    }
+
     if (rules.isPlusHit && hitChance > 2) {
       hitChance -= 1
     }
+
     if (rules.isMinusHit && hitChance < 6) {
       hitChance += 1
     }
 
-    const source = newResults || updatedResults
 
-    if (rules.isTorrent || typeof hitChance != 'number') {
-      const torrentHits = updatedResults[1] + updatedResults[2] + updatedResults[3] + updatedResults[4] + updatedResults[5] + updatedResults[6]
+    if (rules.isTorrent || typeof hitChance != 'number' || Number.isNaN(hitChance)) {
+      const torrentHits = Object.values(updatedResults).reduce((total, value) => total + value, 0)
       return torrentHits
-    } else {
-      for (let key in source) {
-        if (key >= hitChance) {
-          hits += source[key]
-        }
-      }
-      return hits
     }
+
+    for (let key in updatedResults) {
+      if (Number(key) >= hitChance) {
+        hits += updatedResults[key]
+      }
+    }
+
+    return hits
   }
 
   const woundCalculation = (results, localHits) => {
@@ -174,7 +183,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
           failedRollsWithoutLethals = successfulWounds - results[5]
         }
       }
-      reRoll = (woundRoll[1] + woundRoll[2] + woundRoll[3] + woundRoll[4] + woundRoll[5] + woundRoll[6]) - failedRollsWithoutLethals
+      reRoll = (Object.values(woundRoll).reduce((total, value) => total + value, 0)) - failedRollsWithoutLethals
       const rolled = diceRoll(reRoll)
       successfulWounds += woundRollSort(rolled, modifier)
     }
@@ -282,7 +291,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     if (wargear.damage > 1 && rules.isMinusDamage) {
       modifiedDamage -= 1
     }
-    
+
     const damage = localFailedSaves * modifiedDamage
 
     return Number(damage)

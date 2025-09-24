@@ -100,6 +100,14 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
       }
     }
 
+    if (rules.isReRollHits1) {
+      const reRoll1s = diceRoll(updatedResults[1])
+      
+      for (let key in reRoll1s) {
+        updatedResults[key] = (updatedResults[key] || 0) + (reRoll1s[key] || 0)
+      }
+    }
+
     if (rules.isSustained) {
       updatedResults = { ...updatedResults, 6: updatedResults[6] * 2}
 
@@ -152,6 +160,15 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
       modifier = 5
     } else if (strength > toughness) {
       modifier = 3
+    }
+
+    if (rules.reRollWounds1) {
+      const reRolled1 = diceRoll(localHits[1])
+      console.log('localHits', localHits)
+      
+      for (let key in reRolled1) {
+        localHits[key] = (localHits[key] || 0) + (reRolled1[key] || 0)
+      }
     }
 
     if (rules.isPlusWound && modifier > 2) {

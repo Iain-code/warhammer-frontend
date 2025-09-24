@@ -80,10 +80,12 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
   if (wargear.attacks.length === 4) {
     const attacksAddition = wargear.attacks.split("+")
-    let type = splitDiceType(wargear.attacks)
-    let amount = splitDiceAmount(wargear.attacks)
+    let type = splitDiceType(attacksAddition[0])
+    let amount = splitDiceAmount(attacksAddition[0])
     console.log('attacks addition', attacksAddition)
-
+    console.log('type', type)
+    console.log('amount', amount)
+    
   }
 
   const hitCalculation = (results, hitChance) => {

@@ -164,12 +164,13 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
 
     if (rules.isReRollWounds1) {
       console.log('results', results)
-      const reRolled1 = diceRoll(localHits[1])
+      const reRolled1 = diceRoll(results[1])
       console.log('localHits', localHits)
       
       for (let key in reRolled1) {
-        localHits[key] = (localHits[key] || 0) + (reRolled1[key] || 0)
+        localHits = localHits += (reRolled1[key] || 0)
       }
+      console.log('local hits AFTER', localHits)
     }
 
     if (rules.isPlusWound && modifier > 2) {

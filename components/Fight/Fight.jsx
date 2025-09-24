@@ -85,7 +85,12 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     console.log('attacks addition', attacksAddition)
     console.log('type', type)
     console.log('amount', amount)
-    
+    if (Number(amount) === 6) {
+      attacks = 3.5 + attacksAddition[1]
+    }
+    if (Number(amount) === 3) {
+      attacks = 2 + attacksAddition[1]
+    }
   }
 
   const hitCalculation = (results, hitChance) => {

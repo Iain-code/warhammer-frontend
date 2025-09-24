@@ -24,6 +24,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   let toughness = Number(defender.T)
   let attacks = 0
 
+  console.log('wargear', wargear)
+
   const splitDiceType = (dice) => {
     const parts = dice.toUpperCase().split("D")
     return parseInt(parts[1], 10)

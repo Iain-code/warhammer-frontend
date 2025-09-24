@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import MyBarChart from './Chart'
 import ModelContext from '../../contexts/modelContext'
 
-const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
+const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksModifier }) => {
   const [model] = useContext(ModelContext)
   const [hits, setHits] = useState(null)
   const [wounds, setWounds] = useState(null)
@@ -22,7 +22,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   const hitTarget = Number(wargear.BS_WS)
   let strength = Number(wargear.strength)
   let toughness = Number(defender.T)
-  let attacks = Number(wargear.attacks)
+  let attacks = Number(wargear.attacks) + (Number(attacksModifier) || 0)
 
   console.log('wargear', wargear)
 
@@ -76,6 +76,14 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
         attacks = 14
       }
     }
+  }
+
+  if (wargear.attacks.length === 4) {
+    const attacksAddition = wargear.attacks.split("+")
+    let type = splitDiceType(wargear.attacks)
+    let amount = splitDiceAmount(wargear.attacks)
+    console.log('attacks addition', attacksAddition)
+
   }
 
   const hitCalculation = (results, hitChance) => {
@@ -416,7 +424,8 @@ Fight.propTypes = {
   rules: PropTypes.object.isRequired,
   defender: PropTypes.object.isRequired,
   strengthModifier: PropTypes.number,
-  toughnessModifier: PropTypes.number
+  toughnessModifier: PropTypes.number,
+  attacksModifier: PropTypes.number
 }
 
 export default Fight

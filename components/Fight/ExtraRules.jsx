@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 const ExtraRules = ({ wargear }) => {
   const [strengthGain, setStrengthGain] = useState(0)
   const [toughnessGain, setToughnessGain] = useState(0)
+  const [attacksGain, setAttacksGain] = useState(0)
   const [extraRules, setExtraRules] = useState({
     isSustained: false,
     isLethal: false,
@@ -66,10 +67,22 @@ const ExtraRules = ({ wargear }) => {
             value={toughnessGain}
             onChange={(e) => setToughnessGain(e.target.value)}
           />
+          <label htmlFor="attacksSlider" className="mb-2 text-center">
+            Attacks Amount Gain/Loss - Modifier: <span className="font-bold">{attacksGain}</span>
+          </label>
+          <input
+            id="attacksSlider"
+            type='range'
+            min='-10'
+            max='10'
+            value={toughnessGain}
+            onChange={(e) => setToughnessGain(e.target.value)}
+          />
         </div>
         <Fight
           strengthModifier={strengthGain}
           toughnessModifier={toughnessGain}
+          attacksModifier={attacksGain}
           wargear={wargear} 
           rules={extraRules}
         />

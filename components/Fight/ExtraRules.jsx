@@ -75,8 +75,8 @@ const ExtraRules = ({ wargear }) => {
             type='range'
             min='-10'
             max='10'
-            value={toughnessGain}
-            onChange={(e) => setToughnessGain(e.target.value)}
+            value={attacksGain}
+            onChange={(e) => setAttacksGain(e.target.value)}
           />
         </div>
         <Fight

@@ -22,7 +22,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
   const hitTarget = Number(wargear.BS_WS)
   let strength = Number(wargear.strength)
   let toughness = Number(defender.T)
-  let attacks = 0
+  let attacks = Number(wargear.attacks)
 
   console.log('wargear', wargear)
 
@@ -35,12 +35,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     const parts = dice.toUpperCase().split("D")
     return parseInt(parts[0], 10)
   }
-  
-  if (wargear.attacks.length === 1) {
-    attacks = Number(wargear.attacks)
-  }
 
-  if (wargear.attacks.length === 2) {
+  if (wargear.attacks.length === 2 && wargear.attacks.toUpperCase().charAt(0) === "D") {
     const diceTypeToRoll = splitDiceType(wargear.attacks)
     if (diceTypeToRoll === 3) {
       attacks = 2

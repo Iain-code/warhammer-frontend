@@ -163,14 +163,11 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
     }
 
     if (rules.isReRollWounds1) {
-      console.log('results', results)
       const reRolled1 = diceRoll(results[1])
-      console.log('localHits', localHits)
-      
+ 
       for (let key in reRolled1) {
         localHits = localHits += (reRolled1[key] || 0)
       }
-      console.log('local hits AFTER', localHits)
     }
 
     if (rules.isPlusWound && modifier > 2) {
@@ -307,6 +304,32 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
 
   const damageCalculation = (localFailedSaves) => {
     let modifiedDamage = wargear.damage
+    let type = 0
+    let amount = 0
+
+    if (modifiedDamage.length === 3) {
+      amount = splitDiceAmount(modifiedDamage)
+      type = splitDiceType(modifiedDamage)
+
+      if (Number(amount) === 2 && Number(type) === 6) {
+        modifiedDamage = 7
+      }
+      if (Number(amount) === 3 && Number(type) === 6) {
+        modifiedDamage = 10.5
+      }
+    }
+
+    if (modifiedDamage.length === 2) {
+      type = splitDiceType(modifiedDamage)
+
+      if (Number(type) === 3) {
+        modifiedDamage = 2
+      }
+      if (Number(type) === 6) {
+        modifiedDamage = 3.5
+      }
+    }
+
     if (wargear.damage > 1 && rules.isMinusDamage) {
       modifiedDamage -= 1
     }

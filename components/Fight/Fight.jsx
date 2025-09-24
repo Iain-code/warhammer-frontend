@@ -162,7 +162,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier }) => {
       modifier = 3
     }
 
-    if (rules.reRollWounds1) {
+    if (rules.isReRollWounds1) {
       const reRolled1 = diceRoll(localHits[1])
       console.log('localHits', localHits)
       

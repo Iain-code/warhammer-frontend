@@ -275,7 +275,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     if (defender.inv_sv !== '' || defender.inv_sv !== "-" || defender.inv_sv === null) {
       inv_save = Number(String(defender.inv_save).replace("+", ""))
     }
-    if (rules.WithCover) {
+    if (rules.isWithCover) {
       save -= 1
     }
     if (save > 6) {

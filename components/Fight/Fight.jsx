@@ -385,7 +385,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
         {toggle &&
         <div className='w-full mb-6'>
           <h2 className='text-white pt-5 underline justify-center flex flex'>Fight Calculations</h2>
-          <div className='text-white flex flex-col lg:flex-wrap gap-4 justify-center'>
+          <div className='text-white flex flex-col lg:flex-wrap gap-4 justify-center mx-auto'>
             <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
               Average Successful Hits
               <div>

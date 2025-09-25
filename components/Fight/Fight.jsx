@@ -24,8 +24,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
   let toughness = Number(defender.T)
   let attacks = Number(wargear.attacks) + (Number(attacksModifier) || 0)
 
-  console.log('wargear', wargear)
-
   const splitDiceType = (dice) => {
     const parts = dice.toUpperCase().split("D")
     return parseInt(parts[1], 10)
@@ -81,14 +79,12 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
   if (wargear.attacks.length === 4) {
     const attacksAddition = wargear.attacks.split("+")
     let type = splitDiceType(attacksAddition[0])
-    console.log('attacks addition', attacksAddition)
-    console.log('type', type)
 
     if (Number(type) === 6) {
-      attacks = 3.5 + attacksAddition[1]
+      attacks = 3.5 + Number(attacksAddition[1])
     }
     if (Number(type) === 3) {
-      attacks = 2 + attacksAddition[1]
+      attacks = 2 + Number(attacksAddition[1])
     }
   }
 
@@ -276,6 +272,9 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
       inv_save = Number(String(defender.inv_save).replace("+", ""))
     }
     if (rules.isWithCover) {
+      save -= 1
+    }
+    if (rules.isAoC) {
       save -= 1
     }
     if (save > 6) {

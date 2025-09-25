@@ -24,6 +24,7 @@ const ExtraRules = ({ wargear }) => {
     isReRollHits: false,
     isReRollHits1: false,
     isReRollWounds1: false,
+    isAoC: false,
   })
 
   const handleCheckboxChange = (stateToChange) => {

@@ -385,31 +385,25 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
         {toggle &&
         <div className='w-full mb-6'>
           <h2 className='text-white pt-5 underline justify-center flex'>Fight Calculations</h2>
-          <br />
           <div className='text-white flex flex-wrap gap-4 justify-center'>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Average Successful Hits
-              <br />
               {(hits / 10000).toFixed(2) }
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Average Successful Wounds
-              <br />
               {(wounds / 10000).toFixed(2)}
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Average Wounds Through Saves
-              <br />
               {(failedSaves / 10000).toFixed(2)}
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Total Damage
-              <br />
               {(damage / 10000).toFixed(2)}
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Models killed
-              <br />
               {(modelsKilled / 10000).toFixed(2)}
             </div>
           </div>

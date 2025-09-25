@@ -386,31 +386,31 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
         <div className='w-full mb-6'>
           <h2 className='text-white pt-5 underline justify-center flex flex'>Fight Calculations</h2>
           <div className='text-white flex flex-col lg:flex-wrap gap-4 justify-center'>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
               Average Successful Hits
               <div>
                 {(hits / 10000).toFixed(2) }
               </div>
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
               Average Successful Wounds
               <div>
                 {(wounds / 10000).toFixed(2)}
               </div>
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Average Wounds Through Saves
               <div>
                 {(failedSaves / 10000).toFixed(2)}
               </div>
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
               Total Damage
               <div>
                 {(damage / 10000).toFixed(2)}
               </div>
             </div>
-            <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
+            <div className='flex flex-col items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
             Models killed
               <div>
                 {(modelsKilled / 10000).toFixed(2)}

@@ -403,7 +403,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
               {(failedSaves / 10000).toFixed(2)}
             </div>
             <div className='flex items-center text-center justify-center bg-neutral-600 border rounded-xl border-neutral-600 lg:w-1/4 lg:h-[100px]'>
-            Damage
+            Total Damage
               <br />
               {(damage / 10000).toFixed(2)}
             </div>

@@ -119,7 +119,9 @@ const ModelForm = () => {
           <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
           Reset </span>
         </button>
-        <h1 className='flex justify-center text-center text-xl my-2 text-white'>Select a weapon profile</h1>
+        <span>
+          <h1 className='flex justify-center text-center text-xl my-2 text-white'>Select a weapon profile</h1>
+        </span>
       </div>
       <div>
         {model && model.attack && model.defence && <ModelWargear /> }

@@ -357,6 +357,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     const killed = attacksCount / attacksPerKill
 
+    console.log('attacksCount', attacksCount)
+    console.log('attacksPerKill', attacksPerKill)
     console.log('killed', Number(killed))
 
     return Number(killed)

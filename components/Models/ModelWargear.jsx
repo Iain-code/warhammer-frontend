@@ -51,7 +51,9 @@ const ModelWargear = () => {
       <div>
         {atkWargear && atkWargear.length > 0 &&
         <div  className='flex justify-center text-white'>
-          <h1 className='text-center text-xl my-2'>Select a weapon profile</h1>
+          <div>
+            <h1 className='text-center text-xl my-2'>Select a weapon profile</h1>
+          </div>
           <ul className="flex flex-col lg:flex-row w-3/4 gap-3">
             {atkWargear.map(item =>
               <li key={item.id} className="flex flex-1">

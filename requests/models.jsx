@@ -65,8 +65,8 @@ const getEnhancements = async () => {
   return response.data
 }
 
-const getEnhancementsForFaction = async () => {
-  const response = await axios.get(`${baseUrl}/enhancements/{id}`)
+const getEnhancementsForFaction = async (faction) => {
+  const response = await axios.get(`${baseUrl}/enhancements/${faction}`)
   return response.data
 }
 

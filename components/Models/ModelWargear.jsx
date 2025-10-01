@@ -49,7 +49,7 @@ const ModelWargear = () => {
   return (
     <div>
       <div className='flex flex-col justify-center text-center '>
-        <h1 className='text-xl my-2'>Select a weapon profile</h1>
+        <h1 className='text-xl my-2 text-white'>Select a weapon profile</h1>
       </div>
       <div>
         {atkWargear && atkWargear.length > 0 &&

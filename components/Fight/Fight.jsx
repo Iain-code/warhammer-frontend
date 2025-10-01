@@ -359,7 +359,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     const attacksPerKill = Math.ceil(woundsPerModel / dmgPerAttack)
 
-    const killed = Math.floor(attacksCount / attacksPerKill)
+    const killed = attacksCount / attacksPerKill
 
     return killed
   }

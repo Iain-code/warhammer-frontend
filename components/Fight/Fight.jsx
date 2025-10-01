@@ -17,6 +17,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
   const [damageRoll, setDamageRoll] = useState(null)
   const [woundModifier, setWoundModifier] = useState(null)
   const [damageModifier, setDamageModifier] = useState(null)
+  const [damagePerAttack, setDamagePerAttack] = useState(null)
   
   const defender = model.defence
   const hitTarget = Number(wargear.BS_WS)
@@ -357,11 +358,12 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     const damage = Number(localFailedSaves) * Number(modifiedDamage)
 
+    setDamagePerAttack(modifiedDamage)
     return Number(damage)
   }
 
   const modelsCalculation = (localDamage) => {
-    const dmgPerAttack = Number(wargear.damage)
+    const dmgPerAttack = Number(damagePerAttack)
     const woundsPerModel = Number(defender.W)
 
     const attacksCount = Math.floor(localDamage / dmgPerAttack)

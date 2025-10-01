@@ -355,7 +355,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     const dmgPerAttack = attacks.damage
     const woundsPerModel = defender.W
 
-    const attacksCount = localDamage / dmgPerAttack
+    const attacksCount = Math.floor(localDamage / dmgPerAttack)
 
     const attacksPerKill = Math.ceil(woundsPerModel / dmgPerAttack)
 

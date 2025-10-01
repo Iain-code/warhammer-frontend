@@ -120,7 +120,6 @@ const ModelForm = () => {
           Reset </span>
         </button>
       </div>
-      <h1 className='flex justify-center text-center text-xl my-2 text-white'>Select a weapon profile</h1>
       <div>
         {model && model.attack && model.defence && <ModelWargear /> }
       </div>

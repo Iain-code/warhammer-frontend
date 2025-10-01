@@ -361,7 +361,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
   }
 
   const modelsCalculation = (localDamage) => {
-    const dmgPerAttack = Number(wargear.D)
+    const dmgPerAttack = Number(wargear.damage)
     const woundsPerModel = Number(defender.W)
 
     const attacksCount = Math.floor(localDamage / dmgPerAttack)

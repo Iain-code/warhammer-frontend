@@ -344,10 +344,10 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
       const damageSplit = modifiedDamage.split("+")
 
       if (Number(type) === 3) {
-        modifiedDamage = 2 + damageSplit[1]
+        modifiedDamage = 2 + Number(damageSplit[1])
       }
       if (Number(type) === 6) {
-        modifiedDamage = 3.5 + damageSplit[1]
+        modifiedDamage = 3.5 + Number(damageSplit[1])
       }
     }
 
@@ -355,7 +355,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
       modifiedDamage -= 1
     }
 
-    const damage = localFailedSaves * modifiedDamage
+    const damage = Number(localFailedSaves) * Number(modifiedDamage)
 
     return Number(damage)
   }

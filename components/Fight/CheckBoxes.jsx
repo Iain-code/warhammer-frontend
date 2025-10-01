@@ -140,6 +140,22 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
         />
         AoC
       </label>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <input
+          className='tick-boxes-box'
+          type="checkbox"
+          onChange={() => changeRule('isFNP5')}
+        />
+        Feel No Pain 5+
+      </label>
+      <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <input
+          className='tick-boxes-box'
+          type="checkbox"
+          onChange={() => changeRule('isFNP6')}
+        />
+        Feel No Pain 6+
+      </label>
     </div>
   )
 }

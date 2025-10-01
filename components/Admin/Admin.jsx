@@ -704,7 +704,7 @@ const Admin = ({ user }) => {
             </tr>
           </thead>
           <tbody>
-            {getEnhancements.map(item => {
+            {getEnhancements && getEnhancements.map(item => {
               <tr>
                 <td>{item.name}</td>
                 <td>{item.cost}</td>

@@ -695,6 +695,7 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
+      {getEnhancements.data &&
       <div>
         <table>
           <thead>
@@ -704,7 +705,7 @@ const Admin = ({ user }) => {
             </tr>
           </thead>
           <tbody>
-            {getEnhancements.data && getEnhancements.data.map(item => {
+            {getEnhancements.data.map(item => {
               <tr>
                 <td>{item.name}</td>
                 <td>{item.cost}</td>
@@ -713,6 +714,7 @@ const Admin = ({ user }) => {
           </tbody>
         </table>
       </div>
+      }
     </div>
   )
 }

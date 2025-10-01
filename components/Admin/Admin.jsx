@@ -67,10 +67,13 @@ const Admin = ({ user }) => {
     refetchOnWindowFocus: false,
   })
 
-  const getEnhancements = useQuery([
+  const getEnhancements = useQuery({
     queryKey: ['adminEnhance', faction],
-    queryFn: () => modelService.getEnhancements
-  ])
+    queryFn: () => modelService.getEnhancementsForFaction(faction),
+    enabled: !!faction,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  })
 
   const updateModelMutation = useMutation({
     mutationFn: ({ user, updatedModel }) => modelService.updateModel(user, updatedModel),
@@ -701,7 +704,12 @@ const Admin = ({ user }) => {
             </tr>
           </thead>
           <tbody>
-            <td></td>
+            {getEnhancements.map(item => {
+              <tr>
+                <td>{item.name}</td>
+                <td>{item.cost}</td>
+              </tr>
+            })}
           </tbody>
         </table>
       </div>

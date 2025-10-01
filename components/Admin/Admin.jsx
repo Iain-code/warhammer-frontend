@@ -67,6 +67,11 @@ const Admin = ({ user }) => {
     refetchOnWindowFocus: false,
   })
 
+  const getEnhancements = useQuery([
+    queryKey: ['adminEnhance', faction],
+    queryFn: () => modelService.getEnhancements
+  ])
+
   const updateModelMutation = useMutation({
     mutationFn: ({ user, updatedModel }) => modelService.updateModel(user, updatedModel),
     onSuccess: (response) => setSelectedModel(response),
@@ -687,6 +692,19 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Points Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td></td>
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

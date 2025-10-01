@@ -338,6 +338,19 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
       }
     }
 
+    if (modifiedDamage.length === 4) {
+      type = splitDiceType(modifiedDamage)
+
+      const damageSplit = modifiedDamage.split("+")
+
+      if (Number(type) === 3) {
+        modifiedDamage = 2 + damageSplit[1]
+      }
+      if (Number(type) === 6) {
+        modifiedDamage = 3.5 + damageSplit[1]
+      }
+    }
+
     if (wargear.damage > 1 && rules.isMinusDamage) {
       modifiedDamage -= 1
     }
@@ -356,11 +369,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     const attacksPerKill = Math.ceil(woundsPerModel / dmgPerAttack)
 
     const killed = attacksCount / attacksPerKill
-
-    console.log('wargear', wargear)
-    console.log('attacksCount', attacksCount)
-    console.log('attacksPerKill', attacksPerKill)
-    console.log('killed', Number(killed))
 
     return Number(killed)
   }

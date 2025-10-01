@@ -304,12 +304,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     }
 
     const passed = localWounds * passRate
-    console.log('passed:', passed)
-
     const failed = localWounds - passed
-    console.log('failed:', failed)
     const failedWithDev = failed + devs
-    console.log('failedwithDev:', failedWithDev)
 
     return (Number(failedWithDev.toFixed(2)))
   }
@@ -361,7 +357,9 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     const killed = attacksCount / attacksPerKill
 
-    return killed
+    console.log('killed', Number(killed))
+
+    return Number(killed)
   }
 
   return (

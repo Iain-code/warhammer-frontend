@@ -703,34 +703,37 @@ const Admin = ({ user }) => {
       }
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
-        <table className='rounded-xl'>
+        <table className='table-fixed w-full border-collapse border border-gray-400 rounded-xl'>
+
           <thead>
             <tr className='bg-neutral-700'>
-              <th className='border border-grey-400'>Name</th>
-              <th className='border border-grey-400'>Points Cost</th>
-              <th className='border border-grey-400'>Description</th>
-              <th className='border border-grey-400'>Detachment</th>
+              <th className='border border-gry-400'>Name</th>
+              <th className='border border-gray-400'>Points Cost</th>
+              <th className='border border-gray-400'>Description</th>
+              <th className='border border-gray-400'>Detachment</th>
             </tr>
           </thead>
+
           <tbody>
             {getEnhancements.data.map(item =>
               <tr key={item.id} className='bg-neutral-700 text-white border border-grey-400'>
-                <td className='border border-grey-400'>{item.name}</td>
+                <td className='border border-gray-400'>{item.name}</td>
+
                 {editing ? 
                   <input 
                     type='text'
                     value={updatedEnhancement.cost ?? item.cost ?? ''}
                     onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}
-                    className='bg-neutral-700'
+                    className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"
                   /> :
-                  <td className='border border-grey-400'>{item.cost}</td>
+                  <td className='border border-gray-400'>{item.cost}</td>
                 }
                 {editing ?
                   <input 
                     type='text'
                     value={updatedEnhancement.description ?? item.description ?? ''}
                     onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}
-                    className='bg-neutral-700'                    
+                    className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"                    
                   /> :
                   <td>{item.description}</td>
                 }

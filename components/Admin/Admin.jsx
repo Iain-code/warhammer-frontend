@@ -288,25 +288,25 @@ const Admin = ({ user }) => {
     deleteModelMutation.mutate(selectedModel.datasheet_id)
   }
 
-  const enhancementCostChange = (name, value) => {
-    console.log('name1', name)
+  const enhancementCostChange = (enhancement, value) => {
+    console.log('enhancement1', enhancement)
     console.log('value', value)
     setUpdatedEnhancement(prev => {
-      const exists = prev.some(item => item.name === name)
+      const exists = prev.some(item => item.id === enhancement.id)
       if (exists) {
-        return prev.map(item => item.name === name ? {name: name, cost: value} : item)
+        return prev.map(item => item.name === name ? { ...enhancement, cost: value} : item)
       }
-      return [ ...prev, { name: name, cost: value }]
+      return [ ...prev, { ...enhancement, cost: value }]
     })
   }
 
-  const enhancementDescripionChange = (name, description) => {
+  const enhancementDescripionChange = (enhancement, description) => {
     setUpdatedEnhancement(prev => {
-      const exists = prev.some(item => item.name === name)
+      const exists = prev.some(item => item.id === enhancement.id)
       if (exists) {
-        return prev.map(item => item.name === name ? { name: name, description: description } : item)
+        return prev.map(item => item.id === enhancement.id ? { ...enhancement, description: description } : item)
       }
-      return [ ...prev, { name: name, description: description }]
+      return [ ...prev, { ...enhancement, description: description }]
     })
   }
 
@@ -771,16 +771,16 @@ const Admin = ({ user }) => {
                 {editing ? 
                   <td><input
                     type='number'
-                    value={updatedEnhancement?.find(e => e.name === item.name)?.cost ?? item.cost ?? ''}
-                    onChange={(e) => enhancementCostChange(item.name, Number(e.target.value))}
+                    value={updatedEnhancement?.find(e => e.id === item.id)?.cost ?? item.cost ?? ''}
+                    onChange={(e) => enhancementCostChange(item, Number(e.target.value))}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"
                   /></td> :
                   <td className='border border-gray-400'>{item.cost}</td>
                 }
                 {editing ?
                   <td><textarea
-                    value={updatedEnhancement?.find(e => e.name === item.name)?.description ?? item.description ?? ''}
-                    onChange={(e) => enhancementDescripionChange(item.name, Number(e.target.value))}
+                    value={updatedEnhancement?.find(e => e.id === item.id)?.description ?? item.description ?? ''}
+                    onChange={(e) => enhancementDescripionChange(item, e.target.value)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"                    
                   /></td> :
                   <td>{item.description}</td>

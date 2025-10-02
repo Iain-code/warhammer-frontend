@@ -54,7 +54,7 @@ const Admin = ({ user }) => {
     refetchOnWindowFocus: false,
   })
 
-  console.log(wargearQuery)
+  console.log(wargearQuery.data)
 
   const sortUnitsAndFetchData = async () => {
     const IDs = getModels?.data.map(unit => unit.datasheet_id)
@@ -278,15 +278,15 @@ const Admin = ({ user }) => {
     deleteModelMutation.mutate(selectedModel.datasheet_id)
   }
 
-  const enhancementCostChange = (name, cost) => {
+  const enhancementCostChange = (name, value) => {
     setUpdatedEnhancement(prev => {
       const exists = prev.some(item => item.name === name)
       if (exists) {
-        return prev.map(item => item.name === name ? )
+        return prev.map(item => item.name === name ? {name: name, cost: value} : item)
       }
+      return [...prev, ]
     })
   }
-
 
   return (
     <div>
@@ -725,7 +725,7 @@ const Admin = ({ user }) => {
                 <td className='border border-gray-400'>{item.name}</td>
 
                 {editing ? 
-                  <td><textarea 
+                  <td><textarea
                     type='text'
                     value={updatedEnhancement.cost ?? item.cost ?? ''}
                     onChange={(e) => enhancementCostChange(item.name, e.target.value)}
@@ -734,7 +734,7 @@ const Admin = ({ user }) => {
                   <td className='border border-gray-400'>{item.cost}</td>
                 }
                 {editing ?
-                  <td><textarea 
+                  <td><textarea
                     type='text'
                     value={updatedEnhancement.description ?? item.description ?? ''}
                     onChange={(e) => enhancementDescripionChange(item.name, e.target.value)}

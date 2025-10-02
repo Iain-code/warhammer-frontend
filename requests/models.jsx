@@ -27,7 +27,6 @@ const updateModel = async (user, modelObj) => {
   }
 
   const response = await axios.put(`${baseUrl}/admins/models`, modelObj, config)
-  console.log('updateModel Response:', response.data)
   return response.data
 }
 
@@ -109,7 +108,6 @@ const deleteArmy = async (armyId) => {
 }
 
 const updatePoints = async (obj, user) => {
-  console.log('obj:', obj)
   const tokenHeader = userService.setToken(user.token)
   const config = {
     headers: { Authorization: tokenHeader },

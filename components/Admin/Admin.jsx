@@ -697,7 +697,7 @@ const Admin = ({ user }) => {
       }
       {console.log(getEnhancements.data)}
       {getEnhancements.data &&
-      <div>
+      <div className='flex justify-center text-center'>
         <table>
           <thead>
             <tr>
@@ -707,6 +707,7 @@ const Admin = ({ user }) => {
           </thead>
           <tbody>
             {getEnhancements.data.map(item => {
+              {console.log(item)}
               <tr>
                 <td>{item.name}</td>
                 <td>{item.cost}</td>

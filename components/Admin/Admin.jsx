@@ -284,7 +284,17 @@ const Admin = ({ user }) => {
       if (exists) {
         return prev.map(item => item.name === name ? {name: name, cost: value} : item)
       }
-      return [...prev, ]
+      return [ ...prev, { name: name, cost: value }]
+    })
+  }
+
+  const enhancementDescripionChange = (name, description) => {
+    setUpdatedEnhancement(prev => {
+      const exists = prev.some(item => item.name === name)
+      if (exists) {
+        return prev.map(item => item.name === name ? { name: name, description: description } : item)
+      }
+      return [ ...prev, { name: name, description: description }]
     })
   }
 
@@ -706,7 +716,6 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
-      {console.log(getEnhancements.data)}
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
         <table className='table-fixed w-full border-collapse border border-gray-400 rounded-xl'>
@@ -723,13 +732,20 @@ const Admin = ({ user }) => {
           <tbody>
             {getEnhancements.data.map(item =>
               <tr key={item.id} className='bg-neutral-700 text-white border border-grey-400'>
-                <td className='border border-gray-400'>{item.name}</td>
+                <td className='border border-gray-400'>
+                  {item.name}
+                  <button 
+                    onClick={}
+                  >
+                    Save Enhancement Changes
+                  </button> 
+                </td>
 
                 {editing ? 
                   <td><textarea
                     type='text'
-                    value={updatedEnhancement.cost ?? item.cost ?? ''}
-                    onChange={(e) => enhancementCostChange(item.name, e.target.value, item.description)}
+                    value={updatedEnhancement?.find(e => e.name === item.name)?.cost ?? item.cost ?? ''}
+                    onChange={(e) => enhancementCostChange(item.name, e.target.value)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"
                   /></td> :
                   <td className='border border-gray-400'>{item.cost}</td>
@@ -737,7 +753,7 @@ const Admin = ({ user }) => {
                 {editing ?
                   <td><textarea
                     type='text'
-                    value={updatedEnhancement.description ?? item.description ?? ''}
+                    value={updatedEnhancement?.find(e => e.name === item.name)?.description ?? item.description ?? ''}
                     onChange={(e) => enhancementDescripionChange(item.name, e.target.value)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"                    
                   /></td> :

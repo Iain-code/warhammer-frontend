@@ -80,7 +80,7 @@ const Admin = ({ user }) => {
 
   const updateEnhancementMutation = useMutation({
     mutationFn: ({ user, enhancement }) => updateService.updateEnhancement(user, enhancement),
-    onSuccess: (response) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [ 'adminEnhance', faction ]})
     },
     onError: (error) => {
@@ -310,7 +310,7 @@ const Admin = ({ user }) => {
 
   const saveEnhanceChanges = (name) => {
     const enhancement = updatedEnhancement.find(item => item.name === name)
-    updateEnhancementMutation.mutate(enhancement)
+    updateEnhancementMutation.mutate({ user, enhancement })
   }
 
   return (

@@ -71,8 +71,6 @@ const App = () => {
     }
   }, [userDispatch])
 
-  console.log("API base:", import.meta.env.VITE_API_BASE);
-
   return (
     <Router>
       <nav className="flex items-center justify-between px-4 py-3 bg-gray-900 text-white">

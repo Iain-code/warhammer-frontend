@@ -437,7 +437,7 @@ const Admin = ({ user }) => {
             </thead>
             <tbody>
               <tr className='hover:bg-neutral-600'>
-                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24 '>{ editing ?
+                <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>{ editing ?
                   <input
                     type="text"
                     value={updatedModel && updatedModel.name != null ? updatedModel.name : (selectedModel.name ?? '')}
@@ -700,19 +700,18 @@ const Admin = ({ user }) => {
       <div className='flex justify-center text-center'>
         <table>
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Points Cost</th>
+            <tr className='bg-neutral-700'>
+              <th className='border border-grey-400'>Name</th>
+              <th className='border border-grey-400'>Points Cost</th>
             </tr>
           </thead>
           <tbody>
-            {getEnhancements.data.map(item => {
-              {console.log(item)}
-              <tr>
-                <td>{item.name}</td>
-                <td>{item.cost}</td>
+            {getEnhancements.data.map(item => 
+              <tr key={item.id} className='bg-neutral-700 text-white border border-grey-400'>
+                <td className='border border-grey-400'>{item.name}</td>
+                <td className='border border-grey-400'>{item.cost}</td>
               </tr>
-            })}
+            )}
           </tbody>
         </table>
       </div>

@@ -24,7 +24,7 @@ const deleteUnit = async (Id, user) => {
   return response.data
 } 
 
-const updateEnhancement = async (enhancement, user) => {
+const updateEnhancement = async (user, enhancement) => {
   const tokenHeader = userService.setToken(user.token)
   const config = {
     headers: { Authorization: tokenHeader },

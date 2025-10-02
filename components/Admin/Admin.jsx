@@ -78,6 +78,16 @@ const Admin = ({ user }) => {
     refetchOnWindowFocus: false,
   })
 
+  const updateEnhancementMutation = useMutation({
+    mutationFn: ({ user, enhancement }) => updateService.updateEnhancement(user, enhancement),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: [ 'adminEnhance', faction ]})
+    },
+    onError: (error) => {
+      console.error('failed to update enhancements', error)
+    }
+  })
+
   const updateModelMutation = useMutation({
     mutationFn: ({ user, updatedModel }) => modelService.updateModel(user, updatedModel),
     onSuccess: (response) => setSelectedModel(response),
@@ -298,8 +308,9 @@ const Admin = ({ user }) => {
     })
   }
 
-  const saveEnhanceChanges = () => {
-
+  const saveEnhanceChanges = (name) => {
+    const enhancement = updatedEnhancement.find(item => item.name === name)
+    updateEnhancementMutation.mutate(enhancement)
   }
 
   return (
@@ -740,7 +751,7 @@ const Admin = ({ user }) => {
                   {item.name}
                   <div>
                     <button 
-                      onClick={saveEnhanceChanges}
+                      onClick={(item) => saveEnhanceChanges(item.name)}
                       className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                       overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
                       group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 

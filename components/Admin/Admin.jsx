@@ -703,11 +703,12 @@ const Admin = ({ user }) => {
       }
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
-        <table>
+        <table className='rounded-xl'>
           <thead>
             <tr className='bg-neutral-700'>
               <th className='border border-grey-400'>Name</th>
               <th className='border border-grey-400'>Points Cost</th>
+              <th className='border border-grey-400'>Description</th>
               <th className='border border-grey-400'>Detachment</th>
             </tr>
           </thead>
@@ -720,14 +721,16 @@ const Admin = ({ user }) => {
                     type='text'
                     value={updatedEnhancement.cost ?? item.cost ?? ''}
                     onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}
+                    className='bg-neutral-700'
                   /> :
                   <td className='border border-grey-400'>{item.cost}</td>
                 }
-                {editing ? 
+                {editing ?
                   <input 
                     type='text'
                     value={updatedEnhancement.description ?? item.description ?? ''}
-                    onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}                    
+                    onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}
+                    className='bg-neutral-700'                    
                   /> :
                   <td>{item.description}</td>
                 }

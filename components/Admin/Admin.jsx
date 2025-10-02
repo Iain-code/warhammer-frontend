@@ -310,9 +310,9 @@ const Admin = ({ user }) => {
     })
   }
 
-  const saveEnhanceChanges = (name) => {
-    console.log('name', name)
-    const enhancement = updatedEnhancement.find(item => item.name === name)
+  const saveEnhanceChanges = (id) => {
+    console.log('id', id)
+    const enhancement = updatedEnhancement.find(item => item.id === id)
     console.log('saveChanges eh', enhancement)
     updateEnhancementMutation.mutate({ user, enhancement })
   }
@@ -750,12 +750,12 @@ const Admin = ({ user }) => {
 
           <tbody>
             {getEnhancements.data.map(item =>
-              <tr key={item.id} className='bg-neutral-700 text-white border border-grey-400'>
+              <tr key={item.id} className='bg-neutral-700 text-white border border-gray-400'>
                 <td className='border border-gray-400'>
                   {item.name}
                   <div>
                     <button 
-                      onClick={(item) => saveEnhanceChanges(item.name)}
+                      onClick={(item) => saveEnhanceChanges(item.id)}
                       className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                       overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
                       group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
@@ -769,19 +769,18 @@ const Admin = ({ user }) => {
                 </td>
 
                 {editing ? 
-                  <td><textarea
-                    type='text'
+                  <td><input
+                    type='number'
                     value={updatedEnhancement?.find(e => e.name === item.name)?.cost ?? item.cost ?? ''}
-                    onChange={(e) => enhancementCostChange(item.name, e.target.value)}
+                    onChange={(e) => enhancementCostChange(item.name, Number(e.target.value))}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"
                   /></td> :
                   <td className='border border-gray-400'>{item.cost}</td>
                 }
                 {editing ?
                   <td><textarea
-                    type='text'
                     value={updatedEnhancement?.find(e => e.name === item.name)?.description ?? item.description ?? ''}
-                    onChange={(e) => enhancementDescripionChange(item.name, e.target.value)}
+                    onChange={(e) => enhancementDescripionChange(item.name, Number(e.target.value))}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"                    
                   /></td> :
                   <td>{item.description}</td>

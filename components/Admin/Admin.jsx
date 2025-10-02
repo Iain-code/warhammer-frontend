@@ -289,6 +289,8 @@ const Admin = ({ user }) => {
   }
 
   const enhancementCostChange = (name, value) => {
+    console.log('name1', name)
+    console.log('value', value)
     setUpdatedEnhancement(prev => {
       const exists = prev.some(item => item.name === name)
       if (exists) {
@@ -309,6 +311,7 @@ const Admin = ({ user }) => {
   }
 
   const saveEnhanceChanges = (name) => {
+    console.log('name', name)
     const enhancement = updatedEnhancement.find(item => item.name === name)
     console.log('saveChanges eh', enhancement)
     updateEnhancementMutation.mutate({ user, enhancement })

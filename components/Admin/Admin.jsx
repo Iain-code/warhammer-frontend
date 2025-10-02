@@ -19,6 +19,7 @@ const Admin = ({ user }) => {
   const [updatedPoints1, setUpdatedPoints1] = useState(null)
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
+  const [updatedEnhancement, setUpdatedEnhancement] = useState([])
   const queryClient = useQueryClient()
 
   const points = useQuery({
@@ -166,7 +167,6 @@ const Admin = ({ user }) => {
   }
 
   const handlePointsChange1 = (value) => {
-    console.log('updatedPoints1', updatedPoints1)
     if (updatedPoints1) {
       console.log('updated points in IF', updatedPoints1)
       setUpdatedPoints1({ ...updatedPoints1, cost: value })
@@ -274,6 +274,12 @@ const Admin = ({ user }) => {
     if (!ok) return
 
     deleteModelMutation.mutate(selectedModel.datasheet_id)
+  }
+
+  const enhancementChange = (name, value) => {
+    setUpdatedEnhancement(prev => {
+      const exists = prev.some(item.name === name)
+    })
   }
 
 
@@ -695,7 +701,6 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
-      {console.log(getEnhancements.data)}
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
         <table>
@@ -703,13 +708,30 @@ const Admin = ({ user }) => {
             <tr className='bg-neutral-700'>
               <th className='border border-grey-400'>Name</th>
               <th className='border border-grey-400'>Points Cost</th>
+              <th className='border border-grey-400'>Detachment</th>
             </tr>
           </thead>
           <tbody>
-            {getEnhancements.data.map(item => 
+            {getEnhancements.data.map(item =>
               <tr key={item.id} className='bg-neutral-700 text-white border border-grey-400'>
                 <td className='border border-grey-400'>{item.name}</td>
-                <td className='border border-grey-400'>{item.cost}</td>
+                {editing ? 
+                  <input 
+                    type='text'
+                    value={updatedEnhancement.cost ?? item.cost ?? ''}
+                    onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}
+                  /> :
+                  <td className='border border-grey-400'>{item.cost}</td>
+                }
+                {editing ? 
+                  <input 
+                    type='text'
+                    value={updatedEnhancement.description ?? item.description ?? ''}
+                    onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}                    
+                  /> :
+                  <td>{item.description}</td>
+                }
+                <td>{item.detachment}</td>
               </tr>
             )}
           </tbody>

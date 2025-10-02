@@ -720,21 +720,21 @@ const Admin = ({ user }) => {
                 <td className='border border-gray-400'>{item.name}</td>
 
                 {editing ? 
-                  <input 
+                  <td><input 
                     type='text'
                     value={updatedEnhancement.cost ?? item.cost ?? ''}
                     onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"
-                  /> :
+                  /></td> :
                   <td className='border border-gray-400'>{item.cost}</td>
                 }
                 {editing ?
-                  <input 
+                  <td><input 
                     type='text'
                     value={updatedEnhancement.description ?? item.description ?? ''}
                     onChange={(e) => enhancementChange(item.name, item.description, e.target.value)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"                    
-                  /> :
+                  /></td> :
                   <td>{item.description}</td>
                 }
                 <td>{item.detachment}</td>

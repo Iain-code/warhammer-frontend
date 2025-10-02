@@ -310,6 +310,7 @@ const Admin = ({ user }) => {
 
   const saveEnhanceChanges = (name) => {
     const enhancement = updatedEnhancement.find(item => item.name === name)
+    console.log('saveChanges eh', enhancement)
     updateEnhancementMutation.mutate({ user, enhancement })
   }
 

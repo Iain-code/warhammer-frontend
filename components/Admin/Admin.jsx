@@ -706,6 +706,7 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
+      {console.log(getEnhancements.data)}
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
         <table className='table-fixed w-full border-collapse border border-gray-400 rounded-xl'>
@@ -728,7 +729,7 @@ const Admin = ({ user }) => {
                   <td><textarea
                     type='text'
                     value={updatedEnhancement.cost ?? item.cost ?? ''}
-                    onChange={(e) => enhancementCostChange(item.name, e.target.value)}
+                    onChange={(e) => enhancementCostChange(item.name, e.target.value, item.description)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"
                   /></td> :
                   <td className='border border-gray-400'>{item.cost}</td>

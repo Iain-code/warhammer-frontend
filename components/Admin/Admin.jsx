@@ -695,6 +695,7 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
+      {console.log(getEnhancements.data)}
       {getEnhancements.data &&
       <div>
         <table>

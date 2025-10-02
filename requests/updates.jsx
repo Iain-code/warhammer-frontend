@@ -30,6 +30,7 @@ const updateEnhancement = async (user, enhancement) => {
     headers: { Authorization: tokenHeader },
     withCredentials: true
   }
+  console.log('enhancement', enhancement)
 
   const response = await axios.put(`${baseUrl}/admins/enhancements/${enhancement.id}`, enhancement, config)
   console.log(response.data)

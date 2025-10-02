@@ -298,6 +298,10 @@ const Admin = ({ user }) => {
     })
   }
 
+  const saveEnhanceChanges = () => {
+    
+  }
+
   return (
     <div>
       <div className='flex flex-col mx-auto justify-center pt-[100px] text-center w-full md:w-1/2'>
@@ -735,7 +739,7 @@ const Admin = ({ user }) => {
                 <td className='border border-gray-400'>
                   {item.name}
                   <button 
-                    onClick={}
+                    onClick={saveEnhanceChanges}
                   >
                     Save Enhancement Changes
                   </button> 

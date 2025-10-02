@@ -9,7 +9,9 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
 
   return (
     <div className='flex flex-col lg:flex-row justify-center w-3/4 mx-auto gap-2'>
-      <h1>Attacking Buffs</h1>
+      <div className='flex justify-center text-center'>
+        <h1 className='text-white'>Attacking Buffs</h1>
+      </div>
       <div>
         <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
           <input
@@ -101,8 +103,10 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           Re-roll Wounds of 1
         </label>
       </div>
-      
-      <h1>Defensive Buffs</h1>
+
+      <div className='flex justify-center text-center'>
+        <h1 className='text-white'>Defensive Buffs</h1>
+      </div>
       <div>
         <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
           <input

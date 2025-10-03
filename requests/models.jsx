@@ -118,6 +118,11 @@ const updatePoints = async (obj, user) => {
   return response.data
 }
 
+const getWargearDescriptions = async () => {
+  const response = axios.get(`${baseUrl}/wargearDescriptions`)
+  return response.data
+}
+
 export default {
   getModelsForFaction,
   getWargear,
@@ -135,5 +140,6 @@ export default {
   getAllUnits,
   deleteArmy,
   updatePoints,
-  getEnhancementsForFaction
+  getEnhancementsForFaction,
+  getWargearDescriptions
 };

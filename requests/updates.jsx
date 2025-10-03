@@ -45,7 +45,7 @@ const deleteEnhancement = async (user, Id) => {
     withCredentials: true
   }
 
-  const response = await axios.delete(`${baseUrl}/admins/enhancements/${Id}`, config)
+  const response = await axios.delete(`${baseUrl}/admins/enhancements/${Id.id}`, config)
   return response.data
 }
 

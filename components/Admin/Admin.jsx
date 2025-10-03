@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from 'react'
+import React, { useState } from 'react'
 import Select from 'react-select'
 import modelService from '../../requests/models'
 import updateService from '../../requests/updates'
@@ -801,17 +801,18 @@ const Admin = ({ user }) => {
                 }
                 <td>
                   {item.detachment}
-                  <div>
+                  <div className='m-2 p-2'>
                     <button 
                       onClick={() => deleteEnhancement(item.id)}
                       className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                       overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
                       group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
                       focus:ring-pink-200 dark:focus:ring-pink-800 my-3"
-                    />
-                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                    >
+                      <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
                         Delete Enhancement
-                    </span>
+                      </span>
+                    </button>
                   </div>
                 </td>
               </tr>

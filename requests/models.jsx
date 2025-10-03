@@ -118,8 +118,8 @@ const updatePoints = async (obj, user) => {
   return response.data
 }
 
-const getWargearDescriptions = async () => {
-  const response = axios.get(`${baseUrl}/wargearDescriptions`)
+const getWargearDescriptions = async (datasheet_id) => {
+  const response = axios.get(`${baseUrl}/wargearDescriptions/${datasheet_id}`)
   return response.data
 }
 

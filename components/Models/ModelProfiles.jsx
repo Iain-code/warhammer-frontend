@@ -38,6 +38,18 @@ const ModelProfile = ({ wargear }) => {
     refetchOnWindowFocus: false
   })
 
+  console.log('model A', model.attack)
+
+  const wargearDescription = useQuery({
+    queryKey: ['wargearDescription', model.attack],
+    queryFn: () => modelService.getWargearDescriptions(model.attack.datasheet_id),
+    enabled: !!model.attack,
+    retry: 1,
+    refetchOnWindowFocus: false
+  })
+
+  console.log('wargearDes', wargearDescription.data)
+
   return (
     <div className='modelTables'>
       <div className='overflow-x-auto'>

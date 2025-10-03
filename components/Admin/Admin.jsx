@@ -326,7 +326,7 @@ const Admin = ({ user }) => {
   }
 
   const deleteEnhancement = (id) => {
-    const enhancement = getEnhancements.find(e => e.id === id)
+    const enhancement = getEnhancements.data.find(e => e.id === id)
     deleteEnhancementMutation.mutate({ user, enhancement })
   }
 

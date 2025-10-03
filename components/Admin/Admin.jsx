@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useImperativeHandle, useState } from 'react'
 import Select from 'react-select'
 import modelService from '../../requests/models'
 import updateService from '../../requests/updates'
@@ -117,6 +117,9 @@ const Admin = ({ user }) => {
 
   const deleteModelMutation = useMutation({
     mutationFn: (Id) => updateService.deleteUnit(Id, user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ 'adminModels', faction ]})
+    },
     onError: (error) => {
       console.error('failed to delete model:', error)
     }

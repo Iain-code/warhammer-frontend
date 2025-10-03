@@ -38,8 +38,6 @@ const ModelProfile = ({ wargear }) => {
     refetchOnWindowFocus: false
   })
 
-  console.log('model A', model.attack)
-
   const wargearDescription = useQuery({
     queryKey: ['wargearDescription', model.attack],
     queryFn: () => modelService.getWargearDescriptions(model.attack.datasheet_id),

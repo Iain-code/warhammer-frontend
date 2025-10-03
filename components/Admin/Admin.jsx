@@ -54,8 +54,6 @@ const Admin = ({ user }) => {
     refetchOnWindowFocus: false,
   })
 
-  console.log(wargearQuery.data)
-
   const sortUnitsAndFetchData = async () => {
     const IDs = getModels?.data.map(unit => unit.datasheet_id)
     const response = await modelService.getPointsForID(IDs)
@@ -289,14 +287,13 @@ const Admin = ({ user }) => {
   }
 
   const enhancementCostChange = (enhancement, value) => {
-    console.log('enhancement1', enhancement)
-    console.log('value', value)
+
     setUpdatedEnhancement(prev => {
       const exists = prev.some(item => item.id === enhancement.id)
       if (exists) {
-        return prev.map(item => item.id === enhancement.id ? { ...item, cost: value} : item)
+        return prev.map(item => item.id === enhancement.id ? { ...item, cost: Number(value)} : item)
       }
-      return [ ...prev, { ...enhancement, cost: value }]
+      return [ ...prev, { ...enhancement, cost: Number(value) }]
     })
   }
 
@@ -770,7 +767,7 @@ const Admin = ({ user }) => {
 
                 {editing ? 
                   <td><input
-                    type='number'
+                    type='text'
                     value={updatedEnhancement?.find(e => e.id === item.id)?.cost ?? item.cost ?? ''}
                     onChange={(e) => enhancementCostChange(item, Number(e.target.value))}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"

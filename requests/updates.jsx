@@ -36,8 +36,20 @@ const updateEnhancement = async (user, enhancement) => {
   return response.data
 }
 
+const deleteEnhancement = async (user, Id) => {
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader },
+    withCredentials: true
+  }
+
+  const response = await axios.delete(`${baseUrl}/admins/enhancements/${Id}`, config)
+  return response.data
+}
+
 export default {
   updateAbilities,
   deleteUnit,
-  updateEnhancement
+  updateEnhancement,
+  deleteEnhancement
 } 

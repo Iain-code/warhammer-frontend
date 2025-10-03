@@ -25,9 +25,6 @@ const deleteUnit = async (Id, user) => {
 } 
 
 const updateEnhancement = async (user, enhancement) => {
-  console.log('user', user)
-  console.log('enhancement requests', enhancement)
-
   const tokenHeader = userService.setToken(user.token)
   const config = {
     headers: { Authorization: tokenHeader },
@@ -35,7 +32,7 @@ const updateEnhancement = async (user, enhancement) => {
   }
 
   const response = await axios.put(`${baseUrl}/admins/enhancements/${enhancement.id}`, enhancement, config)
-  console.log(response.data)
+
   return response.data
 }
 

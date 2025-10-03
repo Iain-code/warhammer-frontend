@@ -294,17 +294,17 @@ const Admin = ({ user }) => {
     setUpdatedEnhancement(prev => {
       const exists = prev.some(item => item.id === enhancement.id)
       if (exists) {
-        return prev.map(item => item.name === name ? { ...enhancement, cost: value} : item)
+        return prev.map(item => item.id === enhancement.id ? { ...item, cost: value} : item)
       }
       return [ ...prev, { ...enhancement, cost: value }]
     })
   }
 
-  const enhancementDescripionChange = (enhancement, description) => {
+  const enhancementDescriptionChange = (enhancement, description) => {
     setUpdatedEnhancement(prev => {
       const exists = prev.some(item => item.id === enhancement.id)
       if (exists) {
-        return prev.map(item => item.id === enhancement.id ? { ...enhancement, description: description } : item)
+        return prev.map(item => item.id === enhancement.id ? { ...item, description: description } : item)
       }
       return [ ...prev, { ...enhancement, description: description }]
     })
@@ -755,7 +755,7 @@ const Admin = ({ user }) => {
                   {item.name}
                   <div>
                     <button 
-                      onClick={(item) => saveEnhanceChanges(item.id)}
+                      onClick={() => saveEnhanceChanges(item.id)}
                       className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                       overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
                       group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 

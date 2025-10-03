@@ -37,6 +37,8 @@ const updateEnhancement = async (user, enhancement) => {
 }
 
 const deleteEnhancement = async (user, Id) => {
+  console.log('user', user)
+  console.log('id', Id)
   const tokenHeader = userService.setToken(user.token)
   const config = {
     headers: { Authorization: tokenHeader },

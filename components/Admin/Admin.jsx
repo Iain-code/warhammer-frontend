@@ -780,7 +780,7 @@ const Admin = ({ user }) => {
                 {editing ?
                   <td><textarea
                     value={updatedEnhancement?.find(e => e.id === item.id)?.description ?? item.description ?? ''}
-                    onChange={(e) => enhancementDescripionChange(item, e.target.value)}
+                    onChange={(e) => enhancementDescriptionChange(item, e.target.value)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"                    
                   /></td> :
                   <td>{item.description}</td>

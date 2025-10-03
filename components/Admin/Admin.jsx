@@ -326,6 +326,9 @@ const Admin = ({ user }) => {
   }
 
   const deleteEnhancement = (id) => {
+    const confirm = window.confirm('Confirm to delete enhancement')
+    if (!confirm) return
+    
     const enhancement = getEnhancements.data.find(e => e.id === id)
     deleteEnhancementMutation.mutate({ user, enhancement })
   }

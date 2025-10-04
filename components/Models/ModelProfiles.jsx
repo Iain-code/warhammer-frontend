@@ -46,7 +46,6 @@ const ModelProfile = ({ wargear }) => {
     refetchOnWindowFocus: false
   })
 
-  console.log('model attack DS ID', model.attack.datasheet_id)
   console.log('wargearDes', wargearDescription.data)
 
   return (

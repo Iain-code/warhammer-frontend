@@ -58,7 +58,7 @@ const ModelForm = () => {
     }),
     input: (provided) => ({
       ...provided,
-      color: "white",                // typing color
+      color: "white",
     }),
     singleValue: (provided) => ({
       ...provided,

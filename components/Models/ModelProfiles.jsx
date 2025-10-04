@@ -83,8 +83,8 @@ const ModelProfile = ({ wargear }) => {
           {wargearDescription.isError && <div>Failed to load wargear description</div>}
 
           {wargearDescription.data?.filter(item => item.name === wargear.name)?.map(item => (
-            <div key={item.id} className='flex justify-center text-md text-white'>
-              Weapon Keywords - {cleanDescription(item.description)}
+            <div key={item.id} className='flex justify-center text-xl text-white font-semibold'>
+              <span className='text-lg flex justify-center text-white'>Weapon Keywords - {cleanDescription(item.description)}</span>
             </div>
           ))}
         </div>

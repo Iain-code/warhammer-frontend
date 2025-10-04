@@ -80,7 +80,7 @@ const ModelProfile = ({ wargear }) => {
                 {wargearDescription.isLoading && <div>Loading wargear description…</div>}
                 {wargearDescription.isError && <div>Failed to load wargear description</div>}
                 {wargearDescription.data?.filter(item => item.name === wargear.name)
-                  ?.map(item => cleanDescription(item.description)).toUpperCase()
+                  ?.map(item => cleanDescription(item.description.toUpperCase()))
                   .reduce((prev, curr) => [prev, ',', curr])}
               </td>
             </tr>

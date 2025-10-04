@@ -703,6 +703,7 @@ const Admin = ({ user }) => {
                   /> : selectedWargear.damage}
                 </td>
                 {console.log('wargearDes', wargearDescription.data)}
+                {console.log('selectedWargear', selectedWargear)}
                 <td>{editing ?
                   <input
                     type='text'

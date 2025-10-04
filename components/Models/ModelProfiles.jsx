@@ -84,7 +84,7 @@ const ModelProfile = ({ wargear }) => {
           <span className='text-lg flex justify-center text-white'>Weapon Keywords - </span>
           {wargearDescription.data?.filter(item => item.name === wargear.name)?.map(item => (
             <div key={item.id} className='flex justify-center text-xl text-white font-semibold'>
-              {cleanDescription(item.description)}
+              {'' + cleanDescription(item.description)}
             </div>
           ))}
         </div>

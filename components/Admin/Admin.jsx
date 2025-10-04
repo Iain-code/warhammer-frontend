@@ -710,7 +710,7 @@ const Admin = ({ user }) => {
                     value={wargearKeyword ?? wargearDescription?.data?.filter(item => item.name === selectedWargear.name &&(
                       console.log('item', item)
                     ))
-                      .map(item => item.description || '').join(', ')}
+                      .map(item => item.description || '')}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data.filter(item => item.name === selectedWargear?.name)

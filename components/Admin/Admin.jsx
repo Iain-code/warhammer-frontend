@@ -707,7 +707,7 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={wargearKeyword ?? console.log(wargearDescription?.data?.filter(item => item.name === selectedWargear.name)
+                    value={wargearKeyword ?? console.log(wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)
                       .map(item => item.description)).join()}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
@@ -756,7 +756,7 @@ const Admin = ({ user }) => {
                   {editing ?
                     <div className='text-white'>
                       <textarea 
-                        value={(cleanDescription(abilityState.find(item => ability.Name === item.name)?.description) ?? cleanDescription(ability.Description)) ?? ''}
+                        value={(abilityState.find(item => ability.Name === item.name)?.description) ?? cleanDescription(ability.Description) ?? ''}
                         onChange={(e) => handleDescriptionChange(ability.Name, e.target.value, ability.Line, selectedModel.datasheet_id)}
                         className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
                         w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'

@@ -706,11 +706,11 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={wargearKeyword ?? wargearDescription.data.filter(item => item.name === selectedWargear.name)
-                      .map(item => item.description).join()}
+                    value={wargearKeyword ?? wargearDescription?.data.filter(item => item.name === selectedWargear.name)
+                      .map(item => item.description).join(', ')}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
-                  /> : wargearDescription.data.filter(item => item.name === selectedWargear.name)
+                  /> : wargearDescription?.data.filter(item => item.name === selectedWargear?.name)
                     .map(item => cleanDescription(item.description.toUpperCase()))
                     .reduce((prev, curr) => [prev, ',', curr])}
                 </td>

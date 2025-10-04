@@ -63,7 +63,7 @@ const Admin = ({ user }) => {
     retry: 1,
     refetchOnWindowFocus: false
   })
-  
+    
 
   const sortUnitsAndFetchData = async () => {
     const IDs = getModels?.data.map(unit => unit.datasheet_id)
@@ -702,6 +702,7 @@ const Admin = ({ user }) => {
                     className='text-center bg-neutral-800'
                   /> : selectedWargear.damage}
                 </td>
+                {console.log('wargearDes', wargearDescription.data)}
                 <td>{editing ?
                   <input
                     type='text'

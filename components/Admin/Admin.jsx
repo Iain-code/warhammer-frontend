@@ -193,13 +193,9 @@ const Admin = ({ user }) => {
   }
 
   const cleanDescription = (description) => {
-    return parse(description, {
-      replace: domNode => {
-        if (domNode.name === 'a') {
-          return <span>{domToReact(domNode.children)}</span>;
-        }
-      }
-    })
+    if (!description) return ''
+
+    return description.replace(/<[^>]*>/g, '')
   }
 
   const handleFieldChange = (field, value) => {

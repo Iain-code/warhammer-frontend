@@ -21,7 +21,7 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
-  const {wargearKeyword, setWargearKeyword} = useState(null)
+  const [wargearKeyword, setWargearKeyword] = useState(null)
   const queryClient = useQueryClient()
 
   const points = useQuery({
@@ -358,6 +358,8 @@ const Admin = ({ user }) => {
     console.log('description value', value)
     setWargearKeyword(value)
   }
+
+  const wargearDes = (wargearDescription?.data ?? []).filter(item => item.name === selectedWargear.name).map(item => item.description).join()
 
   return (
     <div>
@@ -707,8 +709,7 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={wargearKeyword ?? wargearDescription.data.filter(item => item.name === selectedWargear.name)
-                      .map(item => item.description).join()}
+                    value={wargearDes}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)
@@ -750,22 +751,27 @@ const Admin = ({ user }) => {
           <div className='text-center'>
             <h1 className='text-lg font-semibold underline'>Abilities</h1>
             <ul>
-              {abilities.data.map(ability => (
-                <li key={`${ability.DatasheetID}-${ability.Line}`}>
-                  <h2 className='text-lg text-orange-500'>{ability.Name}</h2>
-                  {editing ?
-                    <div className='text-white'>
-                      <textarea 
-                        value={(abilityState.find(item => ability.Name === item.name)?.description) ?? ability.Description ?? ''}
-                        onChange={(e) => handleDescriptionChange(ability.Name, e.target.value, ability.Line, selectedModel.datasheet_id)}
-                        className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
-                        w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
-                      />
-                    </div> : 
-                    <p className='mb-4 w-5/6 mx-auto text-lg'>{cleanDescription(ability.Description)}</p>
-                  }
-                </li>
-              ))}
+              {abilities.data.map(ability => {
+                const abilityDes = abilityState.find(item => ability.Name === item.name)?.description ?? ability.Description ?? ''
+                const cleanedDes = cleanDescription(abilityDes)
+
+                return (
+                  <li key={`${ability.DatasheetID}-${ability.Line}`}>
+                    <h2 className='text-lg text-orange-500'>{ability.Name}</h2>
+                    {editing ?
+                      <div className='text-white'>
+                        <textarea 
+                          value={cleanedDes}
+                          onChange={(e) => handleDescriptionChange(ability.Name, e.target.value, ability.Line, selectedModel.datasheet_id)}
+                          className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
+                          w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
+                        />
+                      </div> : 
+                      <p className='mb-4 w-5/6 mx-auto text-lg'>{cleanDescription(ability.Description)}</p>
+                    }
+                  </li>
+                )})
+              }
             </ul>
           </div>
         )}

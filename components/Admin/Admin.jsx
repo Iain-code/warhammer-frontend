@@ -756,13 +756,13 @@ const Admin = ({ user }) => {
                   {editing ?
                     <div className='text-white'>
                       <textarea 
-                        value={(abilityState.find(item => ability.Name === item.name)?.description ?? ability.Description) ?? ''}
+                        value={(cleanDescription(abilityState.find(item => ability.Name === item.name)?.description) ?? cleanDescription(ability.Description)) ?? ''}
                         onChange={(e) => handleDescriptionChange(ability.Name, e.target.value, ability.Line, selectedModel.datasheet_id)}
                         className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
                         w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
                       />
                     </div> : 
-                    <p className='mb-4 w-5/6 mx-auto text-lg'>{ability.Description}</p>
+                    <p className='mb-4 w-5/6 mx-auto text-lg'>{cleanDescription(ability.Description)}</p>
                   }
                 </li>
               ))}

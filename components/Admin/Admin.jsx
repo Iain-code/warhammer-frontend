@@ -707,8 +707,7 @@ const Admin = ({ user }) => {
                   <input
                     type='text'
                     value={wargearKeyword ?? wargearDescription.data.filter(item => item.name === selectedWargear.name)
-                      .map(item => cleanDescription(item.description.toUpperCase()))
-                      .reduce((prev, curr) => [prev, ',', curr])}
+                      .map(item => item.description).join()}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription.data.filter(item => item.name === selectedWargear.name)

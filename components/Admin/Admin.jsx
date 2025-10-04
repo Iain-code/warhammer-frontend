@@ -707,14 +707,12 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={wargearKeyword ?? wargearDescription?.data?.filter(item => item.name === selectedWargear.name &&(
-                      console.log('item', item)
-                    ))
-                      .map(item => item.description || '')}
+                    value={wargearKeyword ?? console.log(wargearDescription?.data?.filter(item => item.name === selectedWargear.name)
+                      .map(item => item.description))}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)
-                    .map(item => cleanDescription(item.description.toUpperCase()))
+                    .map(item => cleanDescription(item.description?.toUpperCase()))
                     .reduce((prev, curr) => [prev, ',', curr])}
                 </td>
               </tr>

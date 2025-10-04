@@ -6,7 +6,6 @@ import './admin.css'
 import factionList from '../FactionForm/FactionList'
 import PropTypes from 'prop-types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import parse, { domToReact } from 'html-react-parser'
 
 const Admin = ({ user }) => {
   const [selectedModel, setSelectedModel] = useState(null)
@@ -705,7 +704,7 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={wargearDes}
+                    value={cleanDescription(wargearDes)}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)

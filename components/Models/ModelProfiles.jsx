@@ -46,8 +46,6 @@ const ModelProfile = ({ wargear }) => {
     refetchOnWindowFocus: false
   })
 
-  console.log('wargearDes', wargearDescription.data)
-
   return (
     <div className='modelTables'>
       <div className='overflow-x-auto'>

@@ -6,6 +6,7 @@ import './admin.css'
 import factionList from '../FactionForm/FactionList'
 import PropTypes from 'prop-types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import parse, { domToReact } from 'html-react-parser'
 
 const Admin = ({ user }) => {
   const [selectedModel, setSelectedModel] = useState(null)
@@ -20,6 +21,7 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
+  const {wargearKeyword, setWargearKeyword} = useState(null)
   const queryClient = useQueryClient()
 
   const points = useQuery({
@@ -54,6 +56,13 @@ const Admin = ({ user }) => {
     refetchOnWindowFocus: false,
   })
 
+  const wargearDescription = useQuery({
+    queryKey: ['adminWargearDescription', selectedModel?.datasheet_id],
+    queryFn: () => modelService.getWargearDescriptions(selectedModel.datasheet_id),
+    enabled: !!selectedModel,
+    retry: 1,
+    refetchOnWindowFocus: false
+  })
   
 
   const sortUnitsAndFetchData = async () => {
@@ -181,6 +190,16 @@ const Admin = ({ user }) => {
       setModelPoints1(line1);
       setModelPoints2(line2);
     }
+  }
+
+  const cleanDescription = (description) => {
+    return parse(description, {
+      replace: domNode => {
+        if (domNode.name === 'a') {
+          return <span>{domToReact(domNode.children)}</span>;
+        }
+      }
+    })
   }
 
   const handleFieldChange = (field, value) => {
@@ -335,6 +354,10 @@ const Admin = ({ user }) => {
     deleteEnhancementMutation.mutate({ user, enhancement })
   }
 
+  const handleWargearDescriptionChange = (value) => {
+    console.log('description value', value)
+    setWargearKeyword(value)
+  }
 
   return (
     <div>
@@ -610,6 +633,7 @@ const Admin = ({ user }) => {
                 <th>Strength</th>
                 <th>AP</th>
                 <th>Damage</th>
+                <th>Keywords</th>
               </tr>
             </thead>
             <tbody>
@@ -677,6 +701,18 @@ const Admin = ({ user }) => {
                     onChange={(e) => handleWargearChange('damage', e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : selectedWargear.damage}
+                </td>
+                <td>{editing ?
+                  <input
+                    type='text'
+                    value={wargearKeyword ?? wargearDescription.data.filter(item => item.name === selectedWargear.name)
+                      .map(item => cleanDescription(item.description.toUpperCase()))
+                      .reduce((prev, curr) => [prev, ',', curr])}
+                    onChange={(e) => handleWargearDescriptionChange(e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : wargearDescription.data.filter(item => item.name === selectedWargear.name)
+                    .map(item => cleanDescription(item.description.toUpperCase()))
+                    .reduce((prev, curr) => [prev, ',', curr])}
                 </td>
               </tr>
             </tbody>

@@ -704,7 +704,7 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={cleanDescription(wargearKeyword) ?? cleanDescription(wargearDes)}
+                    value={wargearKeyword ? cleanDescription(wargearKeyword) : cleanDescription(wargearDes)}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)

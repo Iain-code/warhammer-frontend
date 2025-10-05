@@ -704,7 +704,7 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={wargearKeyword ? cleanDescription(wargearKeyword) : cleanDescription(wargearDes)}
+                    value={wargearKeyword ? cleanDescription(wargearKeyword) : cleanDescription(wargearDes) ?? ''}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)
@@ -836,11 +836,11 @@ const Admin = ({ user }) => {
                 }
                 {editing ?
                   <td><textarea
-                    value={updatedEnhancement?.find(e => e.id === item.id)?.description ?? item.description ?? ''}
+                    value={cleanDescription(updatedEnhancement?.find(e => e.id === item.id)?.description ?? item.description ?? '')}
                     onChange={(e) => enhancementDescriptionChange(item, e.target.value)}
                     className="w-full bg-neutral-800 text-white px-2 py-1 border border-gray-500 rounded"                    
                   /></td> :
-                  <td>{item.description}</td>
+                  <td>{cleanDescription(item.description)}</td>
                 }
                 <td>
                   {item.detachment}

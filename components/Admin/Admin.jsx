@@ -354,7 +354,7 @@ const Admin = ({ user }) => {
     setWargearKeyword(value)
   }
 
-  const wargearDes = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name).map(item => item.description ?? '').join()
+  const wargearDes = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name).map(item => item.description ?? '').join(', ')
 
   return (
     <div>

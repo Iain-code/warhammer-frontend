@@ -58,10 +58,6 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
     console.log(abilities)
     setSelectedAbilities(abilities.filter(item => item.datasheet_id === unit.datasheet_id))
   }
-
-  const keywords = useQuery({
-    queryKey: ['armyBuilder', selected]
-  })
   
   return (
     <div className='overflow-x-auto'>

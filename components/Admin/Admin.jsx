@@ -268,8 +268,21 @@ const Admin = ({ user }) => {
       window.alert("edit something before saving")
       return
     }
-    updateWargearMutation.mutate({ user, updatedWargear })
-    updateWargearDescriptionMutation.mutate({ user, selectedWargearKeywordObject })
+    if (updatedWargear) {
+      updateWargearMutation.mutate({ user, updatedWargear })
+    }
+
+    if (updatedWargearDescription) {
+      const descriptionObject = {
+        id: selectedWargearKeywordObject.id,
+        datasheet_id: selectedWargearKeywordObject.datasheet_id,
+        line: selectedWargearKeywordObject.line,
+        name: selectedWargearKeywordObject.name,
+        description: updatedWargearDescription
+      }
+      updateWargearDescriptionMutation.mutate({ user, descriptionObject })
+    }
+
     setEditing(false)
     setUpdatedWargear(null)
   }
@@ -372,13 +385,7 @@ const Admin = ({ user }) => {
     const selectedWargearObject = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name)
     console.log('keyword object', selectedWargearKeywordObject)
     setSelectedWargear(option)
-    setSelectedWargearKeywordObject({
-      id: selectedWargearObject.id,
-      datasheet_id: selectedWargearObject.datasheet_id,
-      line: selectedWargearObject.line,
-      name: selectedWargearObject.name,
-      description: updatedWargearDescription
-    })
+    setSelectedWargearKeywordObject(selectedWargearObject)
     console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
   }
 
@@ -725,8 +732,6 @@ const Admin = ({ user }) => {
                     className='text-center bg-neutral-800'
                   /> : selectedWargear.damage}
                 </td>
-                {console.log('wargearDes', wargearDescription.data)}
-                {console.log('selectedWargear', selectedWargear)}
                 <td>{editing ?
                   <input
                     type='text'

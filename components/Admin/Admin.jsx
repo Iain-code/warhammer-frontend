@@ -377,7 +377,7 @@ const Admin = ({ user }) => {
 
   const handleWargearDescriptionChange = (value) => {
     console.log('description value', value)
-    setUpdatedWargearDescription(value)
+    setUpdatedWargearDescription(value ?? '')
   }
 
   const wargearDes = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name).map(item => item.description ?? '').join(', ')

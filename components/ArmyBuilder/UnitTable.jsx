@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import parse, { domToReact } from 'html-react-parser'
+import { useQuery } from '@tanstack/react-query'
 
 const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }) => {
 
@@ -57,6 +58,10 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
     console.log(abilities)
     setSelectedAbilities(abilities.filter(item => item.datasheet_id === unit.datasheet_id))
   }
+
+  const keywords = useQuery({
+    queryKey: ['armyBuilder', selected]
+  })
   
   return (
     <div className='overflow-x-auto'>
@@ -71,6 +76,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
               <th>Keywords</th>
               <th>Wargear</th>
               <th>Abilites</th>
+              <th>Keywords</th>
             </tr>
           </thead>
           <tbody>

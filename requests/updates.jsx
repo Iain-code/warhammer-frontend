@@ -48,6 +48,7 @@ const deleteEnhancement = async (user, Id) => {
 }
 
 const updateWargearDescription = async (user, description) => {
+  console.log('req description', description)
   const tokenHeader = userService.setToken(user.token)
   const config = {
     headers: { Authorization: tokenHeader },

@@ -383,9 +383,8 @@ const Admin = ({ user }) => {
   const wargearDes = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name).map(item => item.description ?? '').join(', ')
 
   const handleWargearChoice = (option) => {
-    console.log('selectedWargear', selectedWargear)
     console.log('option', option)
-    const selectedWargearObject = wargearDescription?.data.find(item => item?.name?.toLowerCase() === selectedWargear?.name?.toLowerCase())
+    const selectedWargearObject = wargearDescription?.data.find(item => item?.name?.toLowerCase() === option?.name?.toLowerCase())
     setSelectedWargear(option)
     setSelectedWargearKeywordObject(selectedWargearObject)
     console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)

@@ -127,7 +127,7 @@ const Admin = ({ user }) => {
   })
 
   const updateWargearDescriptionMutation = useMutation({
-    mutationFn: ({ user, wargearKeyword }) => updateService.updateWargearDescription(user, wargearKeyword),
+    mutationFn: ({ user, descriptionObject }) => updateService.updateWargearDescription(user, descriptionObject),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adminWargearDescription', selectedModel?.datasheet_id] })
     },

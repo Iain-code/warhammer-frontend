@@ -380,7 +380,10 @@ const Admin = ({ user }) => {
     setUpdatedWargearDescription(value ?? '')
   }
 
-  const wargearDes = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name).map(item => item.description ?? '').join(', ')
+  const wargearDes = (wargearDescription?.data ?? [])
+    .filter(item => item?.name === selectedWargear?.name && item?.type === selectedWargear?.type)
+    .map(item => item.description ?? '')
+    .join(', ')
 
   const handleWargearChoice = (option) => {
     console.log('option', option)

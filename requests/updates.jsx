@@ -37,8 +37,6 @@ const updateEnhancement = async (user, enhancement) => {
 }
 
 const deleteEnhancement = async (user, Id) => {
-  console.log('user', user)
-  console.log('id', Id)
   const tokenHeader = userService.setToken(user.token)
   const config = {
     headers: { Authorization: tokenHeader },
@@ -49,9 +47,21 @@ const deleteEnhancement = async (user, Id) => {
   return response.data
 }
 
+const updateWargearDescription = async (user, description) => {
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader },
+    withCredentials: true
+  }
+
+  const response = await axios.put(`${baseUrl}/admins/wargearDescriptions/${description.id}`, description, config)
+  return response
+}
+
 export default {
   updateAbilities,
   deleteUnit,
   updateEnhancement,
-  deleteEnhancement
+  deleteEnhancement,
+  updateWargearDescription
 } 

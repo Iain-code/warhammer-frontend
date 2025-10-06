@@ -20,7 +20,7 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
-  const [wargearKeyword, setWargearKeyword] = useState(null)
+  const [wargearKeyword, setWargearKeyword] = useState('')
   const queryClient = useQueryClient()
 
   const points = useQuery({
@@ -122,6 +122,16 @@ const Admin = ({ user }) => {
     },
     onError: (error) => {
       console.error('failed to update wargear:', error)
+    }
+  })
+
+  const updateWargearDescriptionMutation = useMutation({
+    mutationFn: ({ user, wargearKeyword }) => updateService.updateWargearDescription(user, wargearKeyword),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminWargearDescription', selectedModel?.datasheet_id] })
+    },
+    onError: (error) => {
+      console.error('failed to update wargear description', error)
     }
   })
 
@@ -258,6 +268,7 @@ const Admin = ({ user }) => {
       return
     }
     updateWargearMutation.mutate({ user, updatedWargear })
+    updateWargearDescriptionMutation.mutate({ user, wargearKeyword })
     setEditing(false)
     setUpdatedWargear(null)
   }

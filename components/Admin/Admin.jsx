@@ -20,7 +20,7 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
-  const [updatedWargearDescription, setUpdatedWargearDescription] = useState('')
+  const [updatedWargearDescription, setUpdatedWargearDescription] = useState(null)
   const [selectedWargearKeywordObject, setSelectedWargearKeywordObject] = useState(null)
   const queryClient = useQueryClient()
 

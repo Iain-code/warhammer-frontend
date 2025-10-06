@@ -285,6 +285,7 @@ const Admin = ({ user }) => {
 
     setEditing(false)
     setUpdatedWargear(null)
+    setUpdatedWargearDescription(null)
   }
 
   const handleCancel = () => {
@@ -382,6 +383,7 @@ const Admin = ({ user }) => {
   const wargearDes = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name).map(item => item.description ?? '').join(', ')
 
   const handleWargearChoice = (option) => {
+    setSelectedWargearKeywordObject(null)
     const selectedWargearObject = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name)
     console.log('keyword object', selectedWargearKeywordObject)
     setSelectedWargear(option)
@@ -735,7 +737,7 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={(updatedWargearDescription ? cleanDescription(updatedWargearDescription) : undefined) ?? cleanDescription(wargearDes) ?? ''}
+                    value={updatedWargearDescription !== null ? cleanDescription(updatedWargearDescription) : (cleanDescription(wargearDes) ?? '')}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)

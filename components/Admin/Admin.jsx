@@ -20,7 +20,8 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
-  const [wargearKeyword, setWargearKeyword] = useState('')
+  const [updatedWargearDescription, setUpdatedWargearDescription] = useState('')
+  const [selectedWargearKeywordObject, setSelectedWargearKeywordObject] = useState(null)
   const queryClient = useQueryClient()
 
   const points = useQuery({
@@ -268,7 +269,7 @@ const Admin = ({ user }) => {
       return
     }
     updateWargearMutation.mutate({ user, updatedWargear })
-    updateWargearDescriptionMutation.mutate({ user, wargearKeyword })
+    updateWargearDescriptionMutation.mutate({ user, selectedWargearKeywordObject })
     setEditing(false)
     setUpdatedWargear(null)
   }
@@ -362,10 +363,24 @@ const Admin = ({ user }) => {
 
   const handleWargearDescriptionChange = (value) => {
     console.log('description value', value)
-    setWargearKeyword(value)
+    setUpdatedWargearDescription(value)
   }
 
   const wargearDes = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name).map(item => item.description ?? '').join(', ')
+
+  const handleWargearChoice = (option) => {
+    const selectedWargearObject = (wargearDescription?.data ?? []).filter(item => item?.name === selectedWargear?.name)
+    console.log('keyword object', selectedWargearKeywordObject)
+    setSelectedWargear(option)
+    setSelectedWargearKeywordObject({
+      id: selectedWargearObject.id,
+      datasheet_id: selectedWargearObject.datasheet_id,
+      line: selectedWargearObject.line,
+      name: selectedWargearObject.name,
+      description: updatedWargearDescription
+    })
+    console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
+  }
 
   return (
     <div>
@@ -450,7 +465,7 @@ const Admin = ({ user }) => {
           options={wargearQuery.data ?? []}
           value={selectedWargear}
           isSearchable
-          onChange={(option) => setSelectedWargear(option)}
+          onChange={(option) => handleWargearChoice(option)}
           getOptionLabel={(option) => (`${option.name} - ${option.type}`)}
           styles={{
             control: (base) => ({
@@ -715,7 +730,7 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={wargearKeyword ? cleanDescription(wargearKeyword) : cleanDescription(wargearDes) ?? ''}
+                    value={(updatedWargearDescription ? cleanDescription(updatedWargearDescription) : undefined) ?? cleanDescription(wargearDes) ?? ''}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)
@@ -727,7 +742,7 @@ const Admin = ({ user }) => {
           </table>
           <div>
             <button 
-              onClick={handleUpdateWargear}
+              onClick={() => handleUpdateWargear()}
               className="flex mx-auto justify-center text-sm bg-orange-500 hover:bg-orange-600 
             text-white font-semibold py-1 px-3 rounded border border-orange-600 m-2"
             >Save Wargear Update</button>

@@ -743,7 +743,7 @@ const Admin = ({ user }) => {
                     value={updatedWargearDescription !== null ? cleanDescription(updatedWargearDescription) : (cleanDescription(wargearDes) ?? '')}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
-                  /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name)
+                  /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name && item.type === selectedWargear?.type)
                     .map(item => cleanDescription(item.description?.toUpperCase()))
                     .reduce((prev, curr) => [prev, ',', curr])}
                 </td>

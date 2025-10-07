@@ -369,6 +369,8 @@ const Admin = ({ user }) => {
     )
   }, [wargearDescription?.data, selectedWargear])
 
+  console.log('selectedKeywordObject Main Area', selectedWargearKeywordObject)
+
   const handleUpdateWargear = () => {
     if (!editing) {
       window.alert("edit something before saving")

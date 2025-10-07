@@ -337,6 +337,12 @@ const Admin = ({ user }) => {
     setUpdatedWargear(null)
   }
 
+  const handleAddNewModel = (field, value) => {
+    console.log('newModel before', newModel)
+    setNewModel({ ...newModel, [field]: value})
+    console.log('newModel after', newModel)
+  }
+
   if (!user || user.isAdmin === false) {
     return null
   }
@@ -610,8 +616,8 @@ const Admin = ({ user }) => {
                 <th>Name</th>
                 <th>Type</th>
                 <th>Range</th>
-                <th>BS/WS</th>
                 <th>Attacks</th>
+                <th>BS/WS</th>
                 <th>Strength</th>
                 <th>AP</th>
                 <th>Damage</th>
@@ -647,18 +653,18 @@ const Admin = ({ user }) => {
                 <td>{editing ? 
                   <input 
                     type='text' 
-                    value={(updatedWargear?.BS_WS ?? selectedWargear.BS_WS) ?? ''}
-                    onChange={(e) => handleWargearChange('BS_WS', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  /> : selectedWargear.BS_WS}
-                </td>
-                <td>{editing ? 
-                  <input 
-                    type='text' 
                     value={(updatedWargear?.attacks ?? selectedWargear.attacks) ?? ''}
                     onChange={(e) => handleWargearChange('attacks', e.target.value)}
                     className='text-center bg-neutral-800'
                   /> : selectedWargear.attacks}
+                </td>
+                <td>{editing ? 
+                  <input 
+                    type='text' 
+                    value={(updatedWargear?.BS_WS ?? selectedWargear.BS_WS) ?? ''}
+                    onChange={(e) => handleWargearChange('BS_WS', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  /> : selectedWargear.BS_WS}
                 </td>
                 <td>{editing ? 
                   <input 
@@ -792,16 +798,86 @@ const Admin = ({ user }) => {
           </thead>
           <tbody>
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>
+                <input 
+                  type='text' 
+                  value={newModel.name}
+                  onChange={(e) => handleAddNewModel('name', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.M}
+                  onChange={(e) => handleAddNewModel('M', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.T}
+                  onChange={(e) => handleAddNewModel('T', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.W}
+                  onChange={(e) => handleAddNewModel('W', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.Sv}
+                  onChange={(e) => handleAddNewModel('Sv', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.inv_sv}
+                  onChange={(e) => handleAddNewModel('inv_sv', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.Ld}
+                  onChange={(e) => handleAddNewModel('Ld', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.OC}
+                  onChange={(e) => handleAddNewModel('OC', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.cost}
+                  onChange={(e) => handleAddNewModel('cost', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
+              <td>
+                <input 
+                  type='number' 
+                  value={newModel.cost2}
+                  onChange={(e) => handleAddNewModel('cost2', e.target.value)}
+                  className='text-center bg-neutral-800'
+                />
+              </td>
             </tr>
           </tbody>
         </table>

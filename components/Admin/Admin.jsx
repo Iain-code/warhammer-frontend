@@ -279,12 +279,6 @@ const Admin = ({ user }) => {
 
     console.log('selectedKeywordObject', selectedWargearKeywordObject)
 
-    if (!updatedWargearDescription) {
-      console.warn('No matching wargear keyword object. Aborting keyword description update.')
-      window.alert('Could not find the wargear keywords record to update (name/type mismatch?).')
-      return
-    }
-
     const descriptionObject = {
       id: selectedWargearKeywordObject.id,
       datasheet_id: selectedWargearKeywordObject.datasheet_id,

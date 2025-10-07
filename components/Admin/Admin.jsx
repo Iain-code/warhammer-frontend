@@ -66,7 +66,6 @@ const Admin = ({ user }) => {
     refetchOnWindowFocus: false
   })
     
-
   const sortUnitsAndFetchData = async () => {
     const IDs = getModels?.data.map(unit => unit.datasheet_id)
     const response = await modelService.getPointsForID(IDs)
@@ -274,10 +273,6 @@ const Admin = ({ user }) => {
     setAbilityState([])
   }
 
-  if (!user || user.isAdmin === false) {
-    return null
-  }
-
   const getmodels = (option) => {
     setSelectedModel(null)
     setUpdatedModel(null)
@@ -305,7 +300,6 @@ const Admin = ({ user }) => {
   }
 
   const handleKeywordChange = () => {
-
   }
 
   const deleteUnit = async () => {
@@ -410,6 +404,9 @@ const Admin = ({ user }) => {
     setUpdatedWargearDescription(null)
   }
 
+  if (!user || user.isAdmin === false) {
+    return null
+  }
 
   return (
     <div>

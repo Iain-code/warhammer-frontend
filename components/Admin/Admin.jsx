@@ -25,6 +25,8 @@ const Admin = ({ user }) => {
   const [newModel, setNewModel] = useState(null)
   const queryClient = useQueryClient()
 
+  const norm = (v) => (v ?? '').toString().trim().toLowerCase();
+
   const points = useQuery({
     queryKey: ['adminPoints', faction],
     queryFn: () => sortUnitsAndFetchData(),
@@ -275,16 +277,20 @@ const Admin = ({ user }) => {
 
     console.log('selectedKeywordObject', selectedWargearKeywordObject)
 
-    if (updatedWargearDescription) {
-      const descriptionObject = {
-        id: selectedWargearKeywordObject.id,
-        datasheet_id: selectedWargearKeywordObject.datasheet_id,
-        line: selectedWargearKeywordObject.line,
-        name: selectedWargearKeywordObject.name,
-        description: updatedWargearDescription ?? ''
-      }
-      updateWargearDescriptionMutation.mutate({ user, descriptionObject })
+    if (!updatedWargearDescription) {
+      console.warn('No matching wargear keyword object. Aborting keyword description update.')
+      window.alert('Could not find the wargear keywords record to update (name/type mismatch?).')
+      return
     }
+
+    const descriptionObject = {
+      id: selectedWargearKeywordObject.id,
+      datasheet_id: selectedWargearKeywordObject.datasheet_id,
+      line: selectedWargearKeywordObject.line,
+      name: selectedWargearKeywordObject.name,
+      description: updatedWargearDescription ?? ''
+    }
+    updateWargearDescriptionMutation.mutate({ user, descriptionObject })
 
     setEditing(false)
     setUpdatedWargear(null)
@@ -384,14 +390,15 @@ const Admin = ({ user }) => {
   }
 
   const wargearDes = (wargearDescription?.data ?? [])
-    .filter(item => item?.name.toLowerCase() === selectedWargear?.name.toLowerCase() && item?.type.toLowerCase() === selectedWargear?.type.toLowerCase())
+    .filter(item => norm(item?.name) === norm(selectedWargear?.name) && norm(item?.type) === norm(selectedWargear?.type))
     .map(item => item.description ?? '')
     .join(', ')
 
   const handleWargearChoice = (option) => {
     console.log('option', option)
     const selectedWargearObject = wargearDescription?.data.find(item => 
-      item?.name?.toLowerCase() === option?.name?.toLowerCase() && item?.type.toLowerCase() === option?.type.toLowerCase())
+      norm(item?.name) === norm(option?.name) && norm(item?.type) === norm(option?.type))
+
     setSelectedWargear(option)
     console.log('selectedWargearObject', selectedWargearObject)
     setSelectedWargearKeywordObject(selectedWargearObject)
@@ -747,7 +754,8 @@ const Admin = ({ user }) => {
                     value={updatedWargearDescription !== null ? cleanDescription(updatedWargearDescription) : (cleanDescription(wargearDes) ?? '')}
                     onChange={(e) => handleWargearDescriptionChange(e.target.value)}
                     className='text-center bg-neutral-800'
-                  /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name && item.type === selectedWargear?.type)
+                  /> : wargearDescription?.data?.filter(item => 
+                    norm(item.name) === norm(selectedWargear?.name) && norm(item.type) === norm(selectedWargear?.type))
                     .map(item => cleanDescription(item.description?.toUpperCase()))
                     .reduce((prev, curr) => [prev, ',', curr], '')}
                 </td>

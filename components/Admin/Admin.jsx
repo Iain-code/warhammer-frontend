@@ -277,8 +277,6 @@ const Admin = ({ user }) => {
       setUpdatedWargear(null)
     }
 
-    console.log('selectedKeywordObject in handleUpdateWargear', selectedWargearKeywordObject)
-
     const descriptionObject = {
       id: selectedWargearKeywordObject.id,
       datasheet_id: selectedWargearKeywordObject.datasheet_id,
@@ -286,6 +284,7 @@ const Admin = ({ user }) => {
       name: selectedWargearKeywordObject.name,
       description: updatedWargearDescription ?? ''
     }
+
     updateWargearDescriptionMutation.mutate({ user, descriptionObject })
 
     setUpdatedWargearDescription(null)
@@ -379,7 +378,6 @@ const Admin = ({ user }) => {
   }
 
   const handleWargearDescriptionChange = (value) => {
-    console.log('description value', value)
     setUpdatedWargearDescription(value ?? '')
   }
 
@@ -396,12 +394,12 @@ const Admin = ({ user }) => {
 
     const selectedWargearObject = wargearDescription?.data.find(item => {
       console.log('item', item)
-      norm(item?.name) === norm(option?.name) && norm(item?.type) === norm(option?.type)})
+      return norm(item?.name) === norm(option?.name) && norm(item?.type) === norm(option?.type)
+    })
 
     setSelectedWargear(option)
     console.log('selectedWargearObject', selectedWargearObject)
     setSelectedWargearKeywordObject(selectedWargearObject)
-    console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
   }
 
   return (

@@ -22,6 +22,7 @@ const Admin = ({ user }) => {
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
   const [updatedWargearDescription, setUpdatedWargearDescription] = useState(null)
   const [selectedWargearKeywordObject, setSelectedWargearKeywordObject] = useState(null)
+  const [newModel, setNewModel] = useState(null)
   const queryClient = useQueryClient()
 
   const points = useQuery({
@@ -286,7 +287,6 @@ const Admin = ({ user }) => {
     setEditing(false)
     setUpdatedWargear(null)
     setUpdatedWargearDescription(null)
-    setSelectedWargearKeywordObject(null)
   }
 
   const handleCancel = () => {
@@ -831,22 +831,24 @@ const Admin = ({ user }) => {
       }
       <div>
         <table className="table-fixed w-full text-sm">
-          <caption className='caption'>Wargear Profile</caption>
+          <caption className='caption'>Add a New Model</caption>
           <thead>
             <tr>
               <th>Name</th>
-              <th>Type</th>
-              <th>Range</th>
-              <th>BS/WS</th>
-              <th>Attacks</th>
-              <th>Strength</th>
-              <th>AP</th>
-              <th>Damage</th>
-              <th>Keywords</th>
+              <th>M</th>
+              <th>T</th>
+              <th>W</th>
+              <th>Sv</th>
+              <th>Inv</th>
+              <th>Ld</th>
+              <th>OC</th>
+              <th>Cost - Description</th>
+              <th>Cost - Description</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>

@@ -757,7 +757,7 @@ const Admin = ({ user }) => {
                   /> : wargearDescription?.data?.filter(item => 
                     norm(item.name) === norm(selectedWargear?.name) && norm(item.type) === norm(selectedWargear?.type))
                     .map(item => cleanDescription(item.description?.toUpperCase()))
-                    .reduce((prev, curr) => [prev, ',', curr], '')}
+                    .join(', ')}
                 </td>
               </tr>
             </tbody>

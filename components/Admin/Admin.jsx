@@ -186,7 +186,7 @@ const Admin = ({ user }) => {
   const cleanDescription = (description) => {
     if (!description) return ''
 
-    return description.replace(/<[^>]*>/g, '')
+    return description.replace(/<[^>]*>/g, '').toUpperCase()
   }
 
   const handleFieldChange = (field, value) => {

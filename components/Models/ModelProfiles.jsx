@@ -66,7 +66,7 @@ const ModelProfile = ({ wargear }) => {
               <td>{wargear.strength}</td>
               <td>{wargear.AP}</td>
               <td>{wargear.damage}</td>
-              <td>{cleanDescription(wargear.description)}</td>
+              <td>{cleanDescription(wargear.description.toUpperCase())}</td>
             </tr>
           </tbody>
         </table>

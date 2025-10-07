@@ -405,6 +405,7 @@ const Admin = ({ user }) => {
 
     updateWargearDescriptionMutation.mutate({ user, descriptionObject })
 
+    setEditing(false)
     setUpdatedWargearDescription(null)
   }
 

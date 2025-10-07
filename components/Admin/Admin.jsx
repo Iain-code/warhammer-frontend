@@ -367,7 +367,7 @@ const Admin = ({ user }) => {
       setEditing(false)
       setUpdatedWargear(null)
     }
-    
+
     console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
 
     if (!selectedWargearKeywordObject) {
@@ -398,6 +398,8 @@ const Admin = ({ user }) => {
     .map(item => item.description ?? '')
     .join(', ')
 
+  console.log('wargearDes', wargearDes)
+  
   const handleWargearChoice = (option) => {
 
     const selectedWargearObject = wargearDescription?.data.find(item =>

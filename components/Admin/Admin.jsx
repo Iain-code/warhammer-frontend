@@ -804,7 +804,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='text' 
-                    value={newModel.name}
+                    value={newModel.name ?? ''}
                     onChange={(e) => handleAddNewModel('name', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -812,7 +812,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.M}
+                    value={newModel.M ?? ''}
                     onChange={(e) => handleAddNewModel('M', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -820,7 +820,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.T}
+                    value={newModel.T ?? ''}
                     onChange={(e) => handleAddNewModel('T', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -828,7 +828,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.W}
+                    value={newModel.W ?? ''}
                     onChange={(e) => handleAddNewModel('W', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -836,7 +836,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.Sv}
+                    value={newModel.Sv ?? ''}
                     onChange={(e) => handleAddNewModel('Sv', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -844,7 +844,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.inv_sv}
+                    value={newModel.inv_sv ?? ''}
                     onChange={(e) => handleAddNewModel('inv_sv', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -852,7 +852,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.Ld}
+                    value={newModel.Ld ?? ''}
                     onChange={(e) => handleAddNewModel('Ld', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -860,7 +860,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.OC}
+                    value={newModel.OC ?? ''}
                     onChange={(e) => handleAddNewModel('OC', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -868,7 +868,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.cost}
+                    value={newModel.cost ?? ''}
                     onChange={(e) => handleAddNewModel('cost', e.target.value)}
                     className='text-center bg-neutral-800'
                   />
@@ -876,7 +876,7 @@ const Admin = ({ user }) => {
                 <td>
                   <input 
                     type='number' 
-                    value={newModel.cost2}
+                    value={newModel.cost2 ?? ''}
                     onChange={(e) => handleAddNewModel('cost2', e.target.value)}
                     className='text-center bg-neutral-800'
                   />

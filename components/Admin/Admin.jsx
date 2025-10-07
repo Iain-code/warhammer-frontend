@@ -780,7 +780,7 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
-      <div>
+      <div className='flex justify-center'>
         <button 
           onClick={() => setAddNewModel(!addNewModel)}
           className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 

@@ -145,7 +145,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
                       <td className="px-4 py-4 border-b border-[#333] text-center">{item.strength}</td>
                       <td className="px-4 py-4 border-b border-[#333] text-center">{item.AP.int32}</td>
                       <td className="px-4 py-4 border-b border-[#333] text-center">{item.damage}</td>
-                      <td className="px-4 py-4 border-b border-[#333] text-center">{cleanDescription(item.description.join(', '))}</td>
+                      <td className="px-4 py-4 border-b border-[#333] text-center">{cleanDescription(item.description)}</td>
                     </tr> 
                   ))}
                 </tbody>

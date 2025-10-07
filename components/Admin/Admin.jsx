@@ -395,6 +395,7 @@ const Admin = ({ user }) => {
     .join(', ')
 
   console.log('wardes.data', wargearDescription.data)
+  console.log('selectedWargear', selectedWargear)
 
   const handleWargearChoice = (option) => {
     console.log('option', option)

@@ -384,7 +384,7 @@ const Admin = ({ user }) => {
   }
 
   const wargearDes = (wargearDescription?.data ?? [])
-    .filter(item => item?.name === selectedWargear?.name && item?.type === selectedWargear?.type)
+    .filter(item => item?.name.toLowerCase() === selectedWargear?.name.toLowerCase() && item?.type.toLowerCase() === selectedWargear?.type.toLowerCase())
     .map(item => item.description ?? '')
     .join(', ')
 

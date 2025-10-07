@@ -72,7 +72,6 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
               <th>Keywords</th>
               <th>Wargear</th>
               <th>Abilites</th>
-              <th>Keywords</th>
             </tr>
           </thead>
           <tbody>
@@ -133,6 +132,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
                     <th className="p-2">Strength</th>
                     <th className="p-2">AP</th>
                     <th className="p-2">Damage</th>
+                    <th className="p-2">Keywords</th>
                   </tr>
                 </thead>
                 <tbody className="">
@@ -145,6 +145,7 @@ const UnitTable = ({ groupedUnits, toShow, addUnitToRoster, wargear, abilities }
                       <td className="px-4 py-4 border-b border-[#333] text-center">{item.strength}</td>
                       <td className="px-4 py-4 border-b border-[#333] text-center">{item.AP.int32}</td>
                       <td className="px-4 py-4 border-b border-[#333] text-center">{item.damage}</td>
+                      <td className="px-4 py-4 border-b border-[#333] text-center">{cleanDescription(item.description.join(', '))}</td>
                     </tr> 
                   ))}
                 </tbody>

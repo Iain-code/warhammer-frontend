@@ -17,13 +17,13 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
   const [damageRoll, setDamageRoll] = useState(null)
   const [woundModifier, setWoundModifier] = useState(null)
   const [damageModifier, setDamageModifier] = useState(null)
-  const [damagePerAttack, setDamagePerAttack] = useState(null)
   
   const defender = model.defence
   const hitTarget = Number(wargear.BS_WS)
   let strength = Number(wargear.strength)
   let toughness = Number(defender.T)
   let attacks = Number(wargear.attacks) + (Number(attacksModifier) || 0)
+  let damagePerAttack = 0
 
   const splitDiceType = (dice) => {
     const parts = dice.toUpperCase().split("D")
@@ -360,7 +360,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     console.log('modifiedDamage', modifiedDamage)
 
-    setDamagePerAttack(modifiedDamage)
+    damagePerAttack = modifiedDamage
     return Number(damage)
   }
 

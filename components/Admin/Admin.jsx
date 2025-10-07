@@ -353,10 +353,6 @@ const Admin = ({ user }) => {
     deleteEnhancementMutation.mutate({ user, enhancement })
   }
 
-  const handleWargearDescriptionChange = (value) => {
-    setUpdatedWargearDescription(value ?? '')
-  }
-
   const handleUpdateWargear = () => {
     if (!editing) {
       window.alert("edit something before saving")
@@ -393,23 +389,20 @@ const Admin = ({ user }) => {
     setUpdatedWargearDescription(null)
   }
 
+  const handleWargearDescriptionChange = (value) => {
+    setUpdatedWargearDescription(value ?? '')
+
+    const selectedWargearObject = wargearDescription?.data.find(item =>
+      (norm(item?.name) === norm(selectedWargear?.name) && norm(item?.type) === norm(selectedWargear?.type)) ?? null)
+
+    setSelectedWargearKeywordObject(selectedWargearObject)
+    console.log('selectedWargearObject', selectedWargearObject)
+  }
+
   const wargearDes = (wargearDescription?.data ?? [])
     .filter(item => norm(item?.name) === norm(selectedWargear?.name) && norm(item?.type) === norm(selectedWargear?.type))
     .map(item => item.description ?? '')
     .join(', ')
-
-  console.log('wargearDes', wargearDes)
-  
-  const handleWargearChoice = (option) => {
-
-    const selectedWargearObject = wargearDescription?.data.find(item =>
-      (norm(item?.name) === norm(option?.name) && norm(item?.type) === norm(option?.type)) ?? null)
-
-    console.log('selectedWargearObject', selectedWargearObject)
-
-    setSelectedWargear(option)
-    setSelectedWargearKeywordObject(selectedWargearObject)
-  }
 
   return (
     <div>
@@ -494,7 +487,7 @@ const Admin = ({ user }) => {
           options={wargearQuery.data ?? []}
           value={selectedWargear}
           isSearchable
-          onChange={(option) => handleWargearChoice(option)}
+          onChange={(option) => setSelectedWargear(option)}
           getOptionLabel={(option) => (`${option.name} - ${option.type}`)}
           styles={{
             control: (base) => ({

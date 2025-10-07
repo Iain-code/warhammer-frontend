@@ -394,6 +394,8 @@ const Admin = ({ user }) => {
     .map(item => item.description ?? '')
     .join(', ')
 
+  console.log('wardes.data', wargearDescription.data)
+
   const handleWargearChoice = (option) => {
     console.log('option', option)
 

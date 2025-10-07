@@ -38,14 +38,6 @@ const ModelProfile = ({ wargear }) => {
     refetchOnWindowFocus: false
   })
 
-  const wargearDescription = useQuery({
-    queryKey: ['wargearDescription', model.attack],
-    queryFn: () => modelService.getWargearDescriptions(model.attack.datasheet_id),
-    enabled: !!model.attack,
-    retry: 1,
-    refetchOnWindowFocus: false
-  })
-
   return (
     <div className='modelTables'>
       <div className='overflow-x-auto'>
@@ -74,13 +66,7 @@ const ModelProfile = ({ wargear }) => {
               <td>{wargear.strength}</td>
               <td>{wargear.AP}</td>
               <td>{wargear.damage}</td>
-              <td>          
-                {wargearDescription.isLoading && <div>Loading wargear description…</div>}
-                {wargearDescription.isError && <div>Failed to load wargear description</div>}
-                {wargearDescription.data?.filter(item => item.name === wargear.name)
-                  ?.map(item => cleanDescription(item.description.toUpperCase()))
-                  .reduce((prev, curr) => [prev, ',', curr])}
-              </td>
+              <td>{cleanDescription(wargear.description)}</td>
             </tr>
           </tbody>
         </table>
@@ -171,6 +157,7 @@ ModelProfile.propTypes = {
     strength: PropTypes.string,
     damage: PropTypes.string,
     AP: PropTypes.string,
+    description: PropTypes.string,
   })
 }
 

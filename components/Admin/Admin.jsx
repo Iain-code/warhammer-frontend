@@ -347,7 +347,7 @@ const Admin = ({ user }) => {
   }
 
   const handleWargearDescriptionChange = (value) => {
-    setUpdatedWargearDescription(value ?? '')
+    setUpdatedWargearDescription(value)
   }
 
   const wargearDes = (wargearDescription?.data ?? [])

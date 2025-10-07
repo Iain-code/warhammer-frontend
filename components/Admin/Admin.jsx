@@ -364,6 +364,7 @@ const Admin = ({ user }) => {
       setUpdatedWargear(null)
     }
 
+    console.log('selectedWargear', selectedWargear)
     console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
 
     if (!selectedWargearKeywordObject) {
@@ -371,8 +372,6 @@ const Admin = ({ user }) => {
       window.alert('Could not find the wargear keywords record to update.')
       return
     }
-
-    console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
 
     const descriptionObject = {
       id: selectedWargearKeywordObject.id,

@@ -277,7 +277,7 @@ const Admin = ({ user }) => {
       setUpdatedWargear(null)
     }
 
-    console.log('selectedKeywordObject', selectedWargearKeywordObject)
+    console.log('selectedKeywordObject in handleUpdateWargear', selectedWargearKeywordObject)
 
     const descriptionObject = {
       id: selectedWargearKeywordObject.id,

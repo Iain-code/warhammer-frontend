@@ -277,7 +277,7 @@ const Admin = ({ user }) => {
       setUpdatedWargear(null)
     }
 
-    if (!updatedWargearDescription) {
+    if (!selectedWargearKeywordObject) {
       console.warn('No matching wargear keyword object')
       window.alert('Could not find the wargear keywords record to update.')
       return
@@ -402,13 +402,12 @@ const Admin = ({ user }) => {
   const handleWargearChoice = (option) => {
     console.log('option', option)
 
-    const selectedWargearObject = wargearDescription?.data.find(item => {
-      console.log('item', item)
-      return norm(item?.name) === norm(option?.name) && norm(item?.type) === norm(option?.type)
-    })
+    const selectedWargearObject = wargearDescription?.data.find(item =>
+      (norm(item?.name) === norm(option?.name) && norm(item?.type) === norm(option?.type)) ?? null)
+
+    console.log('selectedWargearObject', selectedWargearObject)
 
     setSelectedWargear(option)
-    console.log('selectedWargearObject', selectedWargearObject)
     setSelectedWargearKeywordObject(selectedWargearObject)
   }
 

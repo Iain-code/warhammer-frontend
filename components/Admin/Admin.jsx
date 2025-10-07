@@ -273,6 +273,8 @@ const Admin = ({ user }) => {
       updateWargearMutation.mutate({ user, updatedWargear })
     }
 
+    console.log('selectedKeywordObject', selectedWargearKeywordObject)
+    
     if (updatedWargearDescription) {
       const descriptionObject = {
         id: selectedWargearKeywordObject.id,

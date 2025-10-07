@@ -745,7 +745,7 @@ const Admin = ({ user }) => {
                     className='text-center bg-neutral-800'
                   /> : wargearDescription?.data?.filter(item => item.name === selectedWargear?.name && item.type === selectedWargear?.type)
                     .map(item => cleanDescription(item.description?.toUpperCase()))
-                    .reduce((prev, curr) => [prev, ',', curr])}
+                    .reduce((prev, curr) => [prev, ',', curr], '')}
                 </td>
               </tr>
             </tbody>
@@ -828,6 +828,37 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
+      <div>
+        <table className="table-fixed w-full text-sm">
+          <caption className='caption'>Wargear Profile</caption>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Range</th>
+              <th>BS/WS</th>
+              <th>Attacks</th>
+              <th>Strength</th>
+              <th>AP</th>
+              <th>Damage</th>
+              <th>Keywords</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
         <table className='table-fixed w-full border-collapse border border-gray-400 rounded-xl'>

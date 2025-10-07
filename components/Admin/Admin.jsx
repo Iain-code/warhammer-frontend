@@ -55,7 +55,7 @@ const Admin = ({ user }) => {
     retry: 1,
     refetchOnWindowFocus: false,
   })
-  
+
   const sortUnitsAndFetchData = async () => {
     const IDs = getModels?.data.map(unit => unit.datasheet_id)
     const response = await modelService.getPointsForID(IDs)
@@ -687,10 +687,10 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={(updatedWargear?.description ?? selectedWargear.description) ?? ''}
+                    value={cleanDescription((updatedWargear?.description ?? selectedWargear.description) ?? '')}
                     onChange={(e) => handleWargearChange('description', e.target.value)}
                     className='text-center bg-neutral-800'
-                  /> : selectedWargear.description}
+                  /> : cleanDescription(selectedWargear.description)}
                 </td>
               </tr>
             </tbody>

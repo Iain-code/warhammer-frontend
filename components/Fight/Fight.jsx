@@ -358,6 +358,14 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     const damage = Number(localFailedSaves) * Number(modifiedDamage)
 
+    if (rules.isFNP5) {
+      modifiedDamage = modifiedDamage - (modifiedDamage / 3)
+    }
+
+    if (rules.isFNP6) {
+      modifiedDamage = modifiedDamage - (modifiedDamage / 6)
+    }
+
     damagePerAttack = modifiedDamage
     return Number(damage)
   }

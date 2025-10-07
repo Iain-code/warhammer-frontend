@@ -21,7 +21,7 @@ const Admin = ({ user }) => {
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
   const [newModel, setNewModel] = useState(null)
-  const {addNewModel, setAddNewModel} = useState(false)
+  const [addNewModel, setAddNewModel] = useState(false)
   const queryClient = useQueryClient()
 
 
@@ -781,7 +781,7 @@ const Admin = ({ user }) => {
         </div>
       }
       <div>
-        <button onClick={setAddNewModel(!addNewModel)} >Add new Model</button>
+        <button onClick={() => setAddNewModel(!addNewModel)} >Add new Model</button>
         {addNewModel &&
           <table className="table-fixed w-full text-sm text-white bg-neutral-600 border border-collapse rounded-xl">
             <caption className='caption'>Add a New Model</caption>

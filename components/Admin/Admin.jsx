@@ -21,11 +21,24 @@ const Admin = ({ user }) => {
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
   const [updatedWargearDescription, setUpdatedWargearDescription] = useState(null)
-  const [selectedWargearKeywordObject, setSelectedWargearKeywordObject] = useState(null)
   const [newModel, setNewModel] = useState(null)
   const queryClient = useQueryClient()
 
-  const norm = (v) => (v ?? '').toString().trim().toLowerCase();
+  const selectedWargearKeywordObject = React.useMemo(() => {
+
+    if (!selectedWargear) {
+      return null
+    }
+    return (
+      wargearDescription?.data.find(item =>
+        norm(item?.name) === norm(selectedWargear?.name) &&
+        norm(item?.type) === norm(selectedWargear?.type)
+      ) ?? null
+    )
+  }, [wargearDescription?.data, selectedWargear])
+
+
+  const norm = (v) => (v ?? '').toString().trim().toLowerCase()
 
   const points = useQuery({
     queryKey: ['adminPoints', faction],
@@ -390,12 +403,6 @@ const Admin = ({ user }) => {
 
   const handleWargearDescriptionChange = (value) => {
     setUpdatedWargearDescription(value ?? '')
-
-    const selectedWargearObject = wargearDescription?.data.find(item =>
-      (norm(item?.name) === norm(selectedWargear?.name) && norm(item?.type) === norm(selectedWargear?.type)) ?? null)
-
-    setSelectedWargearKeywordObject(selectedWargearObject)
-    console.log('selectedWargearObject', selectedWargearObject)
   }
 
   const wargearDes = (wargearDescription?.data ?? [])

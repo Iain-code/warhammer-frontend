@@ -277,6 +277,12 @@ const Admin = ({ user }) => {
       setUpdatedWargear(null)
     }
 
+    if (!updatedWargearDescription) {
+      console.warn('No matching wargear keyword object')
+      window.alert('Could not find the wargear keywords record to update.')
+      return
+    }
+
     const descriptionObject = {
       id: selectedWargearKeywordObject.id,
       datasheet_id: selectedWargearKeywordObject.datasheet_id,

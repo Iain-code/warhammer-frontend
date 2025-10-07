@@ -283,6 +283,8 @@ const Admin = ({ user }) => {
       return
     }
 
+    console.log('selectedWargearObject', selectedWargearKeywordObject)
+
     const descriptionObject = {
       id: selectedWargearKeywordObject.id,
       datasheet_id: selectedWargearKeywordObject.datasheet_id,
@@ -290,6 +292,8 @@ const Admin = ({ user }) => {
       name: selectedWargearKeywordObject.name,
       description: updatedWargearDescription ?? ''
     }
+
+    console.log('desObj', descriptionObject)
 
     updateWargearDescriptionMutation.mutate({ user, descriptionObject })
 

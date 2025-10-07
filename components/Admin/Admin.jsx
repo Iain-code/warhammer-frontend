@@ -20,11 +20,9 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
-  const [updatedWargearDescription, setUpdatedWargearDescription] = useState(null)
   const [newModel, setNewModel] = useState(null)
   const queryClient = useQueryClient()
 
-  const norm = (v) => (v ?? '').toString().trim().toLowerCase()
 
   const points = useQuery({
     queryKey: ['adminPoints', faction],
@@ -57,15 +55,7 @@ const Admin = ({ user }) => {
     retry: 1,
     refetchOnWindowFocus: false,
   })
-
-  const wargearDescription = useQuery({
-    queryKey: ['adminWargearDescription', selectedModel?.datasheet_id],
-    queryFn: () => modelService.getWargearDescriptions(selectedModel.datasheet_id),
-    enabled: !!selectedModel,
-    retry: 1,
-    refetchOnWindowFocus: false
-  })
-    
+  
   const sortUnitsAndFetchData = async () => {
     const IDs = getModels?.data.map(unit => unit.datasheet_id)
     const response = await modelService.getPointsForID(IDs)
@@ -124,16 +114,6 @@ const Admin = ({ user }) => {
     },
     onError: (error) => {
       console.error('failed to update wargear:', error)
-    }
-  })
-
-  const updateWargearDescriptionMutation = useMutation({
-    mutationFn: ({ user, descriptionObject }) => updateService.updateWargearDescription(user, descriptionObject),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminWargearDescription', selectedModel?.datasheet_id] })
-    },
-    onError: (error) => {
-      console.error('failed to update wargear description', error)
     }
   })
 
@@ -346,67 +326,15 @@ const Admin = ({ user }) => {
     deleteEnhancementMutation.mutate({ user, enhancement })
   }
 
-  const handleWargearDescriptionChange = (value) => {
-    setUpdatedWargearDescription(value)
-  }
-
-  const wargearDes = (wargearDescription?.data ?? [])
-    .filter(item => norm(item?.name) === norm(selectedWargear?.name) && norm(item?.type) === norm(selectedWargear?.type))
-    .map(item => item.description ?? '')
-    .join(', ')
-
-
-  const selectedWargearKeywordObject = React.useMemo(() => {
-
-    if (!selectedWargear) {
-      return null
-    }
-    return (
-      wargearDescription?.data?.find(item => {
-        console.log('item', item)
-        return norm(item?.name) === norm(selectedWargear?.name) &&
-        norm(item?.type) === norm(selectedWargear?.type)
-      }) ?? null
-    )
-  }, [wargearDescription?.data, selectedWargear])
-
-  console.log('selectedKeywordObject Main Area', selectedWargearKeywordObject)
-
   const handleUpdateWargear = () => {
     if (!editing) {
       window.alert("edit something before saving")
       return
     }
-    if (updatedWargear) {
-      updateWargearMutation.mutate({ user, updatedWargear })
-      setEditing(false)
-      setUpdatedWargear(null)
-    }
 
-    console.log('selectedWargear', selectedWargear)
-    console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
-
-    if (!selectedWargearKeywordObject) {
-      console.warn('No matching wargear keyword object')
-      window.alert('Could not find the wargear keywords record to update.')
-      return
-    }
-
-    const descriptionObject = {
-      id: selectedWargearKeywordObject.id,
-      datasheet_id: selectedWargearKeywordObject.datasheet_id,
-      line: selectedWargearKeywordObject.line,
-      name: selectedWargearKeywordObject.name,
-      description: updatedWargearDescription ?? selectedWargearKeywordObject.description ?? '',
-      type: selectedWargearKeywordObject.type
-    }
-
-    console.log('desObj', descriptionObject)
-
-    updateWargearDescriptionMutation.mutate({ user, descriptionObject })
-
+    updateWargearMutation.mutate({ user, updatedWargear })
     setEditing(false)
-    setUpdatedWargearDescription(null)
+    setUpdatedWargear(null)
   }
 
   if (!user || user.isAdmin === false) {
@@ -759,13 +687,10 @@ const Admin = ({ user }) => {
                 <td>{editing ?
                   <input
                     type='text'
-                    value={updatedWargearDescription !== null ? cleanDescription(updatedWargearDescription) : (cleanDescription(wargearDes) ?? '')}
-                    onChange={(e) => handleWargearDescriptionChange(e.target.value)}
+                    value={(updatedWargear?.description ?? selectedWargear.description) ?? ''}
+                    onChange={(e) => handleWargearChange('description', e.target.value)}
                     className='text-center bg-neutral-800'
-                  /> : wargearDescription?.data?.filter(item => 
-                    norm(item.name) === norm(selectedWargear?.name) && norm(item.type) === norm(selectedWargear?.type))
-                    .map(item => cleanDescription(item.description?.toUpperCase()))
-                    .join(', ')}
+                  /> : selectedWargear.description}
                 </td>
               </tr>
             </tbody>

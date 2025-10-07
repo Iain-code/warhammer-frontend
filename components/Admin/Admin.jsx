@@ -774,7 +774,7 @@ const Admin = ({ user }) => {
         </div>
       }
       <div>
-        <table className="table-fixed w-full text-sm">
+        <table className="table-fixed w-full text-sm text-white">
           <caption className='caption'>Add a New Model</caption>
           <thead>
             <tr>

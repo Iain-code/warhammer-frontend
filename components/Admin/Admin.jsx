@@ -21,6 +21,7 @@ const Admin = ({ user }) => {
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
   const [newModel, setNewModel] = useState(null)
+  const {addNewModel, setAddNewModel} = useState(false)
   const queryClient = useQueryClient()
 
 
@@ -780,107 +781,110 @@ const Admin = ({ user }) => {
         </div>
       }
       <div>
-        <table className="table-fixed w-full text-sm text-white">
-          <caption className='caption'>Add a New Model</caption>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>M</th>
-              <th>T</th>
-              <th>W</th>
-              <th>Sv</th>
-              <th>Inv</th>
-              <th>Ld</th>
-              <th>OC</th>
-              <th>Cost - Description</th>
-              <th>Cost - Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <input 
-                  type='text' 
-                  value={newModel.name}
-                  onChange={(e) => handleAddNewModel('name', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.M}
-                  onChange={(e) => handleAddNewModel('M', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.T}
-                  onChange={(e) => handleAddNewModel('T', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.W}
-                  onChange={(e) => handleAddNewModel('W', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.Sv}
-                  onChange={(e) => handleAddNewModel('Sv', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.inv_sv}
-                  onChange={(e) => handleAddNewModel('inv_sv', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.Ld}
-                  onChange={(e) => handleAddNewModel('Ld', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.OC}
-                  onChange={(e) => handleAddNewModel('OC', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.cost}
-                  onChange={(e) => handleAddNewModel('cost', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-              <td>
-                <input 
-                  type='number' 
-                  value={newModel.cost2}
-                  onChange={(e) => handleAddNewModel('cost2', e.target.value)}
-                  className='text-center bg-neutral-800'
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <button onClick={setAddNewModel(!addNewModel)} >Add new Model</button>
+        {addNewModel &&
+          <table className="table-fixed w-full text-sm text-white bg-neutral-600 border border-collapse rounded-xl">
+            <caption className='caption'>Add a New Model</caption>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>M</th>
+                <th>T</th>
+                <th>W</th>
+                <th>Sv</th>
+                <th>Inv</th>
+                <th>Ld</th>
+                <th>OC</th>
+                <th>Cost - Description</th>
+                <th>Cost - Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input 
+                    type='text' 
+                    value={newModel.name}
+                    onChange={(e) => handleAddNewModel('name', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.M}
+                    onChange={(e) => handleAddNewModel('M', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.T}
+                    onChange={(e) => handleAddNewModel('T', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.W}
+                    onChange={(e) => handleAddNewModel('W', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.Sv}
+                    onChange={(e) => handleAddNewModel('Sv', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.inv_sv}
+                    onChange={(e) => handleAddNewModel('inv_sv', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.Ld}
+                    onChange={(e) => handleAddNewModel('Ld', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.OC}
+                    onChange={(e) => handleAddNewModel('OC', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.cost}
+                    onChange={(e) => handleAddNewModel('cost', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+                <td>
+                  <input 
+                    type='number' 
+                    value={newModel.cost2}
+                    onChange={(e) => handleAddNewModel('cost2', e.target.value)}
+                    className='text-center bg-neutral-800'
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        }
       </div>
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>

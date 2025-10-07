@@ -24,20 +24,6 @@ const Admin = ({ user }) => {
   const [newModel, setNewModel] = useState(null)
   const queryClient = useQueryClient()
 
-  const selectedWargearKeywordObject = React.useMemo(() => {
-
-    if (!selectedWargear) {
-      return null
-    }
-    return (
-      wargearDescription?.data.find(item =>
-        norm(item?.name) === norm(selectedWargear?.name) &&
-        norm(item?.type) === norm(selectedWargear?.type)
-      ) ?? null
-    )
-  }, [wargearDescription?.data, selectedWargear])
-
-
   const norm = (v) => (v ?? '').toString().trim().toLowerCase()
 
   const points = useQuery({
@@ -366,6 +352,29 @@ const Admin = ({ user }) => {
     deleteEnhancementMutation.mutate({ user, enhancement })
   }
 
+  const handleWargearDescriptionChange = (value) => {
+    setUpdatedWargearDescription(value ?? '')
+  }
+
+  const wargearDes = (wargearDescription?.data ?? [])
+    .filter(item => norm(item?.name) === norm(selectedWargear?.name) && norm(item?.type) === norm(selectedWargear?.type))
+    .map(item => item.description ?? '')
+    .join(', ')
+
+
+  const selectedWargearKeywordObject = React.useMemo(() => {
+
+    if (!selectedWargear) {
+      return null
+    }
+    return (
+      wargearDescription?.data.find(item =>
+        norm(item?.name) === norm(selectedWargear?.name) &&
+        norm(item?.type) === norm(selectedWargear?.type)
+      ) ?? null
+    )
+  }, [wargearDescription?.data, selectedWargear])
+
   const handleUpdateWargear = () => {
     if (!editing) {
       window.alert("edit something before saving")
@@ -401,14 +410,6 @@ const Admin = ({ user }) => {
     setUpdatedWargearDescription(null)
   }
 
-  const handleWargearDescriptionChange = (value) => {
-    setUpdatedWargearDescription(value ?? '')
-  }
-
-  const wargearDes = (wargearDescription?.data ?? [])
-    .filter(item => norm(item?.name) === norm(selectedWargear?.name) && norm(item?.type) === norm(selectedWargear?.type))
-    .map(item => item.description ?? '')
-    .join(', ')
 
   return (
     <div>

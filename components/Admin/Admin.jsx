@@ -362,7 +362,7 @@ const Admin = ({ user }) => {
       return null
     }
     return (
-      wargearDescription?.data.find(item => {
+      wargearDescription?.data?.find(item => {
         console.log('item', item)
         return norm(item?.name) === norm(selectedWargear?.name) &&
         norm(item?.type) === norm(selectedWargear?.type)

@@ -358,27 +358,20 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     const damage = Number(localFailedSaves) * Number(modifiedDamage)
 
-    console.log('modifiedDamage', modifiedDamage)
-
     damagePerAttack = modifiedDamage
     return Number(damage)
   }
 
   const modelsCalculation = (localDamage) => {
-    console.log('localDamage', localDamage)
     const dmgPerAttack = Number(damagePerAttack)
-    console.log('dmgPerAtk', dmgPerAttack)
+
     const woundsPerModel = Number(defender.W)
-    console.log('woundsPerModel', woundsPerModel)
 
     const attacksCount = Math.floor(localDamage / dmgPerAttack)
-    console.log('attacksCount', attacksCount)
 
     const attacksPerKill = Math.ceil(woundsPerModel / dmgPerAttack)
-    console.log('attacksPerKill', attacksPerKill)
 
     const killed = attacksCount / attacksPerKill
-    console.log('killed', killed)
 
     return Number(killed)
   }

@@ -367,6 +367,8 @@ const Admin = ({ user }) => {
       setEditing(false)
       setUpdatedWargear(null)
     }
+    
+    console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
 
     if (!selectedWargearKeywordObject) {
       console.warn('No matching wargear keyword object')
@@ -396,11 +398,7 @@ const Admin = ({ user }) => {
     .map(item => item.description ?? '')
     .join(', ')
 
-  console.log('wardes.data', wargearDescription.data)
-  console.log('selectedWargear', selectedWargear)
-
   const handleWargearChoice = (option) => {
-    console.log('option', option)
 
     const selectedWargearObject = wargearDescription?.data.find(item =>
       (norm(item?.name) === norm(option?.name) && norm(item?.type) === norm(option?.type)) ?? null)

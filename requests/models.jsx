@@ -5,7 +5,7 @@ import userService from './users'
 const baseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
 
 const getModelsForFaction = async (faction) => {
-  const response = await axios.get(`${baseUrl}/factions`, {
+  const response = await axios.get(`${baseUrl}/models/factions`, {
     params: { faction_id: faction }
   })
   return response.data
@@ -68,7 +68,7 @@ const getEnhancementsForFaction = async (faction) => {
 }
 
 const getWargearForModels = async () => {
-  const response = await axios.get(`${baseUrl}/wargears/models`)
+  const response = await axios.get(`${baseUrl}/wargears`)
   return response.data
 }
 
@@ -84,7 +84,7 @@ const getAbilitiesForModel = async (modelId) => {
 
 const saveToRoster = async (roster) => {
   console.log('request roster:', roster)
-  const response = await axios.post(`${baseUrl}/rosters/save`, roster)
+  const response = await axios.post(`${baseUrl}/users/rosters`, roster)
   return response.data
 }
 
@@ -94,14 +94,12 @@ const getAllUnits = async () => {
 }
 
 const getArmies = async (userId) => {
-  const response = await axios.get(`${baseUrl}/rosters/armies`, {
-    params: { user_id: userId }
-  })
+  const response = await axios.get(`${baseUrl}/users/rosters/${userId}`)
   return response.data
 }
 
 const deleteArmy = async (armyId) => {
-  const response = await axios.delete(`${baseUrl}/rosters/remove/${armyId}`)
+  const response = await axios.delete(`${baseUrl}/users/rosters/${armyId}`)
   return response.data
 }
 

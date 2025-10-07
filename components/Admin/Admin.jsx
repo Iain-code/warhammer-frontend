@@ -266,40 +266,6 @@ const Admin = ({ user }) => {
     }
   }
 
-  const handleUpdateWargear = () => {
-    if (!editing) {
-      window.alert("edit something before saving")
-      return
-    }
-    if (updatedWargear) {
-      updateWargearMutation.mutate({ user, updatedWargear })
-      setEditing(false)
-      setUpdatedWargear(null)
-    }
-
-    if (!selectedWargearKeywordObject) {
-      console.warn('No matching wargear keyword object')
-      window.alert('Could not find the wargear keywords record to update.')
-      return
-    }
-
-    console.log('selectedWargearObject', selectedWargearKeywordObject)
-
-    const descriptionObject = {
-      id: selectedWargearKeywordObject.id,
-      datasheet_id: selectedWargearKeywordObject.datasheet_id,
-      line: selectedWargearKeywordObject.line,
-      name: selectedWargearKeywordObject.name,
-      description: updatedWargearDescription ?? ''
-    }
-
-    console.log('desObj', descriptionObject)
-
-    updateWargearDescriptionMutation.mutate({ user, descriptionObject })
-
-    setUpdatedWargearDescription(null)
-  }
-
   const handleCancel = () => {
     setUpdatedModel(null)
     setUpdatedWargear(null)
@@ -389,6 +355,40 @@ const Admin = ({ user }) => {
 
   const handleWargearDescriptionChange = (value) => {
     setUpdatedWargearDescription(value ?? '')
+  }
+
+  const handleUpdateWargear = () => {
+    if (!editing) {
+      window.alert("edit something before saving")
+      return
+    }
+    if (updatedWargear) {
+      updateWargearMutation.mutate({ user, updatedWargear })
+      setEditing(false)
+      setUpdatedWargear(null)
+    }
+
+    if (!selectedWargearKeywordObject) {
+      console.warn('No matching wargear keyword object')
+      window.alert('Could not find the wargear keywords record to update.')
+      return
+    }
+
+    console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
+
+    const descriptionObject = {
+      id: selectedWargearKeywordObject.id,
+      datasheet_id: selectedWargearKeywordObject.datasheet_id,
+      line: selectedWargearKeywordObject.line,
+      name: selectedWargearKeywordObject.name,
+      description: updatedWargearDescription ?? ''
+    }
+
+    console.log('desObj', descriptionObject)
+
+    updateWargearDescriptionMutation.mutate({ user, descriptionObject })
+
+    setUpdatedWargearDescription(null)
   }
 
   const wargearDes = (wargearDescription?.data ?? [])

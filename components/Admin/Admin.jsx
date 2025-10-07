@@ -273,6 +273,8 @@ const Admin = ({ user }) => {
     }
     if (updatedWargear) {
       updateWargearMutation.mutate({ user, updatedWargear })
+      setEditing(false)
+      setUpdatedWargear(null)
     }
 
     console.log('selectedKeywordObject', selectedWargearKeywordObject)
@@ -292,8 +294,6 @@ const Admin = ({ user }) => {
     }
     updateWargearDescriptionMutation.mutate({ user, descriptionObject })
 
-    setEditing(false)
-    setUpdatedWargear(null)
     setUpdatedWargearDescription(null)
   }
 

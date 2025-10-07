@@ -274,7 +274,7 @@ const Admin = ({ user }) => {
     }
 
     console.log('selectedKeywordObject', selectedWargearKeywordObject)
-    
+
     if (updatedWargearDescription) {
       const descriptionObject = {
         id: selectedWargearKeywordObject.id,
@@ -393,6 +393,7 @@ const Admin = ({ user }) => {
     const selectedWargearObject = wargearDescription?.data.find(item => 
       item?.name?.toLowerCase() === option?.name?.toLowerCase() && item.type === option.type)
     setSelectedWargear(option)
+    console.log('selectedWargearObject', selectedWargearObject)
     setSelectedWargearKeywordObject(selectedWargearObject)
     console.log('selectedWargearKeywordObject', selectedWargearKeywordObject)
   }

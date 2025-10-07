@@ -70,7 +70,7 @@ const ModelProfile = ({ wargear }) => {
             </tr>
           </tbody>
         </table>
-        <table className='table-fixed w-full justify-center mx-auto'>
+        <table className='w-full justify-center mx-auto'>
           <caption className='w-full justify-center mx-auto'>Defenders Profile</caption>
           <thead>
             <tr>

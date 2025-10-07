@@ -397,7 +397,8 @@ const Admin = ({ user }) => {
       datasheet_id: selectedWargearKeywordObject.datasheet_id,
       line: selectedWargearKeywordObject.line,
       name: selectedWargearKeywordObject.name,
-      description: updatedWargearDescription ?? ''
+      description: updatedWargearDescription ?? '',
+      type: selectedWargearKeywordObject.type
     }
 
     console.log('desObj', descriptionObject)

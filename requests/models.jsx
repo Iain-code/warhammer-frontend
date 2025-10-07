@@ -12,10 +12,8 @@ const getModelsForFaction = async (faction) => {
 };
 
 const getWargear = async (id) => {
-  const newID = Math.round(id)
-  const response = await axios.get(`${baseUrl}/wargears`, {
-    params: { datasheet_id: newID } 
-  })
+  console.log('id in getWargear', id)
+  const response = await axios.get(`${baseUrl}/wargears/${id}`)
   return response.data
 }
 
@@ -91,7 +89,7 @@ const saveToRoster = async (roster) => {
 }
 
 const getAllUnits = async () => {
-  const response = await axios.get(`${baseUrl}/models/all`)
+  const response = await axios.get(`${baseUrl}/models`)
   return response.data
 }
 

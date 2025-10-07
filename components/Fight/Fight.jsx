@@ -358,6 +358,8 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     const damage = Number(localFailedSaves) * Number(modifiedDamage)
 
+    console.log('modifiedDamage', modifiedDamage)
+
     setDamagePerAttack(modifiedDamage)
     return Number(damage)
   }

@@ -286,6 +286,7 @@ const Admin = ({ user }) => {
     setEditing(false)
     setUpdatedWargear(null)
     setUpdatedWargearDescription(null)
+    setSelectedWargearKeywordObject(null)
   }
 
   const handleCancel = () => {

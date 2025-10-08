@@ -12,7 +12,6 @@ const getModelsForFaction = async (faction) => {
 };
 
 const getWargear = async (id) => {
-  console.log('id in getWargear', id)
   const response = await axios.get(`${baseUrl}/wargears/${id}`)
   return response.data
 }
@@ -83,7 +82,6 @@ const getAbilitiesForModel = async (modelId) => {
 }
 
 const saveToRoster = async (roster) => {
-  console.log('request roster:', roster)
   const response = await axios.post(`${baseUrl}/users/rosters`, roster)
   return response.data
 }

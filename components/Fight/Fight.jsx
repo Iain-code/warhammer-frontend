@@ -356,22 +356,16 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
       modifiedDamage -= 1
     }
 
-    const damage = Number(localFailedSaves) * Number(modifiedDamage)
+    let fnpProb = 0
+    if (rules.isFNP5) fnpProb = Math.max(fnpProb, 2/6)
+    if (rules.isFNP6) fnpProb = Math.max(fnpProb, 1/6)
 
-    console.log('mod damage before', modifiedDamage)
+    const effectiveDamagePerAttack = modifiedDamage * (1 - fnpProb)
 
-    if (rules.isFNP5) {
-      modifiedDamage = modifiedDamage - (modifiedDamage / 3)
-      console.log('mod damage FNP5', modifiedDamage)
-    }
+    damagePerAttack = effectiveDamagePerAttack
 
-    if (rules.isFNP6) {
-      modifiedDamage = modifiedDamage - (modifiedDamage / 6)
-      console.log('mod damage FNP6', modifiedDamage)
-    }
-
-    damagePerAttack = modifiedDamage
-    return Number(damage)
+    const totalDamage = Number(localFailedSaves) * effectiveDamagePerAttack
+    return Number(totalDamage.toFixed(2))
   }
 
   const modelsCalculation = (localDamage) => {

@@ -23,7 +23,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
   let strength = Number(wargear.strength)
   let toughness = Number(defender.T)
   let attacks = Number(wargear.attacks) + (Number(attacksModifier) || 0)
-  let damagePerAttack = 0
 
   const splitDiceType = (dice) => {
     const parts = dice.toUpperCase().split("D")
@@ -246,7 +245,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     setFailedSaves(localFailedSaves)
 
     const localDamage = damageCalculation(localFailedSaves)
-    setDamage(localDamage)
 
     const localModelsKilled = modelsCalculation(localDamage)
     setModelsKilled(localModelsKilled)
@@ -360,7 +358,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     if (rules.isFNP5) fnpProb = 2/6
     if (rules.isFNP6) fnpProb = 1/6
 
-    damagePerAttack = modifiedDamage
+    setDamage(localFailedSaves * modifiedDamage)
 
     return {
       baseDamage: modifiedDamage,

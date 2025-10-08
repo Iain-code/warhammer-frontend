@@ -357,29 +357,59 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     }
 
     let fnpProb = 0
-    if (rules.isFNP5) fnpProb = Math.max(fnpProb, 2/6)
-    if (rules.isFNP6) fnpProb = Math.max(fnpProb, 1/6)
+    if (rules.isFNP5) fnpProb = 2/6
+    if (rules.isFNP6) fnpProb = 1/6
 
-    const effectiveDamagePerAttack = modifiedDamage * (1 - fnpProb)
+    damagePerAttack = modifiedDamage
 
-    damagePerAttack = effectiveDamagePerAttack
-
-    const totalDamage = Number(localFailedSaves) * effectiveDamagePerAttack
-    return Number(totalDamage.toFixed(2))
+    return {
+      baseDamage: modifiedDamage,
+      fnpProb: fnpProb,
+      failedSaves: localFailedSaves
+    }
   }
-
-  const modelsCalculation = (localDamage) => {
-    const dmgPerAttack = Number(damagePerAttack)
-
+  
+  const modelsCalculation = (damageData) => {
+    const { baseDamage, fnpSaveChance, failedSaves } = damageData
     const woundsPerModel = Number(defender.W)
-
-    const attacksCount = Math.floor(localDamage / dmgPerAttack)
-
-    const attacksPerKill = Math.ceil(woundsPerModel / dmgPerAttack)
-
-    const killed = attacksCount / attacksPerKill
-
-    return Number(killed)
+    
+    let totalModelsKilled = 0
+    let currentModelWounds = woundsPerModel
+    
+    // Simulate each failed save as a separate attack
+    for (let attack = 0; attack < failedSaves; attack++) {
+      // Simulate FNP for each point of damage in this attack
+      let damageThisAttack = 0
+      
+      // Handle fractional damage (e.g., D3 average = 2, D6 average = 3.5)
+      const wholeDamage = Math.floor(baseDamage)
+      const fractionalDamage = baseDamage - wholeDamage
+      
+      // Roll FNP for whole damage points
+      for (let d = 0; d < wholeDamage; d++) {
+        if (Math.random() > fnpSaveChance) {
+          damageThisAttack++
+        }
+      }
+      
+      // Handle fractional damage probabilistically
+      if (fractionalDamage > 0 && Math.random() < fractionalDamage) {
+        if (Math.random() > fnpSaveChance) {
+          damageThisAttack++
+        }
+      }
+      
+      // Apply damage to current model
+      currentModelWounds -= damageThisAttack
+      
+      // Check if we killed models (including overkill into next models)
+      while (currentModelWounds <= 0) {
+        totalModelsKilled++
+        currentModelWounds += woundsPerModel
+      }
+    }
+    
+    return totalModelsKilled
   }
 
   return (

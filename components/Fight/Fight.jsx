@@ -352,7 +352,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
       }
     }
 
-    if (wargear.damage > 1 && rules.isMinusDamage) {
+    if (modifiedDamage > 1 && rules.isMinusDamage) {
       modifiedDamage -= 1
     }
 

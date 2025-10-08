@@ -362,7 +362,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
     return {
       baseDamage: modifiedDamage,
-      fnpProb: fnpProb,
+      fnpSaveChance: fnpProb,
       failedSaves: localFailedSaves
     }
   }

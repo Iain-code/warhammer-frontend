@@ -269,7 +269,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
     let save = (Number(defender.Sv.replace("+", ""))) + ap
     let inv_save
 
-    if (defender.inv_sv !== '' && defender.inv_sv !== "-" && defender.inv_sv !== null) {
+    if (defender.inv_sv && defender.inv_sv !== '-') {
       inv_save = Number(String(defender.inv_sv).replace("+", ""))
     }
     if (rules.isWithCover) {

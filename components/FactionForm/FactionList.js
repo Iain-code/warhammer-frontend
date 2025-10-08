@@ -28,5 +28,4 @@ const factionList = [
   { value: 'WE', label: 'World Eaters', img: '/WE.jpg' },
 ];
 
-{ value: 'AM', label: 'Astra Militarum', img: '/AM.jpg' },
 export default factionList

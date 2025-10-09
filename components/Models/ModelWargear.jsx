@@ -48,13 +48,13 @@ const ModelWargear = () => {
 
   return (
     <div>
-      <div className='flex flex-col justify-center text-center '>
+      <div className='flex flex-col justify-center text-center'>
         <h1 className='text-xl my-2 text-white'>Select a weapon profile</h1>
       </div>
       <div>
         {atkWargear && atkWargear.length > 0 &&
         <div className='flex justify-center text-white'>
-          <ul className="flex flex-col lg:flex-row w-3/4 gap-3">
+          <ul className="flex flex-col lg:flex-wrap w-3/4 gap-3 justify-center">
             {atkWargear.map(item =>
               <li key={item.id} className="flex flex-1">
                 <button

@@ -90,7 +90,9 @@ const ModelForm = () => {
         <Select
           styles={customStyles}
           className='lg:w-1/4 lg:flex-col my-1'
-          options={attacker}
+          options={attacker.slice().sort((a, b) => 
+            a.name.localCompare(b.name)
+          )}
           onChange={(model) => handleAttackerModel(model)}
           placeholder="Select an attacker..."
           isSearchable
@@ -100,7 +102,9 @@ const ModelForm = () => {
         <Select
           styles={customStyles}
           className='lg:w-1/4 my-1'
-          options={defender}
+          options={defender.slice().sort((a, b) => 
+            a.name.localCompare(b.name)
+          )}
           onChange={(model) => handleDefenderModel(model)}
           placeholder="Select a defender..."
           isSearchable

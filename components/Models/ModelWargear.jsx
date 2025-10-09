@@ -54,20 +54,28 @@ const ModelWargear = () => {
       <div>
         {atkWargear && atkWargear.length > 0 &&
         <div className='flex justify-center text-white'>
-          <ul className="flex flex-col flex-1 items-center gap-3 w-3/4 lg:flex-row lg:flex-wrap lg:justify-center lg:min-w-[15%]">
-            {atkWargear.map(item =>
-              <li key={item.id} className="flex flex-1 w-3/4 lg:w-1/5">
+          <ul className="
+            grid w-full max-w-5xl gap-3
+            grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+          ">
+            {atkWargear.map(item => (
+              <li key={item.id} className="aspect-[4/3]"> {/* same footprint */}
                 <button
                   onClick={() => chooseWargear(item)}
                   className="
-              flex flex-1 rounded-2xl border border-white/10 bg-white/5
-              shadow-lg lg:px-4 lg:py-6 lg:mb-5 lg:gap-2
-              hover:bg-white/10 hover:shadow-xl
-              transition-all duration-200 ease-in-out
-            "
-                ><p className="font-semibold">{item.name}</p> <p>{item.type}</p></button>
+                    h-full w-full
+                    rounded-2xl border border-white/10 bg-white/5
+                    shadow-lg px-4 py-4
+                    hover:bg-white/10 hover:shadow-xl
+                    transition-all duration-200 ease-in-out
+                    flex flex-col items-center justify-center text-center
+                  "
+                >
+                  <p className="font-semibold truncate w-full">{item.name}</p>
+                  <p className="truncate w-full">{item.type}</p>
+                </button>
               </li>
-            )}
+            ))}
           </ul>
         </div>
         }

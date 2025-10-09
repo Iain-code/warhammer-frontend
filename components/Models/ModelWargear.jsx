@@ -59,7 +59,7 @@ const ModelWargear = () => {
             grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6
           ">
             {atkWargear.map(item => (
-              <li key={item.id} className="aspect-[2/1] border border-blue-500 justify-items-center"> 
+              <li key={item.id} className="aspect-[2/1] border border-blue-500 place-items-center"> 
                 <button
                   onClick={() => chooseWargear(item)}
                   className="

@@ -53,25 +53,20 @@ const ModelWargear = () => {
       </div>
       <div>
         {atkWargear && atkWargear.length > 0 &&
-        <div className='flex justify-center text-white border border-red-500 place-items-center'>
-          <ul className="
-            grid w-full max-w-5xl gap-3 justify-items-center
-            grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6
-          ">
+        <div className='flex flex-row flex-wrap justify-center text-white'>
+          <ul className="">
             {atkWargear.map(item => (
-              <li key={item.id} className="aspect-[2/1] border border-blue-500 place-items-center"> 
+              <li key={item.id} className=""> 
                 <button
                   onClick={() => chooseWargear(item)}
-                  className="
-                    rounded-2xl border border-white/10 bg-white/5
-                    shadow-lg px-4 py-4
-                    hover:bg-white/10 hover:shadow-xl
-                    transition-all duration-200 ease-in-out
-                    flex flex-col items-center justify-center text-center
-                  "
+                  className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                    overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                    group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                    focus:ring-pink-200"
                 >
-                  <p className="font-semibold truncate w-full">{item.name}</p>
-                  <p className="truncate w-full">{item.type}</p>
+                  <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                    {item.name} - {item.type}
+                  </span>
                 </button>
               </li>
             ))}

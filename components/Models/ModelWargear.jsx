@@ -63,7 +63,6 @@ const ModelWargear = () => {
                 <button
                   onClick={() => chooseWargear(item)}
                   className="
-                    h-full w-full
                     rounded-2xl border border-white/10 bg-white/5
                     shadow-lg px-4 py-4
                     hover:bg-white/10 hover:shadow-xl

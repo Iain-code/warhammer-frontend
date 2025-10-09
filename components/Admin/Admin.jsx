@@ -22,6 +22,7 @@ const Admin = ({ user }) => {
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
   const [newModel, setNewModel] = useState(null)
   const [addNewModel, setAddNewModel] = useState(false)
+  const [newAbility, setNewAbility] = useState('')
   const queryClient = useQueryClient()
 
 
@@ -737,6 +738,15 @@ const Admin = ({ user }) => {
         {abilities.data && (
           <div className='text-center'>
             <h1 className='text-lg font-semibold underline'>Abilities</h1>
+            <div>
+              <h1>Add New Ability</h1>
+              <textarea 
+                value={newAbility}
+                onChange={(e) => setNewAbility(e.target.value)}
+                className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
+                          w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
+              />
+            </div>
             <ul>
               {abilities.data.map(ability => {
                 const abilityDes = abilityState.find(item => ability.Name === item.name)?.description ?? ability.Description ?? ''

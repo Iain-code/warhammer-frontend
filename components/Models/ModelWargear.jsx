@@ -56,10 +56,10 @@ const ModelWargear = () => {
         <div className='flex justify-center text-white'>
           <ul className="
             grid w-full max-w-5xl gap-3
-            grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+            grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6
           ">
             {atkWargear.map(item => (
-              <li key={item.id} className="aspect-[4/3]"> {/* same footprint */}
+              <li key={item.id} className="aspect-[4/3]"> 
                 <button
                   onClick={() => chooseWargear(item)}
                   className="

@@ -55,7 +55,7 @@ const ModelWargear = () => {
         {atkWargear && atkWargear.length > 0 &&
         <div className='flex justify-center text-white border border-red-500'>
           <ul className="
-            grid w-full max-w-5xl gap-3 auto-fit
+            grid w-full max-w-5xl gap-3 auto-fit justify-items-center
             grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6
           ">
             {atkWargear.map(item => (

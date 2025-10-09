@@ -84,13 +84,15 @@ const ModelForm = () => {
     }),
   }
 
+  console.log('attacker', attacker)
+
   return (
     <div>
       <div className='flex flex-col lg:flex-row justify-center my-3 w-5/6 mx-auto lg:gap-10'>
         <Select
           styles={customStyles}
           className='lg:w-1/4 lg:flex-col my-1'
-          options={attacker.slice().sort((a, b) => 
+          options={attacker.slice().sort((a, b) =>
             a.name.localeCompare(b.name)
           )}
           onChange={(model) => handleAttackerModel(model)}

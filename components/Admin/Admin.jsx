@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useImperativeHandle, useState } from 'react'
 import Select from 'react-select'
 import modelService from '../../requests/models'
 import updateService from '../../requests/updates'
@@ -145,6 +145,16 @@ const Admin = ({ user }) => {
     },
     onError: (error) => {
       console.error('failed to update points cost:', error)
+    }
+  })
+
+  const deleteAbilityMutation = useMutation({
+    mutationFn: ({ user, ability }) => updateService.deleteAbility(user, ability),
+    onSuccess: (response) => {
+      window.alert(`${response.data.name} has been deleted`)
+    },
+    onError: (error) => {
+      console.error(`failed to delete ability:`, error)
     }
   })
 
@@ -343,6 +353,14 @@ const Admin = ({ user }) => {
     console.log('newModel before', newModel)
     setNewModel({ ...newModel, [field]: value})
     console.log('newModel after', newModel)
+  }
+
+  const deleteAbility = (ability) => {
+    const confirm = window.confirm(`Confirm deletition of ${ability.Name}`)
+    if (!confirm) return
+    
+    deleteAbilityMutation.mutate({ user, ability })
+    setEditing(false)
   }
 
   if (!user || user.isAdmin === false) {
@@ -755,6 +773,15 @@ const Admin = ({ user }) => {
                 return (
                   <li key={`${ability.DatasheetID}-${ability.Line}`}>
                     <h2 className='text-lg text-orange-500'>{ability.Name}</h2>
+                    <button 
+                      className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                        overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                        group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                        focus:ring-pink-200"
+                      onClick={() => deleteAbility(ability)}
+                    >
+                      Delete Ability
+                    </button>
                     {editing ?
                       <div className='text-white'>
                         <textarea 

@@ -54,13 +54,13 @@ const ModelWargear = () => {
       <div>
         {atkWargear && atkWargear.length > 0 &&
         <div className='flex justify-center text-white'>
-          <ul className="flex flex-col items-center gap-3 w-3/4 lg:flex-row lg:flex-wrap lg:justify-center lg:min-w-[15%]">
+          <ul className="flex flex-col flex-1 items-center gap-3 w-3/4 lg:flex-row lg:flex-wrap lg:justify-center lg:min-w-[15%]">
             {atkWargear.map(item =>
               <li key={item.id} className="flex flex-1 w-3/4 lg:w-1/5">
                 <button
                   onClick={() => chooseWargear(item)}
                   className="
-              flex-1 rounded-2xl border border-white/10 bg-white/5
+              flex flex-1 rounded-2xl border border-white/10 bg-white/5
               shadow-lg lg:px-4 lg:py-6 lg:mb-5 lg:gap-2
               hover:bg-white/10 hover:shadow-xl
               transition-all duration-200 ease-in-out

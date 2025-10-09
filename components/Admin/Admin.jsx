@@ -587,10 +587,10 @@ const Admin = ({ user }) => {
                   { editing && modelPoints1 ?
                     <input
                       type="text"
-                      value={updatedPoints1?.cost ?? modelPoints1?.cost ?? ''}
+                      value={updatedPoints1?.cost ?? modelPoints1?.cost ?? '-'}
                       onChange={(e) => handlePointsChange1( e.target.value)}
                       className='text-center bg-neutral-800'
-                    /> : `${modelPoints1?.description ?? ''} - ${modelPoints1?.cost ?? ''}`}
+                    /> : `${modelPoints1?.description ?? '-'} - ${modelPoints1?.cost ?? '-'}`}
                 </td>
                 <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
                   { editing && modelPoints2 ?

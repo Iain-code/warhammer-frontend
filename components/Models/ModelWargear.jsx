@@ -59,7 +59,7 @@ const ModelWargear = () => {
             grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6
           ">
             {atkWargear.map(item => (
-              <li key={item.id} className="aspect-[4/3]"> 
+              <li key={item.id} className="aspect-[2/1]"> 
                 <button
                   onClick={() => chooseWargear(item)}
                   className="

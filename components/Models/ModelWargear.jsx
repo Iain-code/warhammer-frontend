@@ -53,7 +53,7 @@ const ModelWargear = () => {
       </div>
       <div>
         {atkWargear && atkWargear.length > 0 &&
-        <div className='flex flex-row flex-wrap justify-center text-white'>
+        <div className='flex lg:flex-row lg:flex-wrap justify-center text-white'>
           <ul className="">
             {atkWargear.map(item => (
               <li key={item.id} className=""> 

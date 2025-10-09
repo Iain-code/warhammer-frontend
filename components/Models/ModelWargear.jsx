@@ -56,7 +56,7 @@ const ModelWargear = () => {
         <div className='flex flex-col lg:flex-row lg:flex-wrap justify-center text-white'>
           <ul className="flex flex-col lg:flex-row lg:flex-wrap justify-center">
             {atkWargear.map(item => (
-              <li key={item.id} className="w-3/4 lg:w-auto m-1"> 
+              <li key={item.id} className="w-3/4 lg:w-auto m-1 mx-auto lg:mx-0"> 
                 <button
                   onClick={() => chooseWargear(item)}
                   className="w-3/4 lg:w-auto relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
@@ -64,7 +64,7 @@ const ModelWargear = () => {
                     group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
                     focus:ring-pink-200"
                 >
-                  <span className="w-3/4 lg:w-auto relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                  <span className="w-full lg:w-auto relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
                     {item.name} - {item.type}
                   </span>
                 </button>

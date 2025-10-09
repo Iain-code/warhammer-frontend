@@ -91,7 +91,7 @@ const ModelForm = () => {
           styles={customStyles}
           className='lg:w-1/4 lg:flex-col my-1'
           options={attacker.slice().sort((a, b) => 
-            a.name.localCompare(b.name)
+            a.name.localeCompare(b.name)
           )}
           onChange={(model) => handleAttackerModel(model)}
           placeholder="Select an attacker..."
@@ -103,7 +103,7 @@ const ModelForm = () => {
           styles={customStyles}
           className='lg:w-1/4 my-1'
           options={defender.slice().sort((a, b) => 
-            a.name.localCompare(b.name)
+            a.name.localeCompare(b.name)
           )}
           onChange={(model) => handleDefenderModel(model)}
           placeholder="Select a defender..."

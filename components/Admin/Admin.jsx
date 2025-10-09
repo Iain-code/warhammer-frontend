@@ -391,7 +391,7 @@ const Admin = ({ user }) => {
         <Select 
           placeholder="Select a model"
           options={(getModels.data ?? []).slice().sort((a, b) => 
-            a.name.localCompare(b.name)
+            a.name.localeCompare(b.name)
           )}
           isSearchable
           value={selectedModel}
@@ -431,7 +431,7 @@ const Admin = ({ user }) => {
         <Select
           placeholder="Select Wargear"
           options={(wargearQuery.data ?? []).slice().sort((a, b) => 
-            a.name.localCompare(b.name)
+            a.name.localeCompare(b.name)
           )}
           value={selectedWargear}
           isSearchable

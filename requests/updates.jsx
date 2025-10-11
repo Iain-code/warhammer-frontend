@@ -59,10 +59,35 @@ const deleteAbility = async (user, ability) => {
   return response.data
 }
 
+const addNewEnhancement = async (user, enhancement) => {
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader },
+    withCredentials: true
+  }
+
+  const response = await axios.put(`${baseUrl}/admins/enhancements`, enhancement, config)
+  return response.data
+}
+
+const addNewModel = async (user, model) => {
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader },
+    withCredentials: true
+  }
+
+  const response = axios.post(`${baseUrl}/admins/models`, model, config)
+  return response.data
+}
+
+
 export default {
   updateAbilities,
   deleteUnit,
   updateEnhancement,
   deleteEnhancement,
-  deleteAbility
+  deleteAbility,
+  addNewEnhancement,
+  addNewModel
 } 

@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from 'react'
+import React, { useState } from 'react'
 import Select from 'react-select'
 import modelService from '../../requests/models'
 import updateService from '../../requests/updates'
@@ -20,11 +20,30 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
-  const [newModel, setNewModel] = useState(null)
-  const [addNewModel, setAddNewModel] = useState(false)
   const [newAbility, setNewAbility] = useState('')
-  const queryClient = useQueryClient()
+  const [newEnhancement, setNewEnhancement] = useState({
+    name: '',
+    description: '',
+    cost: 0,
+    detachment: '',
+    faction_id: faction
+  })
+  const [newModel, setNewModel] = useState({
+    name: '',
+    M: 0,
+    T: 0,
+    W: 0,
+    sv: 0,
+    inv_sv: 0,
+    Ld: 0,
+    OC: 0,
+    cost: 0,
+    cost2: 0
+  })
 
+  console.log(selectedModel)
+
+  const queryClient = useQueryClient()
 
   const points = useQuery({
     queryKey: ['adminPoints', faction],
@@ -175,6 +194,18 @@ const Admin = ({ user }) => {
     onError: (error) => {
       console.error(`failed to update ability`, error)
     }
+  })
+  
+  const newEnhancementMutation = useMutation({
+    mutationFn: () => updateService.addNewEnhancement(user, newEnhancement),
+    onSuccess: (response) => window.alert(`new enchancement added - ${response.name})`),
+    onError: (error) => console.error('failed to add new enhancement', error)
+  })
+
+  const addNewModelMutation = useMutation({
+    mutationFn: () => updateService.addNewModel(user, newModel),
+    onSuccess: (response) => window.alert(`new model added - ${response.name}`),
+    onError: (error) => console.error('failed to add new model', error)
   })
 
   const handleModelChoice = (model) => {
@@ -349,18 +380,46 @@ const Admin = ({ user }) => {
     setUpdatedWargear(null)
   }
 
-  const handleAddNewModel = (field, value) => {
-    console.log('newModel before', newModel)
-    setNewModel({ ...newModel, [field]: value})
-    console.log('newModel after', newModel)
-  }
-
   const deleteAbility = (ability) => {
     const confirm = window.confirm(`Confirm deletition of ${ability.Name}`)
     if (!confirm) return
     
     deleteAbilityMutation.mutate({ user, ability })
     setEditing(false)
+  }
+
+  const handleNewEnhancement = (field, value) => {
+    if (field === 'cost') {
+      value = parseInt(value)
+    }
+    setNewEnhancement({
+      ...newEnhancement, [field]: value, faction_id: faction
+    })
+  }
+
+  const addNewEnhancement = () => {
+    if (newEnhancement.name && newEnhancement.cost && newEnhancement.description && newEnhancement.detachment) {
+      newEnhancementMutation.mutate()
+    } else {
+      window.alert('please fill in all fields before saving enhancement')
+      return
+    }
+  }
+
+  const handleAddNewModel = (field, value) => {
+    setNewModel({ ...newModel, [field]: value })
+    console.log('newModel after', newModel)
+  }
+
+  const addNewModel = () => {
+    if (newModel.name != '' && newModel.T != 0 && newModel.W != 0 && 
+      newModel.M != 0 && newModel.sv != 0 && newModel.inv_sv != 0 && 
+      newModel.Ld != 0 && newModel.OC != 0) {
+      addNewModelMutation.mutate()
+      return
+    }
+
+    window.alert('please complete all fields to add a new model')
   }
 
   if (!user || user.isAdmin === false) {
@@ -821,128 +880,129 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
-      <div className='flex justify-center'>
+      <div className='flex flex-col items-center mb-8'>
         <button 
-          onClick={() => setAddNewModel(!addNewModel)}
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+          onClick={addNewModel}
+          className="w-1/6 border border-white relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
                 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
                 focus:ring-pink-200 dark:focus:ring-pink-800"
         >
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+          <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
             Add new Model
           </span>
         </button>
-        {addNewModel &&
-          <table className="table-fixed w-full text-sm text-white bg-neutral-600 border border-collapse rounded-xl">
-            <caption className='caption'>Add a New Model</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>M</th>
-                <th>T</th>
-                <th>W</th>
-                <th>Sv</th>
-                <th>Inv</th>
-                <th>Ld</th>
-                <th>OC</th>
-                <th>Cost - Description</th>
-                <th>Cost - Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <input 
-                    type='text' 
-                    value={newModel?.name ?? ''}
-                    onChange={(e) => handleAddNewModel('name', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.M ?? ''}
-                    onChange={(e) => handleAddNewModel('M', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.T ?? ''}
-                    onChange={(e) => handleAddNewModel('T', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.W ?? ''}
-                    onChange={(e) => handleAddNewModel('W', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.Sv ?? ''}
-                    onChange={(e) => handleAddNewModel('Sv', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.inv_sv ?? ''}
-                    onChange={(e) => handleAddNewModel('inv_sv', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.Ld ?? ''}
-                    onChange={(e) => handleAddNewModel('Ld', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.OC ?? ''}
-                    onChange={(e) => handleAddNewModel('OC', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.cost ?? ''}
-                    onChange={(e) => handleAddNewModel('cost', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-                <td>
-                  <input 
-                    type='number' 
-                    value={newModel?.cost2 ?? ''}
-                    onChange={(e) => handleAddNewModel('cost2', e.target.value)}
-                    className='text-center bg-neutral-800'
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        }
+        <div className='flex flex-col'>
+          <div>
+            <table className="table-fixed w-full text-sm text-black bg-neutral-600 border border-collapse rounded-xl">
+              <thead>
+                <tr className='text-white'>
+                  <th>Name</th>
+                  <th>M</th>
+                  <th>T</th>
+                  <th>W</th>
+                  <th>Sv</th>
+                  <th>Inv</th>
+                  <th>Ld</th>
+                  <th>OC</th>
+                  <th>Cost - Description</th>
+                  <th>Cost - Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input 
+                      type='text' 
+                      value={newModel?.name ?? ''}
+                      onChange={(e) => handleAddNewModel('name', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.M ?? ''}
+                      onChange={(e) => handleAddNewModel('M', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.T ?? ''}
+                      onChange={(e) => handleAddNewModel('T', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.W ?? ''}
+                      onChange={(e) => handleAddNewModel('W', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.Sv ?? ''}
+                      onChange={(e) => handleAddNewModel('sv', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.inv_sv ?? ''}
+                      onChange={(e) => handleAddNewModel('inv_sv', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.Ld ?? ''}
+                      onChange={(e) => handleAddNewModel('Ld', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.OC ?? ''}
+                      onChange={(e) => handleAddNewModel('OC', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.cost ?? ''}
+                      onChange={(e) => handleAddNewModel('cost', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModel?.cost2 ?? ''}
+                      onChange={(e) => handleAddNewModel('cost2', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
         <table className='table-fixed w-full border-collapse border border-gray-400 rounded-xl'>
 
           <thead>
-            <tr className='bg-neutral-700'>
+            <tr className='bg-neutral-700 text-white'>
               <th className='border border-gry-400'>Name</th>
               <th className='border border-gray-400'>Points Cost</th>
               <th className='border border-gray-400'>Description</th>
@@ -951,6 +1011,46 @@ const Admin = ({ user }) => {
           </thead>
 
           <tbody>
+            <tr>
+              <td>
+                <input 
+                  type="text"
+                  onChange={(e) => handleNewEnhancement('name', e.target.value)}
+                />
+              </td>
+              <td>
+                <input 
+                  type="number"
+                  onChange={(e) => handleNewEnhancement('cost', e.target.value)}
+                />
+              </td>
+              <td>
+                <textarea 
+                  onChange={(e) => handleNewEnhancement('description', e.target.value)}
+                />
+              </td>
+              <td>
+                <input 
+                  type="text"
+                  onChange={(e) => handleNewEnhancement('detachment', e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className=''>
+                <button
+                  onClick={() => addNewEnhancement()}
+                  className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                      overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                      group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                      focus:ring-pink-200 dark:focus:ring-pink-800 my-3"
+                >
+                  <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                    Add New Enhancement
+                  </span>
+                </button>
+              </td>
+            </tr>
             {getEnhancements.data.map(item =>
               <tr key={item.id} className='bg-neutral-700 text-white border border-gray-400'>
                 <td className='border border-gray-400'>

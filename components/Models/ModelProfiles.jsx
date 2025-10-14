@@ -127,9 +127,9 @@ const ModelProfile = ({ wargear }) => {
         {activeTab === "attacker" && (
           <div>
             {attackerAbilities.data && attackerAbilities.data.map(ability => 
-              <div key={ability.Line} className='flex flex-col mx-auto w-3/4 text-center'>
-                <h1 className='text-xl mt-5 underline font-semibold'>{ability.Name}</h1>
-                <p className='text-lg'>{cleanDescription(ability.Description)}</p>
+              <div key={ability.line} className='flex flex-col mx-auto w-3/4 text-center'>
+                <h1 className='text-xl mt-5 underline font-semibold'>{ability.name}</h1>
+                <p className='text-lg'>{cleanDescription(ability.description)}</p>
               </div>
             )}
           </div>
@@ -137,9 +137,9 @@ const ModelProfile = ({ wargear }) => {
         {activeTab === "defender" && (
           <div>
             {defenderAbilities.data && defenderAbilities.data.map(ability => 
-              <div key={ability.Line} className='flex flex-col mx-auto w-3/4 text-center'>
-                <h1 className='text-xl mt-5 underline font-semibold'>{ability.Name}</h1>
-                <p className='text-lg'>{cleanDescription(ability.Description)}</p>
+              <div key={ability.line} className='flex flex-col mx-auto w-3/4 text-center'>
+                <h1 className='text-xl mt-5 underline font-semibold'>{ability.name}</h1>
+                <p className='text-lg'>{cleanDescription(ability.description)}</p>
               </div>
             )}
           </div>

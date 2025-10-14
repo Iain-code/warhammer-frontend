@@ -84,8 +84,6 @@ const ModelForm = () => {
     }),
   }
 
-  console.log('attacker', attacker)
-
   return (
     <div>
       <div className='flex flex-col lg:flex-row justify-center my-3 w-5/6 mx-auto lg:gap-10'>

@@ -5,9 +5,7 @@ import userService from './users'
 const baseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
 
 const getModelsForFaction = async (faction) => {
-  const response = await axios.get(`${baseUrl}/models/factions`, {
-    params: { faction_id: faction }
-  })
+  const response = await axios.get(`${baseUrl}/models/factions/${faction}`)
   return response.data
 };
 
@@ -19,10 +17,9 @@ const getWargear = async (id) => {
 const updateModel = async (user, modelObj) => {
   const tokenHeader = userService.setToken(user.token)
   const config = {
-    headers: { Authorization: tokenHeader },
-    withCredentials: true
+    headers: { Authorization: tokenHeader }
   }
-
+  console.log(modelObj)
   const response = await axios.put(`${baseUrl}/admins/models`, modelObj, config)
   return response.data
 }
@@ -30,8 +27,7 @@ const updateModel = async (user, modelObj) => {
 const updateWargear = async (user, wargear) => {
   const tokenHeader = userService.setToken(user.token)
   const config = {
-    headers: { Authorization: tokenHeader },
-    withCredentials: true
+    headers: { Authorization: tokenHeader }
   }
 
   const parsedWargear = { ...wargear, AP: parseInt(wargear.AP, 10) }
@@ -40,9 +36,7 @@ const updateWargear = async (user, wargear) => {
 }
 
 const getKeywordsForFaction = async (faction) => {
-  const response = await axios.get(`${baseUrl}/keywords`, {
-    params: { faction_id: faction }
-  })
+  const response = await axios.get(`${baseUrl}/keywords/${faction}`)
   return response.data
 }
 
@@ -102,10 +96,10 @@ const deleteArmy = async (armyId) => {
 }
 
 const updatePoints = async (obj, user) => {
+  console.log('obj', obj)
   const tokenHeader = userService.setToken(user.token)
   const config = {
-    headers: { Authorization: tokenHeader },
-    withCredentials: true
+    headers: { Authorization: tokenHeader }
   }
 
   const response = await axios.put(`${baseUrl}/admins/points/${obj.id}/${obj.line}`, obj, config)

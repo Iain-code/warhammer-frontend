@@ -20,7 +20,15 @@ const Admin = ({ user }) => {
   const [updatedPoints2, setUpdatedPoints2] = useState(null)
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
-  const [newAbility, setNewAbility] = useState('')
+  const [newModelPoints, setNewModelPoints] = useState(null)
+  const [newAbility, setNewAbility] = useState({
+    ability_id: 0,
+    datasheet_id: 0,
+    description: '',
+    line: 0,
+    model: '',
+    name: ''
+  })
   const [newEnhancement, setNewEnhancement] = useState({
     name: '',
     description: '',
@@ -30,19 +38,15 @@ const Admin = ({ user }) => {
   })
   const [newModel, setNewModel] = useState({
     name: '',
-    M: 0,
-    T: 0,
+    M: '',
+    T: '',
     W: 0,
-    sv: 0,
-    inv_sv: 0,
-    Ld: 0,
+    Sv: '',
+    inv_sv: '',
+    Ld: '',
     OC: 0,
-    cost: 0,
-    cost2: 0
+    faction_id: '',
   })
-
-  console.log(selectedModel)
-
   const queryClient = useQueryClient()
 
   const points = useQuery({
@@ -169,8 +173,9 @@ const Admin = ({ user }) => {
 
   const deleteAbilityMutation = useMutation({
     mutationFn: ({ user, ability }) => updateService.deleteAbility(user, ability),
-    onSuccess: (response) => {
-      window.alert(`${response.data.name} has been deleted`)
+    onSuccess: () => {
+      window.alert('ability has been deleted')
+      return queryClient.invalidateQueries({ queryKey: ['adminAbilities', selectedModel?.datasheet_id] })
     },
     onError: (error) => {
       console.error(`failed to delete ability:`, error)
@@ -195,16 +200,28 @@ const Admin = ({ user }) => {
       console.error(`failed to update ability`, error)
     }
   })
+
+  const addNewAbilityMutation = useMutation({
+    mutationFn: (newAbility) => updateService.addNewAbility(user, newAbility),
+    onSuccess: () => {
+      window.alert('new ability successfully added')
+      return queryClient.invalidateQueries({ queryKey: ['adminAbilities', selectedModel?.datasheet_id] })
+    },
+    onError: (error) => console.error('failed to add new ability', error)
+  })
   
   const newEnhancementMutation = useMutation({
     mutationFn: () => updateService.addNewEnhancement(user, newEnhancement),
-    onSuccess: (response) => window.alert(`new enchancement added - ${response.name})`),
+    onSuccess: () => window.alert(`new enchancement added`),
     onError: (error) => console.error('failed to add new enhancement', error)
   })
 
   const addNewModelMutation = useMutation({
     mutationFn: () => updateService.addNewModel(user, newModel),
-    onSuccess: (response) => window.alert(`new model added - ${response.name}`),
+    onSuccess: () => {
+      window.alert(`new model added`)
+      return queryClient.invalidateQueries({ queryKey: ['adminModels', faction] })
+    },
     onError: (error) => console.error('failed to add new model', error)
   })
 
@@ -242,7 +259,6 @@ const Admin = ({ user }) => {
 
   const handlePointsChange1 = (value) => {
     if (updatedPoints1) {
-      console.log('updated points in IF', updatedPoints1)
       setUpdatedPoints1({ ...updatedPoints1, cost: value })
     } else {
       setUpdatedPoints1({ ...modelPoints1, cost: value })
@@ -278,6 +294,7 @@ const Admin = ({ user }) => {
   const handleSavePoints = () => {
 
     if (updatedPoints1) {
+      console.log('we got this far...')
       const pointsWithCostInt = { ...updatedPoints1, cost: parseInt(updatedPoints1.cost) }
       updatePointsMutation.mutate({ updatedPoints: pointsWithCostInt, user: user })
     }
@@ -305,21 +322,35 @@ const Admin = ({ user }) => {
     setFaction(option)
   }
 
-  const handleDescriptionChange = (name, description, line, datasheet_id) => {
+  const handleDescriptionChange = (name, description, line, datasheet_id, ability_id) => {
     setAbilityState(prev => {
-      const exists = prev.some(item => item.name === name)
+      const exists = prev?.some(item => item.name === name)
       if (exists) {
-        return prev.map(item => item.name === name ? { name: name, description: description, line: line, datasheet_id: datasheet_id } : item)
+        return prev.map(item => item.name === name ? { name: name, description: description, line: line, datasheet_id: datasheet_id, ability_id: ability_id } : item)
       }
-      return  [ ...prev, { name: name, description: description, line: line, datasheet_id: datasheet_id }]
+      return  [ ...prev, { name: name, description: description, line: line, datasheet_id: datasheet_id, ability_id: ability_id }]
     }
     )
   }
 
   const saveAbility = () => {
-    for (const ability of abilityState) {
-      updateAbilityMutation.mutate(ability)
+    if (abilityState) {
+      for (const ability of abilityState) {
+        updateAbilityMutation.mutate(ability)
+      }
     }
+
+    if (newAbility.name !== '' || newAbility.description !== '') {
+      addNewAbilityMutation.mutate(newAbility)
+    }
+    setNewAbility({
+      ability_id: 0,
+      datasheet_id: 0,
+      description: '',
+      line: 0,
+      model: '',
+      name: ''
+    })
   }
 
   const handleKeywordChange = () => {
@@ -385,6 +416,7 @@ const Admin = ({ user }) => {
     if (!confirm) return
     
     deleteAbilityMutation.mutate({ user, ability })
+    setAbilityState(null)
     setEditing(false)
   }
 
@@ -407,8 +439,7 @@ const Admin = ({ user }) => {
   }
 
   const handleAddNewModel = (field, value) => {
-    setNewModel({ ...newModel, [field]: value })
-    console.log('newModel after', newModel)
+    setNewModel({ ...newModel, [field]: value, faction_id: faction })
   }
 
   const addNewModel = () => {
@@ -418,8 +449,11 @@ const Admin = ({ user }) => {
       addNewModelMutation.mutate()
       return
     }
-
     window.alert('please complete all fields to add a new model')
+  }
+
+  const handleNewAbility = (field, value) => {
+    setNewAbility({ ...newAbility, [field]: value, datasheet_id: selectedModel.datasheet_id })
   }
 
   if (!user || user.isAdmin === false) {
@@ -621,7 +655,7 @@ const Admin = ({ user }) => {
                     <input
                       type="text"
                       value={updatedModel?.W ?? selectedModel?.W ?? ''}
-                      onChange={(e) => handleFieldChange( 'W', e.target.value)}
+                      onChange={(e) => handleFieldChange( 'W', Number(e.target.value))}
                       className='text-center bg-neutral-800'
                     /> : selectedModel.W }
                 </td>
@@ -657,12 +691,12 @@ const Admin = ({ user }) => {
                     <input
                       type="text"
                       value={updatedModel?.OC ?? selectedModel?.OC ?? ''}
-                      onChange={(e) => handleFieldChange( 'OC', e.target.value)}
+                      onChange={(e) => handleFieldChange( 'OC', Number(e.target.value))}
                       className='text-center bg-neutral-800'
                     /> : selectedModel.OC }
                 </td>
                 <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
-                  { editing && modelPoints1 ?
+                  { editing ?
                     <input
                       type="text"
                       value={updatedPoints1?.cost ?? modelPoints1?.cost ?? '-'}
@@ -671,10 +705,10 @@ const Admin = ({ user }) => {
                     /> : `${modelPoints1?.description ?? '-'} - ${modelPoints1?.cost ?? '-'}`}
                 </td>
                 <td className='text-center bg-neutral-700 w-12 sm:w-16 md:w-20 lg:w-24'>
-                  { editing && modelPoints2 ?
+                  { editing ?
                     <input
                       type="text"
-                      value={updatedPoints2?.cost ?? modelPoints2?.cost ?? ''}
+                      value={updatedPoints2?.cost ?? modelPoints2?.cost ?? '-'}
                       onChange={(e) => handlePointsChange2( e.target.value)}
                       className='text-center bg-neutral-800'
                     /> : `${modelPoints2?.description ?? ''} - ${modelPoints2?.cost ?? ''}` }
@@ -812,26 +846,38 @@ const Admin = ({ user }) => {
             })}
           </ul>
         )}
+        {selectedModel &&
+        <div className='flex flex-col justify-center items-center'>
+          <h1 className='text-lg font-semibold underline'>Abilities</h1>
+          <div className='flex w-full flex-col justify-center'>
+            <h1 className='flex justify-center mb-4'>Add New Ability</h1>
+            <input 
+              type='text'
+              value={newAbility.name}
+              className='w-1/2 mx-auto bg-neutral-600 text-center mb-2'
+              placeholder='new ability name'
+              onChange={(e) => handleNewAbility('name', e.target.value)}
+            />
+            <textarea 
+              value={newAbility.description}
+              onChange={(e) => handleNewAbility('description', e.target.value)}
+              placeholder='add new ability description'
+              className='flex justify-center mx-auto border border-gray-300 rounded-lg bg-neutral-600 p-2 
+                        w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
+            />
+          </div>
+        </div>
+        }
         {abilities.data && (
           <div className='text-center'>
-            <h1 className='text-lg font-semibold underline'>Abilities</h1>
-            <div>
-              <h1>Add New Ability</h1>
-              <textarea 
-                value={newAbility}
-                onChange={(e) => setNewAbility(e.target.value)}
-                className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
-                          w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
-              />
-            </div>
             <ul>
               {abilities.data.map(ability => {
-                const abilityDes = abilityState.find(item => ability.Name === item.name)?.description ?? ability.Description ?? ''
+                const abilityDes = abilityState?.find(item => ability.name === item.name)?.description ?? ability.description ?? ''
                 const cleanedDes = cleanDescription(abilityDes)
 
                 return (
-                  <li key={`${ability.DatasheetID}-${ability.Line}`}>
-                    <h2 className='text-lg text-orange-500'>{ability.Name}</h2>
+                  <li key={ability.ability_id}>
+                    <h2 className='text-lg text-orange-500'>{ability.name}</h2>
                     <button 
                       className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                         overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
@@ -845,12 +891,12 @@ const Admin = ({ user }) => {
                       <div className='text-white'>
                         <textarea 
                           value={cleanedDes}
-                          onChange={(e) => handleDescriptionChange(ability.Name, e.target.value, ability.Line, selectedModel.datasheet_id)}
+                          onChange={(e) => handleDescriptionChange(ability.name, e.target.value, ability.line, selectedModel.datasheet_id, ability.ability_id)}
                           className='border border-gray-300 rounded-lg bg-neutral-600 p-2 
                           w-3/4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg'
                         />
                       </div> : 
-                      <p className='mb-4 w-5/6 mx-auto text-lg'>{cleanDescription(ability.Description)}</p>
+                      <p className='mb-4 w-5/6 mx-auto text-lg'>{cleanDescription(ability.description)}</p>
                     }
                   </li>
                 )})
@@ -858,7 +904,7 @@ const Admin = ({ user }) => {
             </ul>
           </div>
         )}
-        {abilityState.length > 0 &&
+        {(abilityState?.length > 0 || newAbility?.name !== '') &&
           <div>
             <button
               onClick={saveAbility}
@@ -880,6 +926,7 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
+      {faction && 
       <div className='flex flex-col items-center mb-8'>
         <button 
           onClick={addNewModel}
@@ -925,6 +972,7 @@ const Admin = ({ user }) => {
                       value={newModel?.M ?? ''}
                       onChange={(e) => handleAddNewModel('M', e.target.value)}
                       className='text-center bg-neutral-400'
+                      placeholder='0'
                     />
                   </td>
                   <td>
@@ -939,7 +987,7 @@ const Admin = ({ user }) => {
                     <input 
                       type='number' 
                       value={newModel?.W ?? ''}
-                      onChange={(e) => handleAddNewModel('W', e.target.value)}
+                      onChange={(e) => handleAddNewModel('W', e.target.value === 0 ? 0 : Number(e.target.value))}
                       className='text-center bg-neutral-400'
                     />
                   </td>
@@ -947,7 +995,7 @@ const Admin = ({ user }) => {
                     <input 
                       type='number' 
                       value={newModel?.Sv ?? ''}
-                      onChange={(e) => handleAddNewModel('sv', e.target.value)}
+                      onChange={(e) => handleAddNewModel('Sv', e.target.value)}
                       className='text-center bg-neutral-400'
                     />
                   </td>
@@ -971,7 +1019,7 @@ const Admin = ({ user }) => {
                     <input 
                       type='number' 
                       value={newModel?.OC ?? ''}
-                      onChange={(e) => handleAddNewModel('OC', e.target.value)}
+                      onChange={(e) => handleAddNewModel('OC', e.target.value === 0 ? 0 : Number(e.target.value))}
                       className='text-center bg-neutral-400'
                     />
                   </td>
@@ -979,15 +1027,31 @@ const Admin = ({ user }) => {
                     <input 
                       type='number' 
                       value={newModel?.cost ?? ''}
-                      onChange={(e) => handleAddNewModel('cost', e.target.value)}
+                      onChange={(e) => handleAddNewModelPoints('cost', e.target.value === 0 ? 0 : Number(e.target.value))}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='text' 
+                      value={newModel?.description ?? ''}
+                      onChange={(e) => handleAddNewModelPoints('description', e.target.value)}
                       className='text-center bg-neutral-400'
                     />
                   </td>
                   <td>
                     <input 
                       type='number' 
-                      value={newModel?.cost2 ?? ''}
-                      onChange={(e) => handleAddNewModel('cost2', e.target.value)}
+                      value={newModelPoints?.cost2 ?? ''}
+                      onChange={(e) => handleAddNewModelPoints('cost2', e.target.value === 0 ? 0 : Number(e.target.value))}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModelPoints?.description2 ?? ''}
+                      onChange={(e) => handleAddNewModelPoints('description2', e.target.value)}
                       className='text-center bg-neutral-400'
                     />
                   </td>
@@ -997,6 +1061,7 @@ const Admin = ({ user }) => {
           </div>
         </div>
       </div>
+      }
       {getEnhancements.data &&
       <div className='flex justify-center text-center'>
         <table className='table-fixed w-full border-collapse border border-gray-400 rounded-xl'>

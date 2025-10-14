@@ -36,7 +36,7 @@ const updateWargear = async (user, wargear) => {
 }
 
 const getKeywordsForFaction = async (faction) => {
-  const response = await axios.get(`${baseUrl}/keywords/${faction}`)
+  const response = await axios.get(`${baseUrl}/keywords/factions/${faction}`)
   return response.data
 }
 

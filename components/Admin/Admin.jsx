@@ -225,6 +225,15 @@ const Admin = ({ user }) => {
     onError: (error) => console.error('failed to add new model', error)
   })
 
+  const addNewPointsMutation = useMutation({
+    mutationFn: () => updateService.addNewPoints(user, newModelPoints),
+    onSuccess: () => {
+      window.alert('new points cost added')
+      return queryClient.invalidateQueries({ queryKey: ['adminPoints', faction] })
+    },
+    onError: (error) => console.error('failed to update points', error)
+  })
+
   const handleModelChoice = (model) => {
     setSelectedWargear(null)
     setModelPoints1(null)
@@ -294,7 +303,6 @@ const Admin = ({ user }) => {
   const handleSavePoints = () => {
 
     if (updatedPoints1) {
-      console.log('we got this far...')
       const pointsWithCostInt = { ...updatedPoints1, cost: parseInt(updatedPoints1.cost) }
       updatePointsMutation.mutate({ updatedPoints: pointsWithCostInt, user: user })
     }
@@ -454,6 +462,23 @@ const Admin = ({ user }) => {
 
   const handleNewAbility = (field, value) => {
     setNewAbility({ ...newAbility, [field]: value, datasheet_id: selectedModel.datasheet_id })
+  }
+
+  const handleAddNewModelPoints = (field, value) => {
+    setNewModelPoints({ ...newModelPoints, [field]: value, datasheet_id: selectedModel.datasheet_id })
+  }
+
+  console.log('newModelPoints OUT', newModelPoints)
+
+  const addNewPoints = () => {
+    if (!newModelPoints?.cost || !newModelPoints?.description) {
+      window.alert('Add new points cost and description before saving')
+    }
+
+    if (!newModelPoints?.cost2 || !newModelPoints?.description2) {
+      console.log('newModelPoints', newModelPoints)
+      addNewPointsMutation.mutate()
+    }
   }
 
   if (!user || user.isAdmin === false) {
@@ -939,6 +964,17 @@ const Admin = ({ user }) => {
             Add new Model
           </span>
         </button>
+        <button 
+          onClick={addNewPoints}
+          className="w-1/6 border border-white relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                focus:ring-pink-200 dark:focus:ring-pink-800"
+        >
+          <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            Add new points
+          </span>
+        </button>
         <div className='flex flex-col'>
           <div>
             <table className="table-fixed w-full text-sm text-black bg-neutral-600 border border-collapse rounded-xl">
@@ -952,12 +988,16 @@ const Admin = ({ user }) => {
                   <th>Inv</th>
                   <th>Ld</th>
                   <th>OC</th>
-                  <th>Cost - Description</th>
-                  <th>Cost - Description</th>
+                  <th>Cost</th>
+                  <th>Description</th>
+                  <th>Cost2</th>
+                  <th>Description2</th>
+                  <th>Cost3</th>
+                  <th>Description3</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr className='font-semibold'>
                   <td>
                     <input 
                       type='text' 
@@ -1026,7 +1066,7 @@ const Admin = ({ user }) => {
                   <td>
                     <input 
                       type='number' 
-                      value={newModel?.cost ?? ''}
+                      value={newModelPoints?.cost ?? ''}
                       onChange={(e) => handleAddNewModelPoints('cost', e.target.value === 0 ? 0 : Number(e.target.value))}
                       className='text-center bg-neutral-400'
                     />
@@ -1034,7 +1074,7 @@ const Admin = ({ user }) => {
                   <td>
                     <input 
                       type='text' 
-                      value={newModel?.description ?? ''}
+                      value={newModelPoints?.description ?? ''}
                       onChange={(e) => handleAddNewModelPoints('description', e.target.value)}
                       className='text-center bg-neutral-400'
                     />
@@ -1049,9 +1089,25 @@ const Admin = ({ user }) => {
                   </td>
                   <td>
                     <input 
-                      type='number' 
+                      type='text' 
                       value={newModelPoints?.description2 ?? ''}
                       onChange={(e) => handleAddNewModelPoints('description2', e.target.value)}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='number' 
+                      value={newModelPoints?.cost3 ?? ''}
+                      onChange={(e) => handleAddNewModelPoints('cost3', e.target.value === 0 ? 0 : Number(e.target.value))}
+                      className='text-center bg-neutral-400'
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type='text' 
+                      value={newModelPoints?.description3 ?? ''}
+                      onChange={(e) => handleAddNewModelPoints('description3', e.target.value)}
                       className='text-center bg-neutral-400'
                     />
                   </td>
@@ -1116,7 +1172,7 @@ const Admin = ({ user }) => {
                 </button>
               </td>
             </tr>
-            {getEnhancements.data.map(item =>
+            {getEnhancements.data.sort((a, b) => a.name.localeCompare(b.name)).map(item =>
               <tr key={item.id} className='bg-neutral-700 text-white border border-gray-400'>
                 <td className='border border-gray-400'>
                   {item.name}

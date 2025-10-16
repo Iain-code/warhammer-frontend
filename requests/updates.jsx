@@ -82,6 +82,17 @@ const addNewAbility = async (user, ability) => {
   return response.data
 }
 
+const addNewPoints = async (user, obj) => {
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader }
+  }
+  console.log('obj in req', obj)
+
+  const response = await axios.post(`${baseUrl}/admins/points/${obj.datasheet_id}`, obj, config)
+  return response.data
+}
+
 export default {
   updateAbilities,
   deleteUnit,
@@ -90,5 +101,6 @@ export default {
   deleteAbility,
   addNewEnhancement,
   addNewModel,
-  addNewAbility
+  addNewAbility,
+  addNewPoints  
 }

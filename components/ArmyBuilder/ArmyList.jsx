@@ -43,17 +43,24 @@ const ArmyList = ({ setSelectedUnits }) => {
       payload: 0
     })
     setSelectedUnits(army.army_list)
+    console.log(army)
 
     const cost = Object.values(army.army_list)
       .filter(armyList => armyList.length > 0)
       .map(unit => unit.reduce((total, unit) => {
         return total += (unit.unitPoints.cost2 || unit.unitPoints.cost)
       }, 0))
+    
+    let totalCost = 0
+
+    for (const item of cost) {
+      totalCost += item
+    }
   
     // set roster cost back to selected army_list cost
     rosterDispatch({
       type: 'set',
-      payload: Number(cost)
+      payload: Number(totalCost)
     })
   }
 

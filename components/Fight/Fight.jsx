@@ -403,7 +403,7 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
       // Check if we killed models (including overkill into next models)
       while (currentModelWounds <= 0) {
         totalModelsKilled++
-        currentModelWounds += woundsPerModel
+        currentModelWounds = woundsPerModel
       }
     }
     

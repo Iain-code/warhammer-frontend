@@ -47,6 +47,8 @@ const ArmyBuilder = () => {
     infantry: [],
   })
 
+  console.log('selectedUnits', selectedUnits)
+  
   useQuery({
     queryKey: ['models'],
     queryFn: () => modelService.getAllUnits(),

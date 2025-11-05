@@ -1,10 +1,11 @@
 import React from 'react'
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import Select from 'react-select'
 import AttackerContext from '../../contexts/attackerContext';
 import DefenderContext from '../../contexts/defenderContext';
 import ModelContext from '../../contexts/modelContext'
 import ModelWargear from './ModelWargear'
+import { ClipLoader } from 'react-spinners'
 
 
 const ModelForm = () => {
@@ -12,29 +13,85 @@ const ModelForm = () => {
   const [defender] = useContext(DefenderContext)
   const [model, modelDispatch] = useContext(ModelContext)
 
-  const groupedDefendingUnits = {
-    epicHero: [],
-    character: [],
-    battleline: [],
-    transport: [],
-    mounted: [],
-    aircraft: [],
-    monster: [],
-    vehicle: [],
-    infantry: []
-  }
+  const groupedDefendingUnits = useMemo(() => {
+    if (!defender || defender.length === 0 ) return null
 
-  const groupedAttackingUnits = {
-    epicHero: [],
-    character: [],
-    battleline: [],
-    transport: [],
-    mounted: [],
-    aircraft: [],
-    monster: [],
-    vehicle: [],
-    infantry: []
-  }
+    const groups = {
+      epicHero: [],
+      character: [],
+      battleline: [],
+      transport: [],
+      mounted: [],
+      aircraft: [],
+      monster: [],
+      vehicle: [],
+      infantry: []
+    }
+
+    for (const item of defender) {
+      if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
+        groupedDefendingUnits.epicHero = groupedDefendingUnits.epicHero.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
+        groupedDefendingUnits.character = groupedDefendingUnits.character.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
+        groupedDefendingUnits.battleline = groupedDefendingUnits.battleline.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
+        groupedDefendingUnits.transport = groupedDefendingUnits.transport.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
+        groupedDefendingUnits.mounted = groupedDefendingUnits.mounted.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
+        groupedDefendingUnits.aircraft = groupedDefendingUnits.aircraft.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
+        groupedDefendingUnits.monster = groupedDefendingUnits.monster.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
+        groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
+        groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
+      }
+    }
+    return groups
+  }, [defender])
+
+
+  const groupedAttackingUnits = useMemo(() => {
+
+    if (!attacker || attacker.length === 0) return null
+
+    const groups = {
+      epicHero: [],
+      character: [],
+      battleline: [],
+      transport: [],
+      mounted: [],
+      aircraft: [],
+      monster: [],
+      vehicle: [],
+      infantry: []
+    }
+    
+    for (const item of attacker) {
+      if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
+        groupedAttackingUnits.epicHero = groupedAttackingUnits.epicHero.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
+        groupedAttackingUnits.character = groupedAttackingUnits.character.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
+        groupedAttackingUnits.battleline = groupedAttackingUnits.battleline.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
+        groupedAttackingUnits.transport = groupedAttackingUnits.transport.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
+        groupedAttackingUnits.mounted = groupedAttackingUnits.mounted.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
+        groupedAttackingUnits.aircraft = groupedAttackingUnits.aircraft.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
+        groupedAttackingUnits.monster = groupedAttackingUnits.monster.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
+        groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
+      } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
+        groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
+      }
+    }
+    return groups
+  }, [attacker])
 
   const handleAttackerModel = (modelObject) => {
     modelDispatch({
@@ -50,101 +107,57 @@ const ModelForm = () => {
     })
   }
 
-  for (const item of attacker) {
-    if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
-      groupedAttackingUnits.epicHero = groupedAttackingUnits.epicHero.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
-      groupedAttackingUnits.character = groupedAttackingUnits.character.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
-      groupedAttackingUnits.battleline = groupedAttackingUnits.battleline.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
-      groupedAttackingUnits.transport = groupedAttackingUnits.transport.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
-      groupedAttackingUnits.mounted = groupedAttackingUnits.mounted.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
-      groupedAttackingUnits.aircraft = groupedAttackingUnits.aircraft.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
-      groupedAttackingUnits.monster = groupedAttackingUnits.monster.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
-      groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
-      groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
-    }
-  }
-
-  for (const item of defender) {
-    if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
-      groupedDefendingUnits.epicHero = groupedDefendingUnits.epicHero.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
-      groupedDefendingUnits.character = groupedDefendingUnits.character.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
-      groupedDefendingUnits.battleline = groupedDefendingUnits.battleline.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
-      groupedDefendingUnits.transport = groupedDefendingUnits.transport.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
-      groupedDefendingUnits.mounted = groupedDefendingUnits.mounted.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
-      groupedDefendingUnits.aircraft = groupedDefendingUnits.aircraft.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
-      groupedDefendingUnits.monster = groupedDefendingUnits.monster.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
-      groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
-    } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
-      groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
-    }
-  }
-
   const optionsAttacking = [
     {
       label: 'Epic Heroes',
-      options: groupedAttackingUnits.epicHero.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Characters',
-      options: groupedAttackingUnits.character.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Battleline',
-      options: groupedAttackingUnits.battleline.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Transports',
-      options: groupedAttackingUnits.transport.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Mounted',
-      options: groupedAttackingUnits.mounted.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Aircraft',
-      options: groupedAttackingUnits.aircraft.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Monsters',
-      options: groupedAttackingUnits.monster.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Vehicles',
-      options: groupedAttackingUnits.vehicle.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Infantry',
-      options: groupedAttackingUnits.infantry.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedAttackingUnits?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
   ]
 
   const optionsDefending = [
     {
       label: 'Epic Heroes',
-      options: groupedDefendingUnits.epicHero.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Characters',
-      options: groupedDefendingUnits.character.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Battleline',
-      options: groupedDefendingUnits.battleline.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Transports',
@@ -152,23 +165,23 @@ const ModelForm = () => {
     },
     {
       label: 'Mounted',
-      options: groupedDefendingUnits.mounted.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Aircraft',
-      options: groupedDefendingUnits.aircraft.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Monsters',
-      options: groupedDefendingUnits.monster.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Vehicles',
-      options: groupedDefendingUnits.vehicle.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Infantry',
-      options: groupedDefendingUnits.infantry.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
   ]
 
@@ -229,6 +242,8 @@ const ModelForm = () => {
       letterSpacing: "0.05em",
     }),
   }
+
+  if (groupedAttackingUnits === null || groupedDefendingUnits === null) return <ClipLoader />
 
   return (
     <div>

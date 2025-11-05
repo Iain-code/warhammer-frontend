@@ -46,7 +46,7 @@ const ModelForm = () => {
       } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
         groups.vehicle = groups.vehicle.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
-        groups.vehicle = groups.vehicle.concat(item)
+        groups.infantry = groups.infantry.concat(item)
       }
     }
     return groups
@@ -70,7 +70,6 @@ const ModelForm = () => {
     }
     
     for (const item of attacker) {
-      console.log(item.keywords)
       if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
@@ -88,7 +87,7 @@ const ModelForm = () => {
       } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
         groups.vehicle = groups.vehicle.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
-        groups.vehicle = groups.vehicle.concat(item)
+        groups.infantry = groups.infantry.concat(item)
       }
     }
     return groups
@@ -162,7 +161,7 @@ const ModelForm = () => {
     },
     {
       label: 'Transports',
-      options: groupedDefendingUnits.transport.sort((a,b) => a.name.localeCompare(b.name)),
+      options: (groupedDefendingUnits?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Mounted',

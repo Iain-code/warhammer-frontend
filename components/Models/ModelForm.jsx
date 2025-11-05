@@ -30,23 +30,23 @@ const ModelForm = () => {
 
     for (const item of defender) {
       if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
-        groupedDefendingUnits.epicHero = groupedDefendingUnits.epicHero.concat(item)
+        groups.epicHero = groups.epicHero.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
-        groupedDefendingUnits.character = groupedDefendingUnits.character.concat(item)
+        groups.character = groups.character.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
-        groupedDefendingUnits.battleline = groupedDefendingUnits.battleline.concat(item)
+        groups.battleline = groups.battleline.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
-        groupedDefendingUnits.transport = groupedDefendingUnits.transport.concat(item)
+        groups.transport = groups.transport.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
-        groupedDefendingUnits.mounted = groupedDefendingUnits.mounted.concat(item)
+        groups.mounted = groups.mounted.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
-        groupedDefendingUnits.aircraft = groupedDefendingUnits.aircraft.concat(item)
+        groups.aircraft = groups.aircraft.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
-        groupedDefendingUnits.monster = groupedDefendingUnits.monster.concat(item)
+        groups.monster = groups.monster.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
-        groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
+        groups.vehicle = groups.vehicle.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
-        groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
+        groups.vehicle = groups.vehicle.concat(item)
       }
     }
     return groups
@@ -70,24 +70,25 @@ const ModelForm = () => {
     }
     
     for (const item of attacker) {
+      console.log(item.keywords)
       if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
-        groupedAttackingUnits.epicHero = groupedAttackingUnits.epicHero.concat(item)
+        groups.epicHero = groups.epicHero.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
-        groupedAttackingUnits.character = groupedAttackingUnits.character.concat(item)
+        groups.character = groups.character.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
-        groupedAttackingUnits.battleline = groupedAttackingUnits.battleline.concat(item)
+        groups.battleline = groups.battleline.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
-        groupedAttackingUnits.transport = groupedAttackingUnits.transport.concat(item)
+        groups.transport = groups.transport.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
-        groupedAttackingUnits.mounted = groupedAttackingUnits.mounted.concat(item)
+        groups.mounted = groups.mounted.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
-        groupedAttackingUnits.aircraft = groupedAttackingUnits.aircraft.concat(item)
+        groups.aircraft = groups.aircraft.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
-        groupedAttackingUnits.monster = groupedAttackingUnits.monster.concat(item)
+        groups.monster = groups.monster.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
-        groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
+        groups.vehicle = groups.vehicle.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
-        groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
+        groups.vehicle = groups.vehicle.concat(item)
       }
     }
     return groups
@@ -184,8 +185,6 @@ const ModelForm = () => {
       options: (groupedDefendingUnits?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
   ]
-
-  
 
   const customStyles = {
     control: (provided, state) => ({

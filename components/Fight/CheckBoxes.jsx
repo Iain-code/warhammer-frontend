@@ -8,12 +8,10 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
   }
 
   return (
-    <div className='flex flex-col justify-center w-3/4 mx-auto gap-2'>
-      <div className='flex justify-center text-center'>
-        <h1 className='text-white'>Attacking Buffs</h1>
-      </div>
-      <div className='flex flex-col lg:flex-row justify-center'>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+    <div className='flex flex-col lg:flex-row w-3/4 mx-auto gap-2 text-white'>
+      <div className='flex flex-col w-1/2 items-start w-full border-b mb-4 lg:border-0'>
+        <h1 className='text-white text-xl mx-auto my-4'>Attacking Buffs</h1>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -22,7 +20,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           Sustained
         </label>
         
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -30,7 +28,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           Lethal
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -38,7 +36,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           Critical 5s
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -46,7 +44,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           Dev Wounds
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -54,7 +52,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           Torrent
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -62,7 +60,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           Twin Linked
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -70,7 +68,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           +1 to Hit
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -78,7 +76,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           +1 to Wound
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -86,7 +84,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           Re-roll Hits
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -94,7 +92,7 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
           />
           Re-roll Hits of 1
         </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
+        <label className='flex flex-1 flex-row py-2 gap-x-2 mb-4'>
           <input
             className='tick-boxes-box'
             type="checkbox"
@@ -104,66 +102,66 @@ const CheckBoxes = ({ handleCheckboxChange }) => {
         </label>
       </div>
 
-      <div className='flex justify-center text-center'>
-        <h1 className='text-white'>Defensive Buffs</h1>
-      </div>
-      <div className='flex flex-col lg:flex-row justify-center'>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
-          <input
-            className='tick-boxes-box'
-            type="checkbox"
-            onChange={() => changeRule('isWithCover')}
-          />
-          With Cover
-        </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
-          <input
-            className='tick-boxes-box'
-            type="checkbox"
-            onChange={() => changeRule('isMinusHit')}
-          />
-          -1 to Hit
-        </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
-          <input
-            className='tick-boxes-box'
-            type="checkbox"
-            onChange={() => changeRule('isMinusWound')}
-          />
-          -1 to Wound
-        </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
-          <input
-            className='tick-boxes-box'
-            type="checkbox"
-            onChange={() => changeRule('isMinusDamage')}
-          />
-          -1 Damage
-        </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
-          <input
-            className='tick-boxes-box'
-            type="checkbox"
-            onChange={() => changeRule('isAoC')}
-          />
-          AoC
-        </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
-          <input
-            className='tick-boxes-box'
-            type="checkbox"
-            onChange={() => changeRule('isFNP5')}
-          />
-          Feel No Pain 5+
-        </label>
-        <label className='flex flex-1 flex-col justify-center text-center text-white hover:bg-white/10 hover:shadow-xl bg-white/5 py-2 rounded-xl shadow-lg'>
-          <input
-            className='tick-boxes-box'
-            type="checkbox"
-            onChange={() => changeRule('isFNP6')}
-          />
-          Feel No Pain 6+
-        </label>
+      <div className='flex flex-col items-start w-full border-b mb-4 lg:border-0'>
+        <h1 className='text-white text-xl mx-auto my-4 semi-bold'>Defensive Buffs</h1>
+        <div className="flex flex-col items-start">
+          <label className='flex flex-1 flex-row py-2 gap-x-2'>
+            <input
+              className='tick-boxes-box'
+              type="checkbox"
+              onChange={() => changeRule('isWithCover')}
+            />
+            With Cover
+          </label>
+          <label className='flex flex-1 flex-row py-2 gap-x-2'>
+            <input
+              className='tick-boxes-box'
+              type="checkbox"
+              onChange={() => changeRule('isMinusHit')}
+            />
+            -1 to Hit
+          </label>
+          <label className='flex flex-1 flex-row py-2 gap-x-2'>
+            <input
+              className='tick-boxes-box'
+              type="checkbox"
+              onChange={() => changeRule('isMinusWound')}
+            />
+            -1 to Wound
+          </label>
+          <label className='flex flex-1 flex-row py-2 gap-x-2'>
+            <input
+              className='tick-boxes-box'
+              type="checkbox"
+              onChange={() => changeRule('isMinusDamage')}
+            />
+            -1 Damage
+          </label>
+          <label className='flex flex-1 flex-row py-2 gap-x-2'>
+            <input
+              className='tick-boxes-box'
+              type="checkbox"
+              onChange={() => changeRule('isAoC')}
+            />
+            AoC
+          </label>
+          <label className='flex flex-1 flex-row py-2 gap-x-2'>
+            <input
+              className='tick-boxes-box'
+              type="checkbox"
+              onChange={() => changeRule('isFNP5')}
+            />
+            Feel No Pain 5+
+          </label>
+          <label className='flex flex-1 flex-row py-2 gap-x-2 mb-4'>
+            <input
+              className='tick-boxes-box'
+              type="checkbox"
+              onChange={() => changeRule('isFNP6')}
+            />
+            Feel No Pain 6+
+          </label>
+        </div>
       </div>
     </div>
   )

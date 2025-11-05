@@ -30,35 +30,45 @@ const CreateUser = () => {
   }
 
   return (
-    <div className='createUserForm'>
+    <div className='flex flex-col items-center mt-4'>
       <h3>Create User</h3>
-      <form className='form1' onSubmit={(e) => handleCreate(e)}>
-        <div className="inputRow">
-          <input 
-            className='createUserInput' 
-            type='text' placeholder='Username' 
-            onChange={(e) => setNewUsername(e.target.value)} 
-            value={newUsername}
-          />
-          <input 
-            className='createUserInput' 
-            type='password' 
-            placeholder='Password' 
-            onChange={(e) => setNewPassword(e.target.value)} 
-            value={newPassword}
-          />
+      <form 
+        className='flex flex-col justify-center w-full'
+        onSubmit={(e) => handleCreate(e)}
+      >
+        <div className=''>
+          <div className='flex justify-center'>
+            <input
+              className='lg:w-1/4 bg-neutral-800 rounded-lg border border-white border-2 text-gray-300 text-center placeholder:text-grey-300 py-2 my-2' 
+              type='text' 
+              placeholder='Username' 
+              onChange={(e) => setNewUsername(e.target.value)} 
+              value={newUsername}
+            />
+          </div>
+          <div className='flex justify-center'>
+            <input 
+              className='lg:w-1/4 bg-neutral-800 rounded-lg border border-white border-2 text-gray-300 text-center placeholder:text-grey-300 py-2 my-2' 
+              type='password' 
+              placeholder='Password' 
+              onChange={(e) => setNewPassword(e.target.value)} 
+              value={newPassword}
+            />
+          </div>
         </div>
-        <button 
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
-            overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
-            group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
-            focus:ring-pink-200 dark:focus:ring-pink-800 mt-4" 
-          type='submit' 
-        >
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-            Create User
-          </span>
-        </button>
+        <div className='mx-auto'>
+          <button
+            className="mx-auto relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+              overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+              group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+              focus:ring-pink-200 dark:focus:ring-pink-800 mt-4" 
+            type='submit' 
+          >
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+              Create User
+            </span>
+          </button>
+        </div>
       </form>
       {isOpen &&
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-5000 text-center text-white 

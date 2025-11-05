@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import MyBarChart from './Chart'
 import ModelContext from '../../contexts/modelContext'
 
-const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksModifier }) => {
+const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksModifier, unitSize }) => {
   const [model] = useContext(ModelContext)
   const [hits, setHits] = useState(null)
   const [wounds, setWounds] = useState(null)
   const [failedSaves, setFailedSaves] = useState(null)
   const [damage, setDamage] = useState(null)
-  const [unitSize, setUnitSize] = useState(1)
   const [modelsKilled, setModelsKilled] = useState(null)
   const [toggle, setToggle] = useState(false)
   const [hitRoll, setHitRoll] = useState(null)
@@ -412,20 +411,6 @@ const Fight = ({ wargear, rules, strengthModifier, toughnessModifier, attacksMod
 
   return (
     <div>
-      <div className='flex flex-col lg:w-1/6 mx-auto text-center m-4 text-white'>
-        <label htmlFor="unitSlider" className="mb-2">
-            Attacking Model Count: <span className="font-bold">{unitSize}</span>
-        </label>
-        <input
-          id='unitSlider'
-          className='bg-neutral-600 rounded-sm text-white text-center' 
-          type='range' 
-          min='1'
-          max='20'
-          value={unitSize}
-          onChange={(e) => setUnitSize(e.target.value)}
-        />
-      </div>
       <div className='flex flex-col items-center'>
         <button
           onClick={() => handleCalculations()}
@@ -489,7 +474,8 @@ Fight.propTypes = {
   defender: PropTypes.object.isRequired,
   strengthModifier: PropTypes.number,
   toughnessModifier: PropTypes.number,
-  attacksModifier: PropTypes.number
+  attacksModifier: PropTypes.number,
+  unitSize: PropTypes.number
 }
 
 export default Fight

@@ -40,8 +40,8 @@ const ModelProfile = ({ wargear }) => {
 
   return (
     <div className='modelTables'>
-      <div className='overflow-x-auto'>
-        <table className='w-full justify-center mx-auto'>
+      <div className='overflow-x-auto bg-neutral-800'>
+        <table className='lg:w-3/4 justify-center mx-auto'>
           <caption className=''>Attackers Wargear Profile</caption>
           <thead>
             <tr>
@@ -71,8 +71,8 @@ const ModelProfile = ({ wargear }) => {
           </tbody>
         </table>
       </div>
-      <div className='overflow-x-auto'>
-        <table className='w-full justify-center mx-auto'>
+      <div className='overflow-x-auto bg-neutral-800'>
+        <table className='lg:w-3/4 justify-center mx-auto'>
           <caption className='w-full justify-center mx-auto'>Defenders Profile</caption>
           <thead>
             <tr>
@@ -100,10 +100,10 @@ const ModelProfile = ({ wargear }) => {
           </tbody>
         </table>
       </div>
-      <div className="rounded shadow-lg overflow-hidden">
-        <h1 className='py-3 text-xl font-family:sans text-center text-white'>Abilities</h1>
+      <div className="rounded shadow-lg overflow-hidden bg-neutral-800 pt-4">
+        <h1 className='lg:w-3/4 mx-auto py-3 text-xl font-family:sans text-center text-white bg-neutral-800'>Abilities</h1>
         <div>
-          <div className="flex  border-b bg-neutral-600 text-white">
+          <div className="flex w-3/4 mx-auto border-b text-white">
             <button
               className={`flex-1 px-4 py-2 ${
                 activeTab === 'attacker' ? "bg-neutral-500 font-bold" : "bg-neutral-700"
@@ -123,7 +123,7 @@ const ModelProfile = ({ wargear }) => {
           </div>
         </div>
       </div>
-      <div className="flex border-b mx-auto bg-neutral-800 text-white justify-center py-4 mb-4">
+      <div className="flex lg:w-3/4 border-b mx-auto text-white justify-center py-4 mb-4">
         {activeTab === "attacker" && (
           <div>
             {attackerAbilities.data && attackerAbilities.data.map(ability => 

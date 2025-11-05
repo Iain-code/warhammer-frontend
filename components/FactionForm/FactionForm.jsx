@@ -33,7 +33,7 @@ const FactionForm = ({ setShowForm }) => {
   }
 
   const defenderMutation = useMutation({
-    mutationFn: async (faction) => await modelService.getModelsForFaction(faction),
+    mutationFn: async (faction) => await modelService.getModelsForFaction(faction, true),
     onSuccess: (models) => {
       defenderDispatch({
         type: 'model',
@@ -46,7 +46,7 @@ const FactionForm = ({ setShowForm }) => {
   })
 
   const attackerMutation = useMutation({
-    mutationFn: async (faction) => await modelService.getModelsForFaction(faction),
+    mutationFn: async (faction) => await modelService.getModelsForFaction(faction, true),
     onSuccess: (models) => {
       attackerDispatch({
         type: 'model',

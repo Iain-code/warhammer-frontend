@@ -1,15 +1,40 @@
 import React from 'react'
 import { useContext } from 'react'
-import Select from 'react-select';
+import Select from 'react-select'
 import AttackerContext from '../../contexts/attackerContext';
 import DefenderContext from '../../contexts/defenderContext';
 import ModelContext from '../../contexts/modelContext'
 import ModelWargear from './ModelWargear'
 
+
 const ModelForm = () => {
-  const [attacker, attackerDispatch] = useContext(AttackerContext)
-  const [defender, defenderDispatch] = useContext(DefenderContext)
+  const [attacker] = useContext(AttackerContext)
+  const [defender] = useContext(DefenderContext)
   const [model, modelDispatch] = useContext(ModelContext)
+
+  const groupedDefendingUnits = {
+    epicHero: [],
+    character: [],
+    battleline: [],
+    transport: [],
+    mounted: [],
+    aircraft: [],
+    monster: [],
+    vehicle: [],
+    infantry: []
+  }
+
+  const groupedAttackingUnits = {
+    epicHero: [],
+    character: [],
+    battleline: [],
+    transport: [],
+    mounted: [],
+    aircraft: [],
+    monster: [],
+    vehicle: [],
+    infantry: []
+  }
 
   const handleAttackerModel = (modelObject) => {
     modelDispatch({
@@ -25,19 +50,129 @@ const ModelForm = () => {
     })
   }
 
-  const reset = () => {
-    attackerDispatch({
-      type: 'remove',
-      payload: null
-    })
-    defenderDispatch({
-      type: 'remove',
-      payload: null
-    })
-    modelDispatch({
-      type: 'remove'
-    })
+  for (const item of attacker) {
+    if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
+      groupedAttackingUnits.epicHero = groupedAttackingUnits.epicHero.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
+      groupedAttackingUnits.character = groupedAttackingUnits.character.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
+      groupedAttackingUnits.battleline = groupedAttackingUnits.battleline.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
+      groupedAttackingUnits.transport = groupedAttackingUnits.transport.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
+      groupedAttackingUnits.mounted = groupedAttackingUnits.mounted.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
+      groupedAttackingUnits.aircraft = groupedAttackingUnits.aircraft.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
+      groupedAttackingUnits.monster = groupedAttackingUnits.monster.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
+      groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
+      groupedAttackingUnits.vehicle = groupedAttackingUnits.vehicle.concat(item)
+    }
   }
+
+  for (const item of defender) {
+    if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
+      groupedDefendingUnits.epicHero = groupedDefendingUnits.epicHero.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
+      groupedDefendingUnits.character = groupedDefendingUnits.character.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
+      groupedDefendingUnits.battleline = groupedDefendingUnits.battleline.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
+      groupedDefendingUnits.transport = groupedDefendingUnits.transport.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
+      groupedDefendingUnits.mounted = groupedDefendingUnits.mounted.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
+      groupedDefendingUnits.aircraft = groupedDefendingUnits.aircraft.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
+      groupedDefendingUnits.monster = groupedDefendingUnits.monster.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
+      groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
+    } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
+      groupedDefendingUnits.vehicle = groupedDefendingUnits.vehicle.concat(item)
+    }
+  }
+
+  const optionsAttacking = [
+    {
+      label: 'Epic Heroes',
+      options: groupedAttackingUnits.epicHero.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Characters',
+      options: groupedAttackingUnits.character.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Battleline',
+      options: groupedAttackingUnits.battleline.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Transports',
+      options: groupedAttackingUnits.transport.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Mounted',
+      options: groupedAttackingUnits.mounted.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Aircraft',
+      options: groupedAttackingUnits.aircraft.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Monsters',
+      options: groupedAttackingUnits.monster.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Vehicles',
+      options: groupedAttackingUnits.vehicle.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Infantry',
+      options: groupedAttackingUnits.infantry.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+  ]
+
+  const optionsDefending = [
+    {
+      label: 'Epic Heroes',
+      options: groupedDefendingUnits.epicHero.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Characters',
+      options: groupedDefendingUnits.character.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Battleline',
+      options: groupedDefendingUnits.battleline.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Transports',
+      options: groupedDefendingUnits.transport.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Mounted',
+      options: groupedDefendingUnits.mounted.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Aircraft',
+      options: groupedDefendingUnits.aircraft.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Monsters',
+      options: groupedDefendingUnits.monster.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Vehicles',
+      options: groupedDefendingUnits.vehicle.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+    {
+      label: 'Infantry',
+      options: groupedDefendingUnits.infantry.sort((a,b) => a.name.localeCompare(b.name)),
+    },
+  ]
+
+  
 
   const customStyles = {
     control: (provided, state) => ({
@@ -82,6 +217,17 @@ const ModelForm = () => {
       backgroundColor: state.isFocused ? "white" : "transparent", 
       cursor: "pointer",
     }),
+    groupHeading: (provided) => ({
+      ...provided,
+      color: "#f97316",
+      fontWeight: "bold",
+      fontSize: "0.9rem",
+      textTransform: "uppercase",
+      padding: "6px 12px",
+      borderBottom: "1px solid rgba(255,255,255,0.1)",
+      backgroundColor: "#1e1e1e",
+      letterSpacing: "0.05em",
+    }),
   }
 
   return (
@@ -90,9 +236,7 @@ const ModelForm = () => {
         <Select
           styles={customStyles}
           className='lg:w-1/4 lg:flex-col my-1'
-          options={attacker.slice().sort((a, b) =>
-            a.name.localeCompare(b.name)
-          )}
+          options={optionsAttacking}
           onChange={(model) => handleAttackerModel(model)}
           placeholder="Select an attacker..."
           isSearchable
@@ -102,27 +246,13 @@ const ModelForm = () => {
         <Select
           styles={customStyles}
           className='lg:w-1/4 my-1'
-          options={defender.slice().sort((a, b) => 
-            a.name.localeCompare(b.name)
-          )}
+          options={optionsDefending}
           onChange={(model) => handleDefenderModel(model)}
           placeholder="Select a defender..."
           isSearchable
           getOptionLabel={(option) => option.name}
           getOptionValue={(option) => option.datasheet_id}
         />
-      </div>
-      <div className='flex flex-wrap justify-center lg:m-4 w-100%'>
-        <button 
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
-            overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
-              group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
-              focus:ring-pink-200 dark:focus:ring-pink-800"
-          onClick={() => reset()}
-        >
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-          Reset </span>
-        </button>
       </div>
       <div>
         {model && model.attack && model.defence && <ModelWargear /> }

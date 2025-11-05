@@ -46,8 +46,6 @@ const ArmyBuilder = () => {
     vehicle: [],
     infantry: [],
   })
-
-  console.log('selectedUnits', selectedUnits)
   
   useQuery({
     queryKey: ['models'],

@@ -76,12 +76,11 @@ const ModelWargear = () => {
       </div>
       <div>
         {atkWargear && chosenWargear &&
-        <div className="mt-4">
+        <div>
           <ModelProfile 
             wargear={chosenWargear}
           />
           <ExtraRules 
-            className='extraRules' 
             wargear={chosenWargear}
           />
         </div>

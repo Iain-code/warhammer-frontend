@@ -4,10 +4,12 @@ import userService from './users'
 
 const baseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
 
-const getModelsForFaction = async (faction) => {
-  const response = await axios.get(`${baseUrl}/models/factions/${faction}`)
+const getModelsForFaction = async (faction, includeKeywords = false) => {
+
+  const params = includeKeywords ? { include: 'keywords' } : {}
+  const response = await axios.get(`${baseUrl}/models/factions/${faction}`, { params })
   return response.data
-};
+}
 
 const getWargear = async (id) => {
   const response = await axios.get(`${baseUrl}/wargears/${id}`)

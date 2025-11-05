@@ -11,6 +11,7 @@ const Login = () => {
   const [, userDispatch] = useContext(UserContext)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [showCreateUser, setShowCreateUser] = useState(false)
   const navigate = useNavigate()
 
   const loginMutation = useMutation({
@@ -47,13 +48,30 @@ const Login = () => {
   }
 
   return (
-    <div className='flex flex-col mx-auto justify-center'>
+    <div className='flex flex-col'>
       <div className='text-center'>
         <h3>Login</h3>
-        <form className='form1' onSubmit={(e) => handleLogin(e)}>
-          <div>
-            <input className='loginInput' type='text' placeholder='username' onChange={(event) => setUsername(event.target.value)}/>
-            <input className='loginInput' type='password' placeholder='password' onChange={(event) => setPassword(event.target.value)}/>
+        <form 
+          onSubmit={(e) => handleLogin(e)}
+          className='lg:w-3/4 mx-auto py-4'
+        >
+          <div className=''>
+            <div className='mx-auto'>
+              <input 
+                className='lg:w-1/3 bg-neutral-800 rounded-lg border border-white border-2 text-gray-300 text-center placeholder:text-grey-300 py-2 my-2' 
+                type='text' 
+                placeholder='Username' 
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </div>
+            <div>
+              <input 
+                className='lg:w-1/3 bg-neutral-800 rounded-lg border border-white border-2 text-gray-300 text-center placeholder:text-grey-300 py-2 my-2'
+                type='password' 
+                placeholder='Password' 
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </div>
           </div>
           <button 
             className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
@@ -68,7 +86,21 @@ const Login = () => {
         </form>
       </div>
       <div>
-        <CreateUser />
+        <div className='flex justify-center'>
+          <button 
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+            overflow-hidden text-xl font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+            group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+            focus:ring-pink-200 dark:focus:ring-pink-800 mt-4"
+            onClick={() => setShowCreateUser(!showCreateUser)}
+          >
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            Sign Up</span>
+          </button>
+        </div>
+        {showCreateUser && 
+          <CreateUser />
+        }
       </div>
     </div>
   )

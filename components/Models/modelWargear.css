@@ -1,8 +1,8 @@
 .modelTables {
+  background: #262626;
   flex-direction: column;
   justify-content: center;
   border-collapse: collapse;
-  background: #1b1b1b;
   border-radius: 8px;
   overflow: overflow-x-auto;
   color: white;
@@ -10,7 +10,6 @@
 }
 
 .modelTables th {
-  background: #2a2a2a;
   font-weight: 500;
   border-bottom: 2px solid #444;
 }
@@ -20,5 +19,5 @@
 }
 
 .modelTables tr:hover {
-  background: #2a2a2a;
+  background: #575555ff;
 }

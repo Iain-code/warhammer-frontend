@@ -150,7 +150,7 @@ const Enhancements = ({ enhancements, faction }) => {
              <button
                onClick={() => addEnhancementToRoster(d.cost, d.name)}
                className="flex
-                items-center justify-center mx-auto p-0.5 mb-2 text-md font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                items-center justify-center mx-auto p-0.5 mt-4 mb-2 text-md font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
                group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
                focus:ring-pink-200 dark:focus:ring-pink-800" 
              >

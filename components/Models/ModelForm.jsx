@@ -13,6 +13,8 @@ const ModelForm = () => {
   const [defender] = useContext(DefenderContext)
   const [model, modelDispatch] = useContext(ModelContext)
 
+  console.log(defender)
+
   const groupedDefendingUnits = useMemo(() => {
     if (!defender || defender.length === 0 ) return null
 
@@ -29,8 +31,10 @@ const ModelForm = () => {
     }
 
     for (const item of defender) {
+      console.log(1)
       if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
+        console.log(2)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
         groups.character = groups.character.concat(item)
       } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {

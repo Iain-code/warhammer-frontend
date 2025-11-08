@@ -1,114 +1,127 @@
 import React from 'react'
-import { useContext, useMemo } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import Select from 'react-select'
 import AttackerContext from '../../contexts/attackerContext';
 import DefenderContext from '../../contexts/defenderContext';
 import ModelContext from '../../contexts/modelContext'
 import { ClipLoader } from 'react-spinners'
 
-
 const ModelForm = () => {
   const [attacker] = useContext(AttackerContext)
   const [defender] = useContext(DefenderContext)
-  const [model, modelDispatch] = useContext(ModelContext)
+  const [, modelDispatch] = useContext(ModelContext)
+  const [atkGroups, setAtkGroups] = useState({
+    epicHero: [],
+    character: [],
+    battleline: [],
+    transport: [],
+    mounted: [],
+    aircraft: [],
+    monster: [],
+    vehicle: [],
+    infantry: []
+  })
+  const [defGroups, setDefGroups] = useState({
+    epicHero: [],
+    character: [],
+    battleline: [],
+    transport: [],
+    mounted: [],
+    aircraft: [],
+    monster: [],
+    vehicle: [],
+    infantry: []
+  })
 
-  console.log('model', model)
   console.log('def', defender)
   console.log('atk', attacker)
 
-  const groupedDefendingUnits = useMemo(() => {
-    // if (!defender || defender?.length === 0 ) return null
-
-    const groups = {
-      epicHero: [],
-      character: [],
-      battleline: [],
-      transport: [],
-      mounted: [],
-      aircraft: [],
-      monster: [],
-      vehicle: [],
-      infantry: []
-    }
-
-    for (const item of defender) {
-
-      let keywordArr = []
-
-      if (item?.keywords?.length > 0) {
-        keywordArr = keywordArr.concat(item.keywords.map(i => i.toLowerCase().trim()))
-      }
-
-      if (keywordArr?.includes('epic hero')) {
-        groups.epicHero = groups.epicHero.concat(item)
-      } else if (keywordArr?.includes('character')) {
-        groups.character = groups.character.concat(item)
-      } else if (keywordArr?.includes('battleline')) {
-        groups.battleline = groups.battleline.concat(item)
-      } else if (keywordArr?.includes('transport')) {
-        groups.transport = groups.transport.concat(item)
-      } else if (keywordArr?.includes('mounted')) {
-        groups.mounted = groups.mounted.concat(item)
-      } else if (keywordArr?.includes('aircraft')) {
-        groups.aircraft = groups.aircraft.concat(item)
-      } else if (keywordArr?.includes('monster')) {
-        groups.monster = groups.monster.concat(item)
-      } else if (keywordArr?.includes('vehicle')) {
-        groups.vehicle = groups.vehicle.concat(item)
-      } else if (keywordArr?.includes('infantry')) {
-        groups.infantry = groups.infantry.concat(item)
-      }
-    }
-    return groups
-  }, [defender])
-
-
-  const groupedAttackingUnits = useMemo(() => {
-
-    // if (!attacker || attacker.length === 0) return null
-
-    const groups = {
-      epicHero: [],
-      character: [],
-      battleline: [],
-      transport: [],
-      mounted: [],
-      aircraft: [],
-      monster: [],
-      vehicle: [],
-      infantry: []
-    }
+  useEffect(() => {
     
-    for (let item of attacker) {
+    const newGroupsDef = {
+      epicHero: [],
+      character: [],
+      battleline: [],
+      transport: [],
+      mounted: [],
+      aircraft: [],
+      monster: [],
+      vehicle: [],
+      infantry: []
+    }
+    const newGroups = {
+      epicHero: [],
+      character: [],
+      battleline: [],
+      transport: [],
+      mounted: [],
+      aircraft: [],
+      monster: [],
+      vehicle: [],
+      infantry: []
+    }
+
+    for (const item of attacker) {
 
       let keywordArr = []
 
       if (item?.keywords?.length > 0) {
-        keywordArr = keywordArr.concat(item.keywords.map(i => i.toLowerCase().trim()))
+        keywordArr = (item?.keywords || []).map(k => k.toLowerCase().trim());
       }
 
       if (keywordArr?.includes('epic hero')) {
-        groups.epicHero = groups.epicHero.concat(item)
+        newGroups.epicHero.push(item)
       } else if (keywordArr?.includes('character')) {
-        groups.character = groups.character.concat(item)
+        newGroups.character.push(item)
       } else if (keywordArr?.includes('battleline')) {
-        groups.battleline = groups.battleline.concat(item)
+        newGroups.battleline.push(item)
       } else if (keywordArr?.includes('transport')) {
-        groups.transport = groups.transport.concat(item)
+        newGroups.transport.push(item)
       } else if (keywordArr?.includes('mounted')) {
-        groups.mounted = groups.mounted.concat(item)
+        newGroups.mounted.push(item)
       } else if (keywordArr?.includes('aircraft')) {
-        groups.aircraft = groups.aircraft.concat(item)
+        newGroups.aircraft.push(item)
       } else if (keywordArr?.includes('monster')) {
-        groups.monster = groups.monster.concat(item)
+        newGroups.monster.push(item)
       } else if (keywordArr?.includes('vehicle')) {
-        groups.vehicle = groups.vehicle.concat(item)
+        newGroups.vehicle.push(item)
       } else if (keywordArr?.includes('infantry')) {
-        groups.infantry = groups.infantry.concat(item)
+        newGroups.infantry.push(item)
       }
     }
-    return groups
-  }, [attacker])
+    setAtkGroups(newGroups)
+
+
+    for (let item of defender) {
+
+      let keywordArr = []
+
+      if (item?.keywords?.length > 0) {
+        keywordArr = (item?.keywords || []).map(k => k.toLowerCase().trim());
+      }
+
+      if (keywordArr?.includes('epic hero')) {
+        newGroupsDef.epicHero.push(item)
+      } else if (keywordArr?.includes('character')) {
+        newGroupsDef.character.push(item)
+      } else if (keywordArr?.includes('battleline')) {
+        newGroupsDef.battleline.push(item)
+      } else if (keywordArr?.includes('transport')) {
+        newGroupsDef.transport.push(item)
+      } else if (keywordArr?.includes('mounted')) {
+        newGroupsDef.mounted.push(item)
+      } else if (keywordArr?.includes('aircraft')) {
+        newGroupsDef.aircraft.push(item)
+      } else if (keywordArr?.includes('monster')) {
+        newGroupsDef.monster.push(item)
+      } else if (keywordArr?.includes('vehicle')) {
+        newGroupsDef.vehicle.push(item)
+      } else if (keywordArr?.includes('infantry')) {
+        newGroupsDef.infantry.push(item)
+      }
+    }
+    setDefGroups(newGroupsDef)
+  }, [attacker, defender])
 
   const handleAttackerModel = (modelObject) => {
     modelDispatch({
@@ -127,78 +140,78 @@ const ModelForm = () => {
   const optionsAttacking = [
     {
       label: 'Epic Heroes',
-      options: (groupedAttackingUnits?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Characters',
-      options: (groupedAttackingUnits?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Battleline',
-      options: (groupedAttackingUnits?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Transports',
-      options: (groupedAttackingUnits?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Mounted',
-      options: (groupedAttackingUnits?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Aircraft',
-      options: (groupedAttackingUnits?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Monsters',
-      options: (groupedAttackingUnits?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Vehicles',
-      options: (groupedAttackingUnits?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Infantry',
-      options: (groupedAttackingUnits?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (atkGroups?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
   ]
 
   const optionsDefending = [
     {
       label: 'Epic Heroes',
-      options: (groupedDefendingUnits?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Characters',
-      options: (groupedDefendingUnits?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Battleline',
-      options: (groupedDefendingUnits?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Transports',
-      options: (groupedDefendingUnits?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Mounted',
-      options: (groupedDefendingUnits?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Aircraft',
-      options: (groupedDefendingUnits?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Monsters',
-      options: (groupedDefendingUnits?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Vehicles',
-      options: (groupedDefendingUnits?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Infantry',
-      options: (groupedDefendingUnits?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: (defGroups?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
     },
   ]
 
@@ -258,7 +271,7 @@ const ModelForm = () => {
     }),
   }
 
-  if (groupedAttackingUnits === null || groupedDefendingUnits === null) return <ClipLoader />
+  if (!attacker || !defender || !defGroups || !atkGroups) return (<ClipLoader />)
 
   return (
     <div>

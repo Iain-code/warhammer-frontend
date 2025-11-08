@@ -77,15 +77,15 @@ const FactionForm = ({ setShowForm }) => {
     }),
     input: (provided) => ({
       ...provided,
-      color: "white",                // typing color
+      color: "white",     
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: "white",                // selected value color
+      color: "white",           
     }),
     placeholder: (provided) => ({
       ...provided,
-      color: "white",                // placeholder color
+      color: "white",            
       opacity: 0.9,
     }),
     menu: (provided) => ({
@@ -97,7 +97,7 @@ const FactionForm = ({ setShowForm }) => {
     }),
     option: (provided, state) => ({
       ...provided,
-      color: state.isFocused ? "pink" : 'white',        // text color on hover vs normal
+      color: state.isFocused ? "pink" : 'white',       
       backgroundColor: state.isFocused ? "white" : "transparent", 
       cursor: "pointer",
     }),

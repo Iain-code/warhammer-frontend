@@ -13,7 +13,9 @@ const ModelForm = () => {
   const [defender] = useContext(DefenderContext)
   const [model, modelDispatch] = useContext(ModelContext)
 
-  console.log(defender)
+  console.log('model', model)
+  console.log('def', defender)
+  console.log('atk', attacker)
 
   const groupedDefendingUnits = useMemo(() => {
     if (!defender || defender?.length === 0 ) return null

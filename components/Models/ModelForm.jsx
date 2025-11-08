@@ -140,78 +140,78 @@ const ModelForm = () => {
   const optionsAttacking = [
     {
       label: 'Epic Heroes',
-      options: (atkGroups?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.epicHero || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Characters',
-      options: (atkGroups?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.character || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Battleline',
-      options: (atkGroups?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.battleline || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Transports',
-      options: (atkGroups?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.transport || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Mounted',
-      options: (atkGroups?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.mounted || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Aircraft',
-      options: (atkGroups?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.aircraft || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Monsters',
-      options: (atkGroups?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.monster || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Vehicles',
-      options: (atkGroups?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.vehicle || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Infantry',
-      options: (atkGroups?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(atkGroups?.infantry || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
   ]
 
   const optionsDefending = [
     {
       label: 'Epic Heroes',
-      options: (defGroups?.epicHero || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.epicHero || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Characters',
-      options: (defGroups?.character || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.character || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Battleline',
-      options: (defGroups?.battleline || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.battleline || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Transports',
-      options: (defGroups?.transport || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.transport || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Mounted',
-      options: (defGroups?.mounted || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.mounted || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Aircraft',
-      options: (defGroups?.aircraft || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.aircraft || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Monsters',
-      options: (defGroups?.monster || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.monster || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Vehicles',
-      options: (defGroups?.vehicle || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.vehicle || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
     {
       label: 'Infantry',
-      options: (defGroups?.infantry || []).sort((a,b) => a.name.localeCompare(b.name)),
+      options: ([...(defGroups?.infantry || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
   ]
 

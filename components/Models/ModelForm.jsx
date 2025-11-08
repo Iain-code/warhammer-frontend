@@ -217,6 +217,10 @@ const ModelForm = () => {
 
   console.log('atk options', optionsAttacking)
   console.log('def options', optionsDefending)
+  console.log('attacker len', Array.isArray(attacker) ? attacker.length : attacker);
+  console.log('defender len', Array.isArray(defender) ? defender.length : defender);
+  console.log('first attacker', attacker?.[0]);
+  console.log('first defender', defender?.[0]);
 
   const customStyles = {
     control: (provided, state) => ({

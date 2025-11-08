@@ -59,7 +59,6 @@ const ModelForm = () => {
         groups.infantry = groups.infantry.concat(item)
       }
     }
-    console.log('def groups', groups)
     return groups
   }, [defender])
 
@@ -108,7 +107,6 @@ const ModelForm = () => {
         groups.infantry = groups.infantry.concat(item)
       }
     }
-    console.log('atk groups', groups)
     return groups
   }, [attacker])
 

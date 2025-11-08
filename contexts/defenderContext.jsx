@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 const defenderReducer = (state, action) => {
   switch (action.type) {
   case 'model':
-    return [ ...action.payload ]
+    return Array.isArray(action.payload) ? [...action.payload] : [];
   case 'remove':
-    return [ ...action.payload ]
+    return action.payload 
   default:
     return state
   }

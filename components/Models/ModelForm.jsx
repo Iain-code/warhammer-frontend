@@ -4,7 +4,6 @@ import Select from 'react-select'
 import AttackerContext from '../../contexts/attackerContext';
 import DefenderContext from '../../contexts/defenderContext';
 import ModelContext from '../../contexts/modelContext'
-import ModelWargear from './ModelWargear'
 import { ClipLoader } from 'react-spinners'
 
 
@@ -281,9 +280,7 @@ const ModelForm = () => {
           getOptionValue={(option) => option.datasheet_id}
         />
       </div>
-      <div>
-        {model && model.attack && model.defence && <ModelWargear model={model}/> }
-      </div>
+
     </div>
   )
 }

@@ -3,19 +3,11 @@ import modelService from '../../requests/models'
 import { useMutation } from "@tanstack/react-query"
 import React from 'react'
 import PropTypes from "prop-types"
-import ExtraRules from "../Fight/ExtraRules"
-import ModelProfile from "../Models/ModelProfiles"
 
-
-const ModelWargear = ({ model }) => {
+const ModelWargear = ({ model, setChosenWargear }) => {
   const [atkWargear, setAtkWargear] = useState(null)
-  const [, setDefWargear] = useState(null)
-  const [chosenWargear, setChosenWargear] = useState(null)
-
-  console.log('model', model)
 
   const attacker = model.attack
-  const defender = model.defence
  
   const attackerWargearMutation = useMutation({
     mutationFn: (id) => modelService.getWargear(id),
@@ -26,25 +18,10 @@ const ModelWargear = ({ model }) => {
       console.error('failed to retrieve wargear:', error)
     }
   })
-
-  const defenderWargearMutation = useMutation({
-    mutationFn: (id) => modelService.getWargear(id),
-    onSuccess: (wargear) => {
-      setDefWargear(wargear)
-    },
-    onError: (error) => {
-      console.error('failed to retrieve wargear:', error)
-    }
-  })
   
   useEffect(() => {
     attackerWargearMutation.mutate(attacker.datasheet_id)
-    defenderWargearMutation.mutate(defender.datasheet_id)
   }, [model])
-
-  const chooseWargear = (wargear) => {
-    setChosenWargear(wargear)
-  }
 
   return (
     <div>
@@ -58,7 +35,7 @@ const ModelWargear = ({ model }) => {
             {atkWargear.map(item => (
               <li key={item.id} className="w-full flex justify-center lg:w-auto m-1 lg:mx-0"> 
                 <button
-                  onClick={() => chooseWargear(item)}
+                  onClick={() => setChosenWargear(item)}
                   className="w-[100%] mx-auto lg:w-auto relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                     overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
                     group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
@@ -71,20 +48,7 @@ const ModelWargear = ({ model }) => {
               </li>
             ))}
           </ul>
-        </div>
-        }
-      </div>
-      <div>
-        {atkWargear && chosenWargear &&
-        <div>
-          <ModelProfile 
-            wargear={chosenWargear}
-            model={model}
-          />
-          <ExtraRules 
-            wargear={chosenWargear}
-          />
-        </div>
+        </div> 
         }
       </div>
     </div>
@@ -101,6 +65,7 @@ ModelWargear.propTypes = {
       datasheet_id: PropTypes.number,
     }),
   }),
+  setChosenWargear: PropTypes.func,
 };
 
 export default ModelWargear

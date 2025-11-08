@@ -8,6 +8,7 @@ import parse, { domToReact } from 'html-react-parser'
 
 const ModelProfile = ({ wargear, model }) => {
   const [activeTab, setActiveTab] = useState('attacker')
+  
   const defender = model.defence
 
   const cleanDescription = (description) => {

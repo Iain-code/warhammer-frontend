@@ -1,14 +1,12 @@
 import React from 'react'
-import { useContext, useState } from 'react'
-import ModelContext from '../../contexts/modelContext'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import './modelWargear.css'
 import { useQuery } from '@tanstack/react-query'
 import modelService from '../../requests/models'
 import parse, { domToReact } from 'html-react-parser'
 
-const ModelProfile = ({ wargear }) => {
-  const [model] = useContext(ModelContext)
+const ModelProfile = ({ wargear, model }) => {
   const [activeTab, setActiveTab] = useState('attacker')
   const defender = model.defence
 
@@ -160,7 +158,12 @@ ModelProfile.propTypes = {
     damage: PropTypes.string,
     AP: PropTypes.string,
     description: PropTypes.string,
-  })
+  }),
+  model: PropTypes.shape({
+    datasheet_id: PropTypes.number,
+    attack: PropTypes.object,
+    defence: PropTypes.object,
+  }),
 }
 
 export default ModelProfile

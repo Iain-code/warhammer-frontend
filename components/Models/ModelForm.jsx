@@ -280,7 +280,7 @@ const ModelForm = () => {
         />
       </div>
       <div>
-        {model && model.attack && model.defence && <ModelWargear /> }
+        {model && model.attack && model.defence && <ModelWargear model={model}/> }
       </div>
     </div>
   )

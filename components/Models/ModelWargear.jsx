@@ -1,5 +1,4 @@
-import ModelContext from "../../contexts/modelContext"
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import modelService from '../../requests/models'
 import { useMutation } from "@tanstack/react-query"
 import React from 'react'
@@ -8,11 +7,12 @@ import ExtraRules from "../Fight/ExtraRules"
 import ModelProfile from "../Models/ModelProfiles"
 
 
-const ModelWargear = () => {
-  const [model] = useContext(ModelContext)
+const ModelWargear = ({ model }) => {
   const [atkWargear, setAtkWargear] = useState(null)
   const [, setDefWargear] = useState(null)
   const [chosenWargear, setChosenWargear] = useState(null)
+
+  console.log('model', model)
 
   const attacker = model.attack
   const defender = model.defence
@@ -79,6 +79,7 @@ const ModelWargear = () => {
         <div>
           <ModelProfile 
             wargear={chosenWargear}
+            model={model}
           />
           <ExtraRules 
             wargear={chosenWargear}
@@ -90,8 +91,16 @@ const ModelWargear = () => {
   ) 
 }
 
-ExtraRules.propTypes = {
+ModelWargear.propTypes = {
   wargear: PropTypes.node.isRequired,
+  model: PropTypes.shape({
+    attack: PropTypes.shape({
+      datasheet_id: PropTypes.number,
+    }),
+    defence: PropTypes.shape({
+      datasheet_id: PropTypes.number,
+    }),
+  }),
 };
 
 export default ModelWargear

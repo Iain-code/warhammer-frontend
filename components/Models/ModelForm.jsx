@@ -36,9 +36,6 @@ const ModelForm = () => {
   let optionsAttacking = []
   let optionsDefending = []
 
-  console.log('def', defender)
-  console.log('atk', attacker)
-
   useEffect(() => {
     
     const newGroupsDef = {
@@ -217,7 +214,6 @@ const ModelForm = () => {
       payload: modelObject
     })
   }
-
 
   console.log('atk options', optionsAttacking)
   console.log('def options', optionsDefending)

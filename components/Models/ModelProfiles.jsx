@@ -129,7 +129,7 @@ const ModelProfile = ({ wargear }) => {
             {attackerAbilities.data && attackerAbilities.data.map(ability => 
               <div key={ability.line} className='flex flex-col mx-auto w-3/4 text-center'>
                 <h1 className='text-xl mt-5 underline font-semibold'>{ability.name}</h1>
-                <p className='text-lg'>{cleanDescription(ability.description)}</p>
+                <span className='text-lg'>{cleanDescription(ability.description)}</span>
               </div>
             )}
           </div>
@@ -139,7 +139,7 @@ const ModelProfile = ({ wargear }) => {
             {defenderAbilities.data && defenderAbilities.data.map(ability => 
               <div key={ability.line} className='flex flex-col mx-auto w-3/4 text-center'>
                 <h1 className='text-xl mt-5 underline font-semibold'>{ability.name}</h1>
-                <p className='text-lg'>{cleanDescription(ability.description)}</p>
+                <span className='text-lg'>{cleanDescription(ability.description)}</span>
               </div>
             )}
           </div>

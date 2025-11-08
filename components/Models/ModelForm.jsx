@@ -31,15 +31,13 @@ const ModelForm = () => {
     }
 
     for (const item of defender) {
-      console.log(1)
 
-      if (item.keywords.length > 0) {
+      if (item?.keywords?.length > 0) {
         item.keywords = item.keywords.map(i => i.toLowerCase())
       }
 
       if (item.keywords?.includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
-        console.log(2)
       } else if (item.keywords?.includes('character')) {
         groups.character = groups.character.concat(item)
       } else if (item.keywords?.includes('battleline')) {
@@ -80,7 +78,7 @@ const ModelForm = () => {
     
     for (let item of attacker) {
 
-      if (item.keywords.length > 0) {
+      if (item?.keywords?.length > 0) {
         item.keywords = item.keywords.map(i => i.toLowerCase())
       }
 

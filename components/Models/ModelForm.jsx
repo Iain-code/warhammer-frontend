@@ -17,7 +17,7 @@ const ModelForm = () => {
   console.log('atk', attacker)
 
   const groupedDefendingUnits = useMemo(() => {
-    if (!defender || defender?.length === 0 ) return null
+    // if (!defender || defender?.length === 0 ) return null
 
     const groups = {
       epicHero: [],
@@ -65,7 +65,7 @@ const ModelForm = () => {
 
   const groupedAttackingUnits = useMemo(() => {
 
-    if (!attacker || attacker.length === 0) return null
+    // if (!attacker || attacker.length === 0) return null
 
     const groups = {
       epicHero: [],
@@ -89,7 +89,7 @@ const ModelForm = () => {
 
       if (keywordArr?.includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
-      } else if (item.keywords?.includes('character')) {
+      } else if (keywordArr?.includes('character')) {
         groups.character = groups.character.concat(item)
       } else if (keywordArr?.includes('battleline')) {
         groups.battleline = groups.battleline.concat(item)
@@ -284,7 +284,6 @@ const ModelForm = () => {
           getOptionValue={(option) => option.datasheet_id}
         />
       </div>
-
     </div>
   )
 }

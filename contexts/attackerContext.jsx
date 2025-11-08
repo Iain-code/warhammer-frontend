@@ -6,9 +6,9 @@ import PropTypes from 'prop-types'
 const attackerReducer = (state, action) => {
   switch (action.type) {
   case 'model':
-    return action.payload
+    return [ ...action.payload ]
   case 'remove':
-    return action.payload
+    return [ ...action.payload ]
   default:
     return state
   }
@@ -17,7 +17,7 @@ const attackerReducer = (state, action) => {
 const AttackerContext = createContext()
 
 export const AttackerContextProvider = ({ children }) => {
-  const [attacker, attackerDispatch] = useReducer(attackerReducer, null)
+  const [attacker, attackerDispatch] = useReducer(attackerReducer, [])
 
   return (
     <AttackerContext.Provider value={[attacker, attackerDispatch]}>

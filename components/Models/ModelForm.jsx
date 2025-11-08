@@ -33,6 +33,9 @@ const ModelForm = () => {
     infantry: []
   })
 
+  console.log(attacker)
+  console.log(defender)
+
   useEffect(() => {
     
     const newGroupsDef = {

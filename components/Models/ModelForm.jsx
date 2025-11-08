@@ -16,7 +16,7 @@ const ModelForm = () => {
   console.log(defender)
 
   const groupedDefendingUnits = useMemo(() => {
-    if (!defender || defender.length === 0 ) return null
+    if (!defender || defender?.length === 0 ) return null
 
     const groups = {
       epicHero: [],
@@ -32,24 +32,29 @@ const ModelForm = () => {
 
     for (const item of defender) {
       console.log(1)
-      if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
+
+      if (item.keywords.length > 0) {
+        item.keywords = item.keywords.map(i => i.toLowerCase())
+      }
+
+      if (item.keywords?.includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
         console.log(2)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
+      } else if (item.keywords?.includes('character')) {
         groups.character = groups.character.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
+      } else if (item.keywords?.includes('battleline')) {
         groups.battleline = groups.battleline.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
+      } else if (item.keywords?.includes('transport')) {
         groups.transport = groups.transport.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
+      } else if (item.keywords?.includes('mounted')) {
         groups.mounted = groups.mounted.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
+      } else if (item.keywords?.includes('aircraft')) {
         groups.aircraft = groups.aircraft.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
+      } else if (item.keywords?.includes('monster')) {
         groups.monster = groups.monster.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
+      } else if (item.keywords?.includes('vehicle')) {
         groups.vehicle = groups.vehicle.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
+      } else if (item.keywords?.includes('infantry')) {
         groups.infantry = groups.infantry.concat(item)
       }
     }
@@ -73,24 +78,29 @@ const ModelForm = () => {
       infantry: []
     }
     
-    for (const item of attacker) {
-      if (item.keywords.map(i => i.toLowerCase()).includes('epic hero')) {
+    for (let item of attacker) {
+
+      if (item.keywords.length > 0) {
+        item.keywords = item.keywords.map(i => i.toLowerCase())
+      }
+
+      if (item.keywords?.includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('character')) {
+      } else if (item.keywords?.includes('character')) {
         groups.character = groups.character.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('battleline')) {
+      } else if (item.keywords?.includes('battleline')) {
         groups.battleline = groups.battleline.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('transport')) {
+      } else if (item.keywords?.includes('transport')) {
         groups.transport = groups.transport.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('mounted')) {
+      } else if (item.keywords?.includes('mounted')) {
         groups.mounted = groups.mounted.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('aircraft')) {
+      } else if (item.keywords?.includes('aircraft')) {
         groups.aircraft = groups.aircraft.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('monster')) {
+      } else if (item.keywords?.includes('monster')) {
         groups.monster = groups.monster.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('vehicle')) {
+      } else if (item.keywords?.includes('vehicle')) {
         groups.vehicle = groups.vehicle.concat(item)
-      } else if (item.keywords.map(i => i.toLowerCase()).includes('infantry')) {
+      } else if (item.keywords?.includes('infantry')) {
         groups.infantry = groups.infantry.concat(item)
       }
     }

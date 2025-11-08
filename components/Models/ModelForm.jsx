@@ -36,7 +36,7 @@ const ModelForm = () => {
       let keywordArr = []
 
       if (item?.keywords?.length > 0) {
-        keywordArr.concat(item.keywords.map(i => i.toLowerCase()))
+        keywordArr = keywordArr.concat(item.keywords.map(i => i.toLowerCase().trim()))
       }
 
       if (keywordArr?.includes('epic hero')) {
@@ -84,7 +84,7 @@ const ModelForm = () => {
       let keywordArr = []
 
       if (item?.keywords?.length > 0) {
-        keywordArr.concat(item.keywords.map(i => i.toLowerCase()).trim())
+        keywordArr = keywordArr.concat(item.keywords.map(i => i.toLowerCase().trim()))
       }
 
       if (keywordArr?.includes('epic hero')) {

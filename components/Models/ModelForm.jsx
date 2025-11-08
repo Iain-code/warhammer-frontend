@@ -33,27 +33,29 @@ const ModelForm = () => {
 
     for (const item of defender) {
 
+      let keywordArr = []
+
       if (item?.keywords?.length > 0) {
-        item.keywords = item.keywords.map(i => i.toLowerCase())
+        keywordArr.concat(item.keywords.map(i => i.toLowerCase()))
       }
 
-      if (item.keywords?.includes('epic hero')) {
+      if (keywordArr?.includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
-      } else if (item.keywords?.includes('character')) {
+      } else if (keywordArr?.includes('character')) {
         groups.character = groups.character.concat(item)
-      } else if (item.keywords?.includes('battleline')) {
+      } else if (keywordArr?.includes('battleline')) {
         groups.battleline = groups.battleline.concat(item)
-      } else if (item.keywords?.includes('transport')) {
+      } else if (keywordArr?.includes('transport')) {
         groups.transport = groups.transport.concat(item)
-      } else if (item.keywords?.includes('mounted')) {
+      } else if (keywordArr?.includes('mounted')) {
         groups.mounted = groups.mounted.concat(item)
-      } else if (item.keywords?.includes('aircraft')) {
+      } else if (keywordArr?.includes('aircraft')) {
         groups.aircraft = groups.aircraft.concat(item)
-      } else if (item.keywords?.includes('monster')) {
+      } else if (keywordArr?.includes('monster')) {
         groups.monster = groups.monster.concat(item)
-      } else if (item.keywords?.includes('vehicle')) {
+      } else if (keywordArr?.includes('vehicle')) {
         groups.vehicle = groups.vehicle.concat(item)
-      } else if (item.keywords?.includes('infantry')) {
+      } else if (keywordArr?.includes('infantry')) {
         groups.infantry = groups.infantry.concat(item)
       }
     }
@@ -79,27 +81,29 @@ const ModelForm = () => {
     
     for (let item of attacker) {
 
+      let keywordArr = []
+
       if (item?.keywords?.length > 0) {
-        item.keywords = item.keywords.map(i => i.toLowerCase())
+        keywordArr.concat(item.keywords.map(i => i.toLowerCase()).trim())
       }
 
-      if (item.keywords?.includes('epic hero')) {
+      if (keywordArr?.includes('epic hero')) {
         groups.epicHero = groups.epicHero.concat(item)
       } else if (item.keywords?.includes('character')) {
         groups.character = groups.character.concat(item)
-      } else if (item.keywords?.includes('battleline')) {
+      } else if (keywordArr?.includes('battleline')) {
         groups.battleline = groups.battleline.concat(item)
-      } else if (item.keywords?.includes('transport')) {
+      } else if (keywordArr?.includes('transport')) {
         groups.transport = groups.transport.concat(item)
-      } else if (item.keywords?.includes('mounted')) {
+      } else if (keywordArr?.includes('mounted')) {
         groups.mounted = groups.mounted.concat(item)
-      } else if (item.keywords?.includes('aircraft')) {
+      } else if (keywordArr?.includes('aircraft')) {
         groups.aircraft = groups.aircraft.concat(item)
-      } else if (item.keywords?.includes('monster')) {
+      } else if (keywordArr?.includes('monster')) {
         groups.monster = groups.monster.concat(item)
-      } else if (item.keywords?.includes('vehicle')) {
+      } else if (keywordArr?.includes('vehicle')) {
         groups.vehicle = groups.vehicle.concat(item)
-      } else if (item.keywords?.includes('infantry')) {
+      } else if (keywordArr?.includes('infantry')) {
         groups.infantry = groups.infantry.concat(item)
       }
     }

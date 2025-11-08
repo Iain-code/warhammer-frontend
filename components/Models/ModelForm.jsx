@@ -215,6 +215,9 @@ const ModelForm = () => {
     },
   ]
 
+  console.log('atk options', optionsAttacking)
+  console.log('def options', optionsDefending)
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,

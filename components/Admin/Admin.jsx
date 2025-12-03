@@ -21,6 +21,7 @@ const Admin = ({ user }) => {
   const [abilityState, setAbilityState] = useState([])
   const [updatedEnhancement, setUpdatedEnhancement] = useState([])
   const [newModelPoints, setNewModelPoints] = useState(null)
+  const [updatedKeyword, setUpdatedKeyword] = useState(null)
   const [newAbility, setNewAbility] = useState({
     ability_id: 0,
     datasheet_id: 0,
@@ -101,6 +102,26 @@ const Admin = ({ user }) => {
     enabled: !!faction,
     retry: 1,
     refetchOnWindowFocus: false,
+  })
+
+  const addNewKeywordToModelMutation = useMutation({ 
+    mutationFn: () => updateService.addNewKeywordToModel(user, updatedKeyword, selectedModel),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ 'adminKeywords', selectedModel?.datasheet_id ]})
+    },
+    onError: (error) => {
+      console.error('failed to update keywords', error)
+    }
+  })
+
+  const deleteKeywordMutation = useMutation({
+    mutationFn: ({ word, datasheet_id }) => updateService.deleteKeyword( user, word, datasheet_id ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ 'adminKeywords', selectedModel?.datasheet_id ]})
+    },
+    onError: (error) => {
+      console.error('failed to delete keywords', error)
+    }
   })
 
   const deleteEnhancementMutation = useMutation({
@@ -243,7 +264,7 @@ const Admin = ({ user }) => {
     setSelectedModel(model)
     setAbilityState([])
 
-    if (points.data && model) {
+    if (model) {
       const foundUnits = points.data.filter(p => p.datasheet_id === model.datasheet_id)
       const line1 = foundUnits.find(u => u.line === 1) || null
       const line2 = foundUnits.find(u => u.line === 2) || null
@@ -452,8 +473,7 @@ const Admin = ({ user }) => {
 
   const addNewModel = () => {
     if (newModel.name != '' && newModel.T != 0 && newModel.W != 0 && 
-      newModel.M != 0 && newModel.sv != 0 && newModel.inv_sv != 0 && 
-      newModel.Ld != 0 && newModel.OC != 0) {
+      newModel.M != 0 && newModel.sv != 0 && newModel.Ld != 0) {
       addNewModelMutation.mutate()
       return
     }
@@ -467,8 +487,6 @@ const Admin = ({ user }) => {
   const handleAddNewModelPoints = (field, value) => {
     setNewModelPoints({ ...newModelPoints, [field]: value, datasheet_id: selectedModel.datasheet_id })
   }
-
-  console.log('newModelPoints OUT', newModelPoints)
 
   const addNewPoints = () => {
     if (!newModelPoints?.cost || !newModelPoints?.description) {
@@ -644,7 +662,7 @@ const Admin = ({ user }) => {
                 <th>Ld</th>
                 <th>OC</th>
                 <th>Cost - Description</th>
-                <th>Cost - Description</th>
+                <th>Cost 2 - Description 2</th>
               </tr>   
             </thead>
             <tbody>
@@ -852,19 +870,56 @@ const Admin = ({ user }) => {
           </div>
         </div>
         }
+        {selectedModel &&
+        <div className='flex flex-col mx-auto'>
+          <div className='border my-8 w-1/2 mx-auto'></div>
+          <h1 className='mx-auto'>Add New Keyword</h1>
+          <div className='flex flex-col mx-auto w-1/2 my-4'>
+            <input
+              type="text"
+              value={updatedKeyword ?? ''}
+              className='text-center text-black'
+              onChange={(e) => setUpdatedKeyword(e.target.value)}
+            />
+          </div>
+          <div className='mx-auto'>
+            <button
+              onClick={() => addNewKeywordToModelMutation.mutate()}
+              className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                          overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                          group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                          focus:ring-pink-200"
+            >
+              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                Confirm New Keyword</span>
+            </button>
+          </div>
+
+        </div>
+        }
         {keywords.data && (
           <ul className="flex flex-wrap gap-4 justify-center py-4">
             {keywords.data.keyword.map(word => {
               if (word !== '') {
                 return (
                   !editing ? <li key={word}>{word}</li> :
-                    <div className='text-black' key={word}>
+                    <div className='text-black flex flex-col' key={word}>
                       <input
                         type='text'
                         value={word}
                         className='text-center'
                         onChange={(event) => handleKeywordChange(event.target.value)}
                       />
+                      <button
+                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                          overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                          group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                          focus:ring-pink-200 my-4"
+                        onClick={() => deleteKeywordMutation.mutate({ word, datasheet_id: selectedModel.datasheet_id })}
+                      >
+                        <span className="relative px-5 py-2.5 w-full transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                        Delete Keyword</span>
+                      </button>
                     </div>
                 )
               }
@@ -872,7 +927,8 @@ const Admin = ({ user }) => {
           </ul>
         )}
         {selectedModel &&
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col justify-center items-center my-4'>
+          <div className='border my-12 w-1/2 mx-auto'></div>
           <h1 className='text-lg font-semibold underline'>Abilities</h1>
           <div className='flex w-full flex-col justify-center'>
             <h1 className='flex justify-center mb-4'>Add New Ability</h1>
@@ -901,8 +957,8 @@ const Admin = ({ user }) => {
                 const cleanedDes = cleanDescription(abilityDes)
 
                 return (
-                  <li key={ability.ability_id}>
-                    <h2 className='text-lg text-orange-500'>{ability.name}</h2>
+                  <li key={ability.ability_id} className='py-2'>
+                    <h2 className='text-2xl underline text-white text-semibold my-2'>{ability.name}</h2>
                     <button 
                       className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
                         overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
@@ -910,7 +966,8 @@ const Admin = ({ user }) => {
                         focus:ring-pink-200"
                       onClick={() => deleteAbility(ability)}
                     >
-                      Delete Ability
+                      <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                        Delete Ability</span>
                     </button>
                     {editing ?
                       <div className='text-white'>
@@ -951,31 +1008,35 @@ const Admin = ({ user }) => {
             DELETE SELECTED MODEL</span></button>
         </div>
       }
-      {faction && 
+      {faction &&
       <div className='flex flex-col items-center mb-8'>
-        <button 
-          onClick={addNewModel}
-          className="w-1/6 border border-white relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
-                overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
-                group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
-                focus:ring-pink-200 dark:focus:ring-pink-800"
-        >
-          <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-            Add new Model
-          </span>
-        </button>
-        <button 
-          onClick={addNewPoints}
-          className="w-1/6 border border-white relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
-                overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
-                group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
-                focus:ring-pink-200 dark:focus:ring-pink-800"
-        >
-          <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-            Add new points
-          </span>
-        </button>
-        <div className='flex flex-col'>
+        <div className='border-t w-1/2 my-6'></div>
+        <h1 className='text-white text-2xl my-4'>Add a New Model</h1>
+        <div className='flex flex-row w-full justify-center gap-4'>
+          <button 
+            onClick={addNewModel}
+            className="w-1/6 border border-white relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                  group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                  focus:ring-pink-200 dark:focus:ring-pink-800"
+          >
+            <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+              Add new Model
+            </span>
+          </button>
+          <button 
+            onClick={addNewPoints}
+            className="w-1/6 border border-white relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+                  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400
+                  group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none 
+                  focus:ring-pink-200 dark:focus:ring-pink-800"
+          >
+            <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+              Add new points
+            </span>
+          </button>
+        </div>
+        <div className='flex flex-col my-8'>
           <div>
             <table className="table-fixed w-full text-sm text-black bg-neutral-600 border border-collapse rounded-xl">
               <thead>
@@ -1114,12 +1175,14 @@ const Admin = ({ user }) => {
                 </tr>
               </tbody>
             </table>
+            <div className='border mt-12 w-1/2 mx-auto'></div>
           </div>
         </div>
       </div>
       }
       {getEnhancements.data &&
-      <div className='flex justify-center text-center'>
+      <div className='flex flex-col justify-center text-center'>
+        <h1 className='text-2xl text-white my-2'>Enhancements</h1>
         <table className='table-fixed w-full border-collapse border border-gray-400 rounded-xl'>
 
           <thead>

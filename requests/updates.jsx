@@ -87,9 +87,31 @@ const addNewPoints = async (user, obj) => {
   const config = {
     headers: { Authorization: tokenHeader }
   }
-  console.log('obj in req', obj)
 
   const response = await axios.post(`${baseUrl}/admins/points/${obj.datasheet_id}`, obj, config)
+  return response.data
+}
+
+const addNewKeywordToModel = async (user, updatedKeyword, selectedModel) => {
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader }
+  }
+
+  const response = await axios.post(`${baseUrl}/admins/keywords/${selectedModel.datasheet_id}`, {keyword: updatedKeyword}, config)
+  return response.data
+}
+
+const deleteKeyword = async (user, keyword, datasheet_id) => {
+  const tokenHeader = userService.setToken(user.token)
+  const config = {
+    headers: { Authorization: tokenHeader }
+  }
+
+  console.log('keyword', keyword)
+  console.log('ID', datasheet_id)
+  
+  const response = await axios.delete(`${baseUrl}/admins/keywords/${datasheet_id}/${keyword}`, config)
   return response.data
 }
 
@@ -102,5 +124,7 @@ export default {
   addNewEnhancement,
   addNewModel,
   addNewAbility,
-  addNewPoints  
+  addNewPoints,
+  addNewKeywordToModel,
+  deleteKeyword
 }

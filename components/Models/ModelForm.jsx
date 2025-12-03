@@ -19,7 +19,8 @@ const ModelForm = () => {
     aircraft: [],
     monster: [],
     vehicle: [],
-    infantry: []
+    infantry: [],
+    otherUnits: []
   })
   const [defGroups, setDefGroups] = useState({
     epicHero: [],
@@ -30,11 +31,9 @@ const ModelForm = () => {
     aircraft: [],
     monster: [],
     vehicle: [],
-    infantry: []
+    infantry: [],
+    otherUnits: []
   })
-
-  console.log(attacker)
-  console.log(defender)
 
   useEffect(() => {
     
@@ -47,7 +46,8 @@ const ModelForm = () => {
       aircraft: [],
       monster: [],
       vehicle: [],
-      infantry: []
+      infantry: [],
+      otherUnits: []
     }
     const newGroups = {
       epicHero: [],
@@ -58,7 +58,8 @@ const ModelForm = () => {
       aircraft: [],
       monster: [],
       vehicle: [],
-      infantry: []
+      infantry: [],
+      otherUnits: []
     }
 
     for (const item of attacker) {
@@ -87,6 +88,8 @@ const ModelForm = () => {
         newGroups.vehicle.push(item)
       } else if (keywordArr?.includes('infantry')) {
         newGroups.infantry.push(item)
+      } else {
+        newGroupsDef.otherUnits.push(item)
       }
     }
     setAtkGroups(newGroups)
@@ -118,6 +121,8 @@ const ModelForm = () => {
         newGroupsDef.vehicle.push(item)
       } else if (keywordArr?.includes('infantry')) {
         newGroupsDef.infantry.push(item)
+      } else {
+        newGroupsDef.otherUnits.push(item)
       }
     }
     setDefGroups(newGroupsDef)
@@ -160,6 +165,10 @@ const ModelForm = () => {
       label: 'Infantry',
       options: ([...(atkGroups?.infantry || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
+    {
+      label: 'Other Units',
+      options: ([...(defGroups?.otherUnits || [])]).sort((a,b) => a.name.localeCompare(b.name)),
+    },
   ]
 
   const optionsDefending = [
@@ -199,6 +208,10 @@ const ModelForm = () => {
       label: 'Infantry',
       options: ([...(defGroups?.infantry || [])]).sort((a,b) => a.name.localeCompare(b.name)),
     },
+    {
+      label: 'Other Units',
+      options: ([...(defGroups?.otherUnits || [])]).sort((a,b) => a.name.localeCompare(b.name)),
+    },
   ]
 
   const handleAttackerModel = (modelObject) => {
@@ -214,13 +227,6 @@ const ModelForm = () => {
       payload: modelObject
     })
   }
-
-  console.log('atk options', optionsAttacking)
-  console.log('def options', optionsDefending)
-  console.log('attacker len', Array.isArray(attacker) ? attacker.length : attacker);
-  console.log('defender len', Array.isArray(defender) ? defender.length : defender);
-  console.log('first attacker', attacker?.[0]);
-  console.log('first defender', defender?.[0]);
 
   const customStyles = {
     control: (provided, state) => ({

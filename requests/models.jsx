@@ -103,6 +103,7 @@ const updatePoints = async (obj, user) => {
     headers: { Authorization: tokenHeader }
   }
 
+  console.log('obj', obj)
   const response = await axios.put(`${baseUrl}/admins/points/${obj.id}/${obj.line}`, obj, config)
   return response.data
 }
